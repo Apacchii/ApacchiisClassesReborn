@@ -1,0 +1,25 @@
+Join the discord to report bugs, ask for help, or just chat with us:
+https://discord.gg/G4TwQCAdxf
+
+Apacchii's Classes: Reborn is the successor to my first ever mod "Apacchii's Classes Mod" (Now known as "Apacchii's Classes: Classic").
+This mod focuses solely on the classes and is completely reimagined and hopefully more balanced.
+
+-> BETA VERSION, NOT ALL FEATURES ARE IMPLEMENTED YET <-
+
+As of now there are 4 classes, 1 for each vanilla damage type.
+Each class has 1 passive ability, 2 active abilities, 1 ultimate ability and a Talent Tree specific for that class.
+
+Classes level up automatically each time a boss is defeated and the levels are player and class-sided.
+The class' max level is as high as the amount of bosses you have in the game, including modded.
+
+Dont forget to bind your mod keybinds!
+
+--- If you enjoy this mod, please consider giving the steam workshop page a like, have fun! ---
+
+**Visit the discord server for detailed patch notes and other information**
+
+--------------------------------------------------
+DONATING
+Donations of 5eur or more are entitled to a custom Relic item on this mod.
+Support me: https://www.paypal.com/donate?hosted_button_id=SAQ2RQ5VAX9A4
+--------------------------------------------------

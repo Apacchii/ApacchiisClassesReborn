@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApacchiisClassesMod2", "ApacchiisClassesMod2.csproj", "{990F461D-0521-46AE-A621-B683E4069D74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{990F461D-0521-46AE-A621-B683E4069D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990F461D-0521-46AE-A621-B683E4069D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990F461D-0521-46AE-A621-B683E4069D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990F461D-0521-46AE-A621-B683E4069D74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76A2D2F6-F976-4023-B6B4-80BA1FAD1FBE}
+	EndGlobalSection
+EndGlobal

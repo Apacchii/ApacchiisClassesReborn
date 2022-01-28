@@ -1,0 +1,4 @@
+displayName = Apacchii's Classes: Reborn [Beta]
+author = Apacchii
+version = 0.11.0.1.-
+homepage = https://discord.gg/G4TwQCAdxf

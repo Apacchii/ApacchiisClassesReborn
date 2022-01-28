@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>ApacchiisClassesMod2</AssemblyName>
+    <TargetFramework>net6.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Items\BlueCloth.png" />
+    <None Remove="Items\Classes\BloodMage.png" />
+    <None Remove="Items\Classes\CasterClass.png" />
+    <None Remove="Items\Classes\Commander.png" />
+    <None Remove="Items\Classes\Marksman.png" />
+    <None Remove="Items\Classes\Scout.png" />
+    <None Remove="Items\Classes\Vanguard.png" />
+    <None Remove="Items\ClassWeapons\BloodSpray.png" />
+    <None Remove="Items\ClassWeapons\FadingDagger.png" />
+    <None Remove="Items\ClassWeapons\SeekingSpirit.png" />
+    <None Remove="Items\ClassWeapons\TrainingRapier.png" />
+    <None Remove="Items\EmptyClassBanner.png" />
+    <None Remove="Items\GreenCloth.png" />
+    <None Remove="Items\HitList.png" />
+    <None Remove="Items\OrangeCloth.png" />
+    <None Remove="Items\RedCloth.png" />
+    <None Remove="Items\Relics\AghanimsScepter.png" />
+    <None Remove="Items\Relics\AghanimsStaff.png" />
+    <None Remove="Items\Relics\BleedingMoonStone.png" />
+    <None Remove="Items\Relics\BleedingMoonStone_Old.png" />
+    <None Remove="Items\Relics\BloodGem.png" />
+    <None Remove="Items\Relics\BrokenHeart.png" />
+    <None Remove="Items\Relics\BrokenHear_Old.png" />
+    <None Remove="Items\Relics\Croissant.png" />
+    <None Remove="Items\Relics\CursedCandle.png" />
+    <None Remove="Items\Relics\LeysMushroom.png" />
+    <None Remove="Items\Relics\MoonStone.png" />
+    <None Remove="Items\Relics\MushroomConcentrate.png" />
+    <None Remove="Items\Relics\NiterihsBracelet.png" />
+    <None Remove="Items\Relics\NiterihsEarring.png" />
+    <None Remove="Items\Relics\NiterihsLuckyToken.png" />
+    <None Remove="Items\Relics\NiterihsNecklace.png" />
+    <None Remove="Items\Relics\NiterihsRing.png" />
+    <None Remove="Items\Relics\OldBelt.png" />
+    <None Remove="Items\Relics\RandomRelic.png" />
+    <None Remove="Items\Relics\StrangeGem.png" />
+    <None Remove="Items\Relics\StrangeMushroom.png" />
+    <None Remove="Items\Relics\TearsOfLife.png" />
+    <None Remove="Items\Relics\UnstableConcoction.png" />
+    <None Remove="Items\Relics\VoidMirror.png" />
+    <None Remove="Items\WhiteCloth.png" />
+    <None Remove="Items\ZIP.png" />
+    <None Remove="Projectiles\BloodMage\BloodEnchantment.png" />
+    <None Remove="Projectiles\BloodMage\BloodEnchantment2.png" />
+    <None Remove="Projectiles\BloodMage\BloodEnchantment3.png" />
+    <None Remove="Projectiles\BloodMage\BloodEnchantment4.png" />
+    <None Remove="Projectiles\Weapons\FadingDagger.png" />
+    <None Remove="Projectiles\Weapons\TrainingRapier.png" />
+    <None Remove="UI\background.png" />
+    <None Remove="UI\backgroundOld.png" />
+    <None Remove="UI\HUD\AbilityBack.png" />
+    <None Remove="UI\HUD\AbilityBar.png" />
+    <None Remove="UI\HUD\BackBar.png" />
+    <None Remove="UI\HUD\BackBar2.png" />
+    <None Remove="UI\HUD\Bar.png" />
+    <None Remove="UI\HUD\Bar3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+</Project>
