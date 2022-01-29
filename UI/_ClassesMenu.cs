@@ -407,15 +407,15 @@ namespace ApacchiisClassesMod2.UI
             if(!passiveButton.IsMouseHovering && ! ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering)
             {
                 abilityName.SetText("-Player Stats-" +
-                                    "\nTimes died: " + acmPlayer.timesDied +
-                                    "\nEnemies killed: " + acmPlayer.enemiesKilled +
-                                    "\nDamage Dealt: " + acmPlayer.damageDealt +
-                                    "\nHighest DPS: " + acmPlayer.highestDPS +
-                                    "\nHighest Crit: " + acmPlayer.highestCrit +
-                                    "\nEndurance: " + (decimal)((acmPlayer.trueEndurance + Player.endurance - 1f) * 100) + "%" +
-                                    "\nAbility Power: " + (decimal)(acmPlayer.abilityPower * 100) + "%" +
-                                    "\nAbilities Cooldown: " + (int)(acmPlayer.cooldownReduction * 100) + "%" +
-                                    "\nUltimate Cost: " + (int)(acmPlayer.ultCooldownReduction * 100) + "%");
+                                    $"\nTimes died: {acmPlayer.timesDied}" +
+                                    $"\nEnemies killed: {acmPlayer.enemiesKilled}" +
+                                    $"\nDamage Dealt: {acmPlayer.damageDealt} " +
+                                    $"\nHighest DPS: {acmPlayer.highestDPS} " +
+                                    $"\nHighest Crit: {acmPlayer.highestCrit} " +
+                                    $"\nEndurance: {(decimal)((acmPlayer.trueEndurance + Player.endurance - 1f) * 100)}%" +
+                                    $"\nAbility Power: {(decimal)(acmPlayer.abilityPower * 100)}%" +
+                                    $"\nCooldown Reduction: {-(int)((acmPlayer.cooldownReduction - 1f) * 100)}%" +
+                                    $"\nUltimate Cost: {(int)(acmPlayer.ultCooldownReduction * 100)}%");
 
             }
 
@@ -430,7 +430,7 @@ namespace ApacchiisClassesMod2.UI
                     SoundEngine.PlaySound(SoundID.MenuTick);
                     tick = true;
                 }
-                
+
                 switch (selectedClass)
                 {
                     case "Vanguard":
@@ -438,7 +438,7 @@ namespace ApacchiisClassesMod2.UI
                         abilityName.SetText("[Enchanted Armor]");
                         abilityText.SetText("Your armor is enchanted with light properties.\n" +
                                             "Enemies that directly attack you take a percentage of your defense as mitigable damage.");
-                        abilityEffect1.SetText("Reflected Damage: " + (acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f) + "% = " + acmPlayer.vanguardPassiveReflectAmount * 100 + "% + 2.5% p/Level(" + (acmPlayer.vanguardLevel * 2.5f) + "%)");
+                        abilityEffect1.SetText($"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f}% = {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level{acmPlayer.vanguardLevel * 2.5f}%)");
                         break;
 
                     case "Blood Mage":
@@ -459,15 +459,15 @@ namespace ApacchiisClassesMod2.UI
                         abilityEffect1.SetText("Regen: " + acmPlayer.bloodMageBasePassiveRegen * 100 + "% p/Stack = " + (decimal)(acmPlayer.bloodMagePassiveRegen * (acmPlayer.bloodMagePassiveMaxStacks + acmPlayer.bloodMageLevel * 2) * 100) + "% at max stacks");
                         abilityEffect2.SetText("Max Stacks: " + acmPlayer.bloodMagePassiveBaseMaxStacks + " + 2 p/Level(" + acmPlayer.bloodMageLevel * 2 + ") = " + acmPlayer.bloodMagePassiveMaxStacks);
                         if (acmPlayer.bloodMageTalent_9 == "L")
-                            abilityEffect4.SetText("Max Bonus Damage: " + (decimal)(acmPlayer.bloodMagePassiveMaxStacks * .008f * 100) + "%");
+                            abilityEffect4.SetText($"Max Bonus Damage: {(decimal)(acmPlayer.bloodMagePassiveMaxStacks * .008f * 100)}%");
                         break;
 
                     case "Commander":
                         abilityName.SetText("[Commander's Will]");
                         abilityText.SetText("Gain bonus damage reduction for each minion slot you have.");
 
-                        abilityEffect1.SetText("Endurance: " + (decimal)(acmPlayer.commanderPassiveEndurance * acmPlayer.Player.maxMinions * 100) + "%");
-                        abilityEffect2.SetText("Max Minions: " + acmPlayer.Player.maxMinions);
+                        abilityEffect1.SetText($"Endurance: {(decimal)(acmPlayer.commanderPassiveEndurance * acmPlayer.Player.maxMinions * 100)}%");
+                        abilityEffect2.SetText($"Max Minions: {acmPlayer.Player.maxMinions}");
                         break;
 
                     case "Scout":
@@ -479,7 +479,7 @@ namespace ApacchiisClassesMod2.UI
                         else
                             abilityEffect1.SetText("Double Jump: Disabled");
 
-                        abilityEffect2.SetText("Speed Bonus: " + (int)(acmPlayer.scoutPassiveSpeedBonus * 100) + "%");
+                        abilityEffect2.SetText($"Speed Bonus: {(int)(acmPlayer.scoutPassiveSpeedBonus * 100)}%");
 
                         break;
                 }
@@ -502,8 +502,8 @@ namespace ApacchiisClassesMod2.UI
                         abilityText.SetText("Throw a spear of light that will drag enemies along with it.\n" +
                                             "If the spear collides with terrain or 1.5 seconds have passed, the spear will explode dealing damage\n" +
                                             "to all enemies in the area.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability1MaxCooldown / 60 + "s");
-                        abilityEffect1.SetText("Explosion Damage: " + acmPlayer.vanguardSpearBaseDamage + " + 8 p/Level(" + acmPlayer.vanguardLevel * 8 + ") = " + (int)(acmPlayer.vanguardSpearBaseDamage + (acmPlayer.vanguardLevel * 8)));
+                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
+                        abilityEffect1.SetText($"Explosion Damage: {(int)(acmPlayer.vanguardSpearBaseDamage + acmPlayer.vanguardLevel * 8)} = {acmPlayer.vanguardSpearBaseDamage} + 8 p/Level ({acmPlayer.vanguardLevel * 8})");
                         break;
 
                     case "Blood Mage":
@@ -512,7 +512,7 @@ namespace ApacchiisClassesMod2.UI
                         abilityText.SetText("Throw a blob of your own blood to seek out an enemy, when the blob hits its target it will return to\n" +
                                             "you with a bit of the enemy's blood heal you for 10% of the enemy's max health.\n" +
                                             "(Healing cannot be greater than 15% of your max health)");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability1MaxCooldown / 60 + "s");
+                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
                         abilityEffect1.SetText("Damage: " + acmPlayer.bloodMageSiphonBaseDamage + " + 5 p/Level(" + acmPlayer.bloodMageLevel * 5 + ") = " + (decimal)(acmPlayer.bloodMageSiphonBaseDamage + acmPlayer.bloodMageLevel * 5) + "");
                         abilityEffect2.SetText("Max Healing: " + (decimal)acmPlayer.bloodMageSiphonHealMax * 100 + "% of your max health");
                         break;
@@ -523,9 +523,9 @@ namespace ApacchiisClassesMod2.UI
                                             "Players inside the banner's radius are granted damage reduction and\n" +
                                             "increased damage.\n" +
                                             "This buff persists for a while after leaving the banner's radius.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability1MaxCooldown / 60 + "s");
+                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
 
-                        abilityEffect1.SetText("Endurance: " + (decimal)((1f - acmPlayer.commanderBannerEndurance) * 100) + "%");
+                        abilityEffect1.SetText($"Endurance: {(decimal)((1f - acmPlayer.commanderBannerEndurance) * 100)}%");
                         abilityEffect2.SetText("Bonus Damage: " + (int)((acmPlayer.commanderBannerDamage - 1f) * 100) + "%");
                         abilityEffect4.SetText("Duration: " + acmPlayer.commanderBannerDuration / 60 + "s + 0.5s p/Level(" + acmPlayer.commanderLevel * .4f + "s) = " + (decimal)((acmPlayer.commanderLevel * 24 + acmPlayer.commanderBannerDuration) / 60) + "s");
                         break;
@@ -534,7 +534,7 @@ namespace ApacchiisClassesMod2.UI
                         abilityName.SetText("[Hit-a-Soda]");
                         abilityText.SetText("Take a sip from an energy drink you made yourself.\n" +
                                             "This drink will increase the damage you deal temporarily.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability1MaxCooldown / 60 + "s");
+                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
 
                         abilityEffect1.SetText("Damage Bonus: " + (decimal)(acmPlayer.scoutColaDamageBonus) * 100 + "% + " + acmPlayer.scoutColaDamageBonusLevel * 100 + "% p/Level(" + (decimal)(acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel * 100) + "%) = " + (decimal)((acmPlayer.scoutColaDamageBonus + acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel) * 100) + "%");
                         abilityEffect2.SetText("Duration: " + acmPlayer.scoutColaDuration / 60 + "s");
@@ -621,8 +621,8 @@ namespace ApacchiisClassesMod2.UI
                     case "Blood Mage":
                         //castType.SetText("-No Target-");
                         abilityName.SetText("[Regeneration]");
-                        abilityText.SetText("Regenerate the blood of you and all your allies, regenerating a percentage of the healed player's max\n" +
-                                            "health each second for a limited number of ticks.\n" +
+                        abilityText.SetText("Quickly regenerate the blood of you and all your allies over time, regenerating a percentage of the healed player's max\n" +
+                                            "health at a medium rate for a limited number of ticks.\n" +
                                             "[Currently only heals yourself, and not allies, im working on it]");
                         abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
                         abilityEffect1.SetText("Max Health Heal: " + (decimal)acmPlayer.bloodMageBaseUltRegen * 100 + "% + 0.1% p/Level(" + acmPlayer.bloodMageLevel * 0.1f * 100 + "%) = " + (acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .1f) + "%");

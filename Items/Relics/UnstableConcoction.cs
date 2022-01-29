@@ -8,7 +8,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class UnstableConcoction : ModItem
 	{
-        public string desc = "Casting an ability causes your next attack to deal 3x the damage";
+        public string desc = "Casting an ability causes your next attack to deal 4x the damage";
 
         public override void SetStaticDefaults()
         {

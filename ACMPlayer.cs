@@ -22,6 +22,7 @@ namespace ApacchiisClassesMod2
         public bool hasAghanims;
         public bool hasUnstableConcoction;
         bool isUnstableConcoctionReady;
+        public bool hasNeterihsToken;
         #endregion
 
         public string equippedClass;
@@ -45,6 +46,11 @@ namespace ApacchiisClassesMod2
         bool ultSound = false;
         bool a1Sound = false;
         bool a2Sound = false;
+        public int healthToRegen;
+        public int healthToRegenMedium;
+        int healthToRegenMediumTimer = 0;
+        public int healthToRegenSlow;
+        int healthToRegenSlowTimer = 0;
 
         public bool devTool = false;
 
@@ -264,6 +270,7 @@ namespace ApacchiisClassesMod2
             hasBleedingMoonStone = false;
             hasAghanims = false;
             hasUnstableConcoction = false;
+            hasNeterihsToken = false;
             #endregion
 
             abilityPower = 1f;
@@ -514,6 +521,9 @@ namespace ApacchiisClassesMod2
             if (hasVanguard && !npc.dontTakeDamage)
                 Player.ApplyDamageToNPC(npc, (int)(Player.statDefense * vanguardPassiveReflectAmount), 0, hitDir, false);
 
+            if(hasNeterihsToken)
+                Player.immuneTime += 60;
+
             base.OnHitByNPC(npc, damage, crit);
         }
 
@@ -522,6 +532,9 @@ namespace ApacchiisClassesMod2
             InBattle();
             if (ultCharge < ultChargeMax)
                 ultCharge = (int)(ultCharge * .94f);
+
+            if (hasNeterihsToken)
+                Player.immuneTime += 60;
 
             base.OnHitByProjectile(proj, damage, crit);
         }
@@ -603,7 +616,7 @@ namespace ApacchiisClassesMod2
 
             if (isUnstableConcoctionReady)
             {
-                damage *= 3;
+                damage *= 4;
                 isUnstableConcoctionReady = false;
             }
                 
@@ -628,7 +641,7 @@ namespace ApacchiisClassesMod2
         {
             if (isUnstableConcoctionReady)
             {
-                damage *= 3;
+                damage *= 4;
                 isUnstableConcoctionReady = false;
             }
                 
@@ -656,10 +669,34 @@ namespace ApacchiisClassesMod2
 
         public override void PreUpdate()
         {
-            //if (Player.statLife <= 0 && !Player.dead)
-            //    Player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(Player.name + " killed themselves with their own class. Silly player!"), 1, 1);
             if (Player.statLife <= 0 && !Player.dead && bloodMageBloodEnchantment && hasBloodMage)
-                Player.KillMe(Terraria.DataStructures.PlayerDeathReason.ByCustomReason(Player.name + " ran out of blood for their 'Blood Enchantment' ability!. Silly player!"), 1, 1);
+                Player.KillMe(PlayerDeathReason.ByCustomReason(Player.name + " ran out of blood for their 'Blood Enchantment' ability!. Silly player!"), 1, 1);
+
+            if(healthToRegen > 0)
+            {
+                Player.statLife++;
+                healthToRegen--;
+            }
+
+            healthToRegenMediumTimer++;
+            if(healthToRegenMediumTimer % 3 == 0)
+            {
+                if(healthToRegenMedium > 0)
+                {
+                    Player.statLife++;
+                    healthToRegenMedium--;
+                }    
+            }
+
+            healthToRegenSlowTimer++;
+            if (healthToRegenSlowTimer % 6 == 0)
+            {
+                if (healthToRegenSlow > 0)
+                {
+                    Player.statLife++;
+                    healthToRegenSlow--;
+                }
+            }
 
             resetHUD--;
             if (resetHUD <= 0)
@@ -1121,7 +1158,7 @@ namespace ApacchiisClassesMod2
                             if (Main.player[i].active)
                             {
                                 ModPacket packet = Mod.GetPacket();
-                                packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayer);
+                                packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayerMedium);
                                 packet.Write((byte)i);
                                 packet.Write((int)(Main.player[i].statLifeMax2 * Main.player[Player.whoAmI].GetModPlayer<ACMPlayer>().bloodMageUltRegen));
                                 packet.Send(-1, -1);
@@ -1130,7 +1167,7 @@ namespace ApacchiisClassesMod2
                     }
                     else
                     {
-                        Player.statLife += (int)(Player.statLifeMax2 * Player.GetModPlayer<ACMPlayer>().bloodMageUltRegen);
+                        healthToRegenMedium += (int)(Player.statLifeMax2 * Player.GetModPlayer<ACMPlayer>().bloodMageUltRegen);
                         Player.HealEffect((int)(Player.statLifeMax2 * Player.GetModPlayer<ACMPlayer>().bloodMageUltRegen));
                     }
                     

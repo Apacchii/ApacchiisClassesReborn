@@ -66,25 +66,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             }
             float num134 = Projectile.position.X;
             float num135 = Projectile.position.Y;
-            float num136 = 750f; // Range ?
+            float range = 750f;
             bool flag3 = false;
             int num137 = 0;
             if (Projectile.ai[1] == 0f)
             {
-                for (int num138 = 0; num138 < 200; num138++)
+                for (int target = 0; target < 200; target++)
                 {
-                    if (Main.npc[num138].CanBeChasedBy(this, false) && (Projectile.ai[1] == 0f || Projectile.ai[1] == (float)(num138 + 1)))
+                    if (Main.npc[target].CanBeChasedBy(this, false) && (Projectile.ai[1] == 0f || Projectile.ai[1] == (float)(target + 1)))
                     {
-                        float num139 = Main.npc[num138].position.X + (float)(Main.npc[num138].width / 2);
-                        float num140 = Main.npc[num138].position.Y + (float)(Main.npc[num138].height / 2);
+                        float num139 = Main.npc[target].position.X + (float)(Main.npc[target].width / 2);
+                        float num140 = Main.npc[target].position.Y + (float)(Main.npc[target].height / 2);
                         float num141 = Math.Abs(Projectile.position.X + (float)(Projectile.width / 2) - num139) + Math.Abs(Projectile.position.Y + (float)(Projectile.height / 2) - num140);
-                        if (num141 < num136 && Collision.CanHit(new Vector2(Projectile.position.X + (float)(Projectile.width / 2), Projectile.position.Y + (float)(Projectile.height / 2)), 1, 1, Main.npc[num138].position, Main.npc[num138].width, Main.npc[num138].height))
+                        if (num141 < range && Collision.CanHit(new Vector2(Projectile.position.X + (float)(Projectile.width / 2), Projectile.position.Y + (float)(Projectile.height / 2)), 1, 1, Main.npc[target].position, Main.npc[target].width, Main.npc[target].height))
                         {
-                            num136 = num141;
+                            range = num141;
                             num134 = num139;
                             num135 = num140;
                             flag3 = true;
-                            num137 = num138;
+                            num137 = target;
                         }
                     }
                 }
@@ -145,25 +145,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
                 }
                 float num134_2 = Projectile.position.X;
                 float num135_2 = Projectile.position.Y;
-                float num136_2 = 50000f; // Range ?
+                float range = 100000f;
                 bool flag3_2 = false;
                 int num137_2 = 0;
                 if (Projectile.ai[1] == 0f)
                 {
-                    for (int num138_2 = 0; num138_2 < 200; num138_2++)
+                    for (int target = 0; target < 200; target++)
                     {
-                        if (Main.player[num138_2].whoAmI == Main.myPlayer && (Projectile.ai[1] == 0f || Projectile.ai[1] == (float)(num138_2 + 1)))
+                        if (Main.player[target].whoAmI == Main.myPlayer && (Projectile.ai[1] == 0f || Projectile.ai[1] == (float)(target + 1)))
                         {
-                            float num139_2 = Main.player[num138_2].position.X + (float)(Main.player[num138_2].width / 2);
-                            float num140_2 = Main.player[num138_2].position.Y + (float)(Main.player[num138_2].height / 2);
+                            float num139_2 = Main.player[target].position.X + (float)(Main.player[target].width / 2);
+                            float num140_2 = Main.player[target].position.Y + (float)(Main.player[target].height / 2);
                             float num141_2 = Math.Abs(Projectile.position.X + (float)(Projectile.width / 2) - num139_2) + Math.Abs(Projectile.position.Y + (float)(Projectile.height / 2) - num140_2);
-                            if (num141_2 < num136_2 && Collision.CanHit(new Vector2(Projectile.position.X + (float)(Projectile.width / 2), Projectile.position.Y + (float)(Projectile.height / 2)), 1, 1, Main.player[num138_2].position, Main.player[num138_2].width, Main.player[num138_2].height))
+                            if (num141_2 < range /*&& Collision.CanHit(new Vector2(Projectile.position.X + (float)(Projectile.width / 2), Projectile.position.Y + (float)(Projectile.height / 2)), 1, 1, Main.player[target].position, Main.player[target].width, Main.player[target].height)*/)
                             {
-                                num136_2 = num141_2;
+                                range = num141_2;
                                 num134_2 = num139_2;
                                 num135_2 = num140_2;
                                 flag3_2 = true;
-                                num137_2 = num138_2;
+                                num137_2 = target;
                             }
                         }
                     }

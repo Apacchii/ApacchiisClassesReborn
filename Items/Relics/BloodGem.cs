@@ -8,8 +8,8 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class BloodGem : ModItem
 	{
-        public string desc = "Your projectile and minion hits heal you for 1% max health (3s Cooldown)\n" +
-                             "Your melee hits heal you for 2.5% max health (2s Cooldown)";
+        public string desc = "Your projectile and minion hits heal you for 1% max health (4s Cooldown)\n" +
+                             "Your non-projectile melee hits heal you for 2% max health (2s Cooldown)";
         string donator = "Matty";
 
         public override void SetStaticDefaults()

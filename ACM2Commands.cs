@@ -18,7 +18,7 @@ namespace ApacchiisClassesMod2
             => "/acr resetHUD";
 
         public override string Description
-            => "Reset's the HUD from 'Apacchii's Clases: Reborn' if it is stuck";
+            => "Resets the HUD from 'Apacchii's Clases: Reborn' if it is stuck";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -38,7 +38,7 @@ namespace ApacchiisClassesMod2
 
             var modPlayer = Main.player[player].GetModPlayer<ACMPlayer>();
 
-            if(args[0] == "devCC")
+            if(args[0] == "cc")
             {
                 modPlayer.ability1Cooldown = 0;
                 modPlayer.ability2Cooldown = 0;

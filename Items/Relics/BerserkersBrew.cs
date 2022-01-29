@@ -6,13 +6,13 @@ using Terraria.ModLoader;
 
 namespace ApacchiisClassesMod2.Items.Relics
 {
-	public class NiterihsNecklace : ModItem
+	public class BerserkersBrew : ModItem
 	{
-        public string desc = "Increases max health by 6%";
+        public string desc = "Increases potion sickness duration by 8 seconds\nPotions heal for an additional 35% of your missing health";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Relic] Niterih's Necklace");
+            DisplayName.SetDefault("[Relic] Berserker's Brew");
             Tooltip.SetDefault(desc);
         }
 
@@ -29,9 +29,10 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void UpdateVanity(Player player)
         {
-            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            var acmPlayer = player.GetModPlayer<ACMPlayerOtherEffects>();
             acmPlayer.hasRelic = true;
-            acmPlayer.lifeMult += .06f;
+            acmPlayer.hasBerserkersBrew = true;
+            player.potionDelayTime += 60 * 10;
 
             base.UpdateVanity(player);
         }

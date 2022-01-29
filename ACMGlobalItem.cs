@@ -16,6 +16,33 @@ namespace ApacchiisClassesMod2
         public bool isClass = false;
         public bool isRelic = false;
 
+        public List<string> relicList = new List<string>()
+        {
+        };
+
+        #region Obsolete
+        //ItemType<AghanimsScepter>(),
+        //ItemType<BerserkersBrew>(),
+        //ItemType<BleedingMoonStone>(),
+        //ItemType<BloodGem>(),
+        //ItemType<BrokenHeart>(),
+        //ItemType<Croissant>(),
+        //ItemType<CursedCandle>(),
+        //ItemType<LeysMushroom>(),
+        //ItemType<MushroomConcentrate>(),
+        //ItemType<NiterihsBracelet>(),
+        //ItemType<NiterihsEarring>(),
+        //ItemType<NiterihsLuckyToken>(),
+        //ItemType<NiterihsNecklace>(),
+        //ItemType<NiterihsRing>(),
+        //ItemType<OldBelt>(),
+        //ItemType<StrangeGem>(),
+        //ItemType<StrangeMushroom>(),
+        //ItemType<TearsOfLife>(),
+        //ItemType<UnstableConcoction>(),
+        //ItemType<VoidMirror>()
+        #endregion
+
         public override bool InstancePerEntity
         {
             get
@@ -27,6 +54,15 @@ namespace ApacchiisClassesMod2
         public override GlobalItem Clone(Item item, Item itemClone)
         {
             return base.Clone(item, itemClone);
+        }
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if (isRelic && !relicList.Contains(item.Name))
+            {
+                relicList.Add(item.Name);
+            }
+            base.UpdateInventory(item, player);
         }
 
         public override bool? PrefixChance(Item item, int pre, UnifiedRandom rand)
@@ -199,6 +235,14 @@ namespace ApacchiisClassesMod2
                 foreach (TooltipLine line in tooltips)
                     if (line.mod == "Terraria" && line.Name == "SocialDesc")
                         line.text = GetInstance<NiterihsLuckyToken>().desc;
+            }
+
+            if (item.type == ItemType<BerserkersBrew>())
+            {
+                tooltips.RemoveAll(x => x.Name == "Terraria" || x.Name == "Social");
+                foreach (TooltipLine line in tooltips)
+                    if (line.mod == "Terraria" && line.Name == "SocialDesc")
+                        line.text = GetInstance<BerserkersBrew>().desc;
             }
             #endregion
         }
