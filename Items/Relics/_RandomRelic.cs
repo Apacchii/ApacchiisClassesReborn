@@ -13,6 +13,8 @@ namespace ApacchiisClassesMod2.Items.Relics
     {
         Player player = Main.player[Main.myPlayer];
 
+        
+
         public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Random Relic");
 			Tooltip.SetDefault("Gives you a random relic\n{$CommonItemTooltip.RightClickToOpen}");
