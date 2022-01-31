@@ -542,7 +542,10 @@ namespace ApacchiisClassesMod2
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            //if (target.type != NPCID.TargetDummy)
+            if (target.type != NPCID.TargetDummy)
+                InBattle();
+
+            if(Player.name == "Modding Man" || devTool)
                 InBattle();
 
             if (target.life <= 0)
@@ -572,7 +575,10 @@ namespace ApacchiisClassesMod2
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-            //if (target.type != NPCID.TargetDummy)
+            if (target.type != NPCID.TargetDummy)
+                InBattle();
+
+            if (Player.name == "Modding Man" || devTool)
                 InBattle();
 
             if (target.life <= 0)
