@@ -60,7 +60,7 @@ namespace ApacchiisClassesMod2.Items.Relics
             TooltipLine effect = new TooltipLine(Mod, "Effect", "Effects");
 
             int duration = 3;
-            int heal = 4;
+            int heal = 3;
             int crit = 5;
             int endurance = 4;
             int damage = 4;
@@ -68,13 +68,13 @@ namespace ApacchiisClassesMod2.Items.Relics
             if (Main.hardMode)
             {
                 duration = 4;
-                heal = 5;
+                heal = 4;
                 crit = 7;
                 endurance = 6;
                 damage = 5;
             }
 
-            effect.text = $"Hitting an enemy has a 5% chance to heal you for {heal}% missing health\n" +
+            effect.text = $"Hitting an enemy has a 4% chance to heal you for {heal}% missing health\n" +
                           $"Hitting an enemy has a 10% chance to give you one of these buffs for {duration} seconds:\n" +
                           $"- {crit}% Increased critical strike chance\n" +
                           $"- {endurance}% Decreased damage taken\n" +

@@ -48,6 +48,9 @@ namespace ApacchiisClassesMod2
 
             PlayerSyncPlayer,
             HealPlayer,
+            HealPlayerFast,
+            HealPlayerMedium,
+            HealPlayerSlow,
             SyncPlayerHealth,
             BuffPlayer,
             SyncPlayerBuffs,
@@ -89,6 +92,7 @@ namespace ApacchiisClassesMod2
                                 acmPlayer.scoutDefeatedBosses.Add(bossDefeated);
                             break;
                     }
+                    acmPlayer.levelUpText = true;
                     break;
 
                 case ACMHandlePacketMessage.SyncTalentPoints:
@@ -117,6 +121,60 @@ namespace ApacchiisClassesMod2
                         case "Scout":
                                 acmPlayer2.scoutTalentPoints++;
                             break;
+                    }
+                    break;
+
+                case ACMHandlePacketMessage.HealPlayerFast:
+
+                    byte PlayerNumber2 = reader.ReadByte();
+                    int totalHealAmount = reader.ReadInt32();
+
+                    Main.player[PlayerNumber2].GetModPlayer<ACMPlayer>().healthToRegen += totalHealAmount;
+                    Main.player[PlayerNumber2].HealEffect(totalHealAmount);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
+                        packet.Write((byte)PlayerNumber2);
+                        packet.Write(Main.player[PlayerNumber2].statLife);
+                        packet.Send(-1, -1);
+                    }
+                    break;
+
+                case ACMHandlePacketMessage.HealPlayerMedium:
+
+                    byte PlayerNumber3 = reader.ReadByte();
+                    int totalHealAmountMedium = reader.ReadInt32();
+
+                    Main.player[PlayerNumber3].GetModPlayer<ACMPlayer>().healthToRegenMedium += totalHealAmountMedium;
+                    Main.player[PlayerNumber3].HealEffect(totalHealAmountMedium);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
+                        packet.Write((byte)PlayerNumber3);
+                        packet.Write(Main.player[PlayerNumber3].statLife);
+                        packet.Send(-1, -1);
+                    }
+                    break;
+
+                case ACMHandlePacketMessage.HealPlayerSlow:
+
+                    byte PlayerNumber4 = reader.ReadByte();
+                    int totalHealAmountSlow = reader.ReadInt32();
+
+                    Main.player[PlayerNumber4].GetModPlayer<ACMPlayer>().healthToRegenSlow += totalHealAmountSlow;
+                    Main.player[PlayerNumber4].HealEffect(totalHealAmountSlow);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
+                        packet.Write((byte)PlayerNumber4);
+                        packet.Write(Main.player[PlayerNumber4].statLife);
+                        packet.Send(-1, -1);
                     }
                     break;
 

@@ -6,13 +6,13 @@ using Terraria.ModLoader;
 
 namespace ApacchiisClassesMod2.Items.Relics
 {
-	public class BleedingMoonStone : ModItem
+	public class BerserkersBrew : ModItem
 	{
-        public string desc = "Casting an ability heals you for 3.5% max health\nCasting your ultimate heals you for 7.5% max health";
+        public string desc = "Increases potion sickness duration by 8 seconds\nPotions heal for an additional 35% of your missing health";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Relic] Bleeding Moon Stone");
+            DisplayName.SetDefault("[Relic] Berserker's Brew");
             Tooltip.SetDefault(desc);
         }
 
@@ -22,16 +22,17 @@ namespace ApacchiisClassesMod2.Items.Relics
 			Item.height = 30;
 			Item.accessory = true;	
 			Item.value = Item.sellPrice(0, 5, 0, 0);
-            Item.rare = ItemRarityID.Quest;            
+            Item.rare = ItemRarityID.Quest;
 
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
         }
 
         public override void UpdateVanity(Player player)
         {
-            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            var acmPlayer = player.GetModPlayer<ACMPlayerOtherEffects>();
             acmPlayer.hasRelic = true;
-            acmPlayer.hasBleedingMoonStone = true;
+            acmPlayer.hasBerserkersBrew = true;
+            player.potionDelayTime += 60 * 10;
 
             base.UpdateVanity(player);
         }

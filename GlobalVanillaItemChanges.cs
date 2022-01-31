@@ -110,11 +110,11 @@ namespace ApacchiisClassesMod2
                         line.text += "\n2% increased cooldown reduction";
             if (item.type == ItemID.LightningBoots)
                 foreach (TooltipLine line in tooltips)
-                    if (line.mod == "Terraria" && line.Name == "Tooltip1")
+                    if (line.mod == "Terraria" && line.Name == "Tooltip0")
                         line.text += "\n4% increased cooldown reduction\n3% increased ability power\n3% decreased ultimate cost";
             if (item.type == ItemID.FrostsparkBoots)
                 foreach (TooltipLine line in tooltips)
-                    if (line.mod == "Terraria" && line.Name == "Tooltip1")
+                    if (line.mod == "Terraria" && line.Name == "Tooltip0")
                         line.text += "\n4% increased cooldown reduction\n4% increased ability power\n3% decreased ultimate cost";
             if (item.type == ItemID.TerrasparkBoots)
                 foreach (TooltipLine line in tooltips)

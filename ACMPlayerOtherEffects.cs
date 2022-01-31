@@ -19,18 +19,15 @@ namespace ApacchiisClassesMod2
         public bool hasLeysMushroom;
         public bool hasStrangeMushroom;
         public bool hasMushroomConcentrate;
+        public bool hasBerserkersBrew;
         #endregion
 
         int bloodGemProjectileTimer = 0;
         int bloodGemMeleeTimer = 0;
 
         float leysMushroomBuffChance = .1f;
-        int leysMushroomBuffDuration = 60 * 5;
-        float leysMushroomHealChance = .05f;
-        float leysMushroomHeal = .04f;
-        float leysMushroomEndurance = .04f;
-        int leysMushroomCrit = 5;
-        float leysMushroomDamage = .04f;
+        float leysMushroomHealChance = .04f;
+        float leysMushroomHeal = .03f;
 
         public override void ResetEffects()
         {
@@ -41,6 +38,7 @@ namespace ApacchiisClassesMod2
             hasLeysMushroom = false;
             hasStrangeMushroom = false;
             hasMushroomConcentrate = false;
+            hasBerserkersBrew = false;
 
             base.ResetEffects();
         }
@@ -57,7 +55,7 @@ namespace ApacchiisClassesMod2
 
         public override void GetHealLife(Item item, bool quickHeal, ref int healValue)
         {
-            if (hasBrokenHeart && healValue >= 50)
+            if (hasBrokenHeart && healValue >= 50 && item.type != ItemID.Mushroom)
                 healValue += (int)(Player.statLifeMax2 * .07f);
 
             if (hasMushroomConcentrate && item.type == ItemID.Mushroom)
@@ -65,7 +63,12 @@ namespace ApacchiisClassesMod2
                 int heal = (int)((Player.statLifeMax2 - Player.statLife) * .06f);
                 healValue = 60 + heal;
             }
-               
+
+            if (hasBerserkersBrew && item.type != ItemID.Mushroom)
+            {
+                int heal = (int)((Player.statLifeMax2 - Player.statLife) * .35f);
+                healValue += heal;
+            }
 
             base.GetHealLife(item, quickHeal, ref healValue);
         }
@@ -75,7 +78,7 @@ namespace ApacchiisClassesMod2
             // Blood Gem
             if(bloodGemMeleeTimer <= 0 && hasBloodGem)
             {
-                int heal = (int)(Player.statLifeMax2 * .025f);
+                int heal = (int)(Player.statLifeMax2 * .02f);
                 if(Player.statLife < Player.statLifeMax2)
                 {
                     Player.statLife += heal;
@@ -87,7 +90,7 @@ namespace ApacchiisClassesMod2
             // Ley's Mushroom Heal
             if(Main.rand.NextFloat() < leysMushroomHealChance && hasLeysMushroom)
             {
-                if (Main.hardMode) leysMushroomHeal = .05f;
+                if (Main.hardMode) leysMushroomHeal = .04f;
                 int heal = (int)((Player.statLifeMax2 - Player.statLife) * leysMushroomHeal);
                 Player.statLife += heal;
                 Player.HealEffect(heal);
@@ -98,8 +101,6 @@ namespace ApacchiisClassesMod2
             {
                 int duration = 60 * 3;
                 if (Main.hardMode) duration = 60 * 4;
-
-                leysMushroomBuffChance = .5f;
 
                 int buff = Main.rand.Next(3);
                 if (buff == 0)
@@ -138,7 +139,7 @@ namespace ApacchiisClassesMod2
                 {
                     Player.statLife += heal;
                     Player.HealEffect(heal);
-                    bloodGemProjectileTimer = 180;
+                    bloodGemProjectileTimer = 240;
                 }
             }
 
@@ -156,8 +157,6 @@ namespace ApacchiisClassesMod2
             {
                 int duration = 60 * 3;
                 if (Main.hardMode) duration = 60 * 4;
-
-                leysMushroomBuffChance = .5f;
 
                 int buff = Main.rand.Next(3);
                 if (buff == 0)

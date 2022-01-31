@@ -9,7 +9,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 	public class AghanimsScepter : ModItem
 	{
         public string desc = "[Effect varies on class]\n" +
-                             "Upgrades some of your class' abilities and/or stats";
+                             "Upgrades some of your class' abilities and/or stats:";
 
         public override void SetStaticDefaults()
         {
@@ -35,7 +35,11 @@ namespace ApacchiisClassesMod2.Items.Relics
             acmPlayer.hasAghanims = true;
 
             if (acmPlayer.hasBloodMage)
-                acmPlayer.abilityPower += .2f;
+            {
+                acmPlayer.abilityPower += .17f;
+                acmPlayer.cooldownReduction -= .06f;
+            }
+                
 
             if (acmPlayer.hasCommander)
             {
@@ -66,20 +70,21 @@ namespace ApacchiisClassesMod2.Items.Relics
             switch (modPlayer.equippedClass)
             {
                 case "Blood Mage":
-                    effect.text = "Ability power is increased by 20%\n" +
-                                  "Transfusion now also heals for 8% of the damage it deals";
+                    effect.text = "- Ability power is increased by 17%\n" +
+                                  "- Cooldown reduction increased by 6%\n" +
+                                  "- Transfusion now also heals for 8% of the damage it deals";
                     break;
                 case "Commander":
-                    effect.text = "Banner cooldown decreased by 6 seconds\n" +
-                                  "Banner range is increased by 50";
+                    effect.text = "- Banner cooldown decreased by 6 seconds\n" +
+                                  "- Banner range is increased by 50";
                     break;
                 case "Scout":
-                    effect.text = "Ultimate invulnerability increased by 1 second\n" +
-                                  "Hit-a-Soda now increases ranged crit chance by 15% for its duration";
+                    effect.text = "- Ultimate invulnerability increased by 1 second\n" +
+                                  "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
                     break;
                 case "Vanguard":
-                    effect.text = "Decreases damage taken by enemies by 4%\n" +
-                                  "Passive reflected damage is increased by 65%";
+                    effect.text = "- Decreases damage taken by enemies by 4%\n" +
+                                  "- Passive reflected damage is increased by 65%";
                     break;
                 default:
                     effect.text = "No class equipped";

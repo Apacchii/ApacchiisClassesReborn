@@ -8,7 +8,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class NiterihsNecklace : ModItem
 	{
-        public string desc = "Increases max health by 5%";
+        public string desc = "Increases max health by 6%";
 
         public override void SetStaticDefaults()
         {
@@ -31,7 +31,7 @@ namespace ApacchiisClassesMod2.Items.Relics
         {
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasRelic = true;
-            acmPlayer.lifeMult += .04f;
+            acmPlayer.lifeMult += .06f;
 
             base.UpdateVanity(player);
         }

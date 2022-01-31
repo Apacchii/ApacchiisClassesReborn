@@ -39,24 +39,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 Projectile.Center = player.Center;
                 Projectile.rotation -= .05f;
-                Projectile.netUpdate = true;
 
                 if (!player.GetModPlayer<ACMPlayer>().bloodMageBloodEnchantment)
                     Projectile.Kill();
                 else
                     Projectile.timeLeft = 60;
+                Projectile.ai[1] = Projectile.rotation;
+                Projectile.netUpdate = true;
             }
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(Projectile.rotation);
+            writer.Write(Projectile.ai[1]);
             base.SendExtraAI(writer);
         }
         
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            float rot = reader.Read();
+            var rot = reader.Read();
             Projectile.rotation = rot;
             base.ReceiveExtraAI(reader);
         }
@@ -95,24 +96,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 Projectile.Center = player.Center;
                 Projectile.rotation += .025f;
-                Projectile.netUpdate = true;
 
                 if (!player.GetModPlayer<ACMPlayer>().bloodMageBloodEnchantment)
                     Projectile.Kill();
                 else
                     Projectile.timeLeft = 60;
+                Projectile.ai[1] = Projectile.rotation;
+                Projectile.netUpdate = true;
             }
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(Projectile.rotation);
+            writer.Write(Projectile.ai[1]);
             base.SendExtraAI(writer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            float rot = reader.Read();
+            var rot = reader.Read();
             Projectile.rotation = rot;
             base.ReceiveExtraAI(reader);
         }
@@ -151,24 +153,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 Projectile.Center = player.Center;
                 Projectile.rotation -= .025f;
-                Projectile.netUpdate = true;
-
+                
                 if (!player.GetModPlayer<ACMPlayer>().bloodMageBloodEnchantment)
                     Projectile.Kill();
                 else
                     Projectile.timeLeft = 60;
+                Projectile.ai[1] = Projectile.rotation;
+                Projectile.netUpdate = true;
             }
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(Projectile.rotation);
+            writer.Write(Projectile.ai[1]);
             base.SendExtraAI(writer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            float rot = reader.Read();
+            var rot = reader.Read();
             Projectile.rotation = rot;
             base.ReceiveExtraAI(reader);
         }
@@ -207,24 +210,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 Projectile.Center = player.Center;
                 Projectile.rotation -= .025f;
-                Projectile.netUpdate = true;
-
+                
                 if (!player.GetModPlayer<ACMPlayer>().bloodMageBloodEnchantment)
                     Projectile.Kill();
                 else
                     Projectile.timeLeft = 60;
+                Projectile.ai[1] = Projectile.rotation;
+                Projectile.netUpdate = true;
             }
         }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write(Projectile.rotation);
+            writer.Write(Projectile.ai[1]);
             base.SendExtraAI(writer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            float rot = reader.Read();
+            var rot = reader.Read();
             Projectile.rotation = rot;
             base.ReceiveExtraAI(reader);
         }

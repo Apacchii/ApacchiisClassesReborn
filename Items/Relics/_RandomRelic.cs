@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -15,7 +16,7 @@ namespace ApacchiisClassesMod2.Items.Relics
         public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Random Relic");
 			Tooltip.SetDefault("Gives you a random relic\n{$CommonItemTooltip.RightClickToOpen}");
-            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 0;
         }
 
         public override void SetDefaults()
@@ -34,7 +35,8 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void RightClick(Player player)
         {
-            int choice = Main.rand.Next(19);
+            int relicCount = 20;
+            int choice = Main.rand.Next(relicCount);
 
             switch (choice)
             {
@@ -94,6 +96,9 @@ namespace ApacchiisClassesMod2.Items.Relics
                     break;
                 case 18:
                     player.QuickSpawnItem(ItemType<NiterihsLuckyToken>());
+                    break;
+                case 19:
+                    player.QuickSpawnItem(ItemType<BerserkersBrew>());
                     break;
                 default:
                     player.QuickSpawnItem(ItemType<RandomRelic>());

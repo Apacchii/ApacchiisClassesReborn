@@ -31,7 +31,7 @@ namespace ApacchiisClassesMod2.Items.Relics
         {
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasRelic = true;
-            player.immuneTime += 60;
+            acmPlayer.hasNeterihsToken = true;
 
             base.UpdateVanity(player);
         }

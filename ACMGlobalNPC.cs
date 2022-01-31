@@ -32,7 +32,7 @@ namespace ApacchiisClassesMod2
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if(!npc.boss && !npc.friendly && npc.lifeMax > 5)
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Relics.RandomRelic>(), 200, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Relics.RandomRelic>(), 250, 1, 1));
 
             base.ModifyNPCLoot(npc, npcLoot);
         }
@@ -88,6 +88,7 @@ namespace ApacchiisClassesMod2
                             {
                                 acmPlayer.vanguardDefeatedBosses.Add(npc.GivenOrTypeName);
                                 acmPlayer.vanguardTalentPoints++;
+                                acmPlayer.levelUpText = true;
                             }
                         }
 
@@ -113,6 +114,7 @@ namespace ApacchiisClassesMod2
                             {
                                 acmPlayer.bloodMageDefeatedBosses.Add(npc.GivenOrTypeName);
                                 acmPlayer.bloodMageTalentPoints++;
+                                acmPlayer.levelUpText = true;
                             }
                         }
 
@@ -138,6 +140,7 @@ namespace ApacchiisClassesMod2
                             {
                                 acmPlayer.commanderDefeatedBosses.Add(npc.GivenOrTypeName);
                                 acmPlayer.commanderTalentPoints++;
+                                acmPlayer.levelUpText = true;
                             }
                         }
 
@@ -163,6 +166,7 @@ namespace ApacchiisClassesMod2
                             {
                                 acmPlayer.scoutDefeatedBosses.Add(npc.GivenOrTypeName);
                                 acmPlayer.scoutTalentPoints++;
+                                acmPlayer.levelUpText = true;
                             }
                         }
                     }

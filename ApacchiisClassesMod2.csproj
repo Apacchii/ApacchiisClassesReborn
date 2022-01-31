@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Items\BlueCloth.png" />
+    <None Remove="Items\ClassBook.png" />
     <None Remove="Items\Classes\BloodMage.png" />
     <None Remove="Items\Classes\CasterClass.png" />
     <None Remove="Items\Classes\Commander.png" />
@@ -26,6 +27,7 @@
     <None Remove="Items\RedCloth.png" />
     <None Remove="Items\Relics\AghanimsScepter.png" />
     <None Remove="Items\Relics\AghanimsStaff.png" />
+    <None Remove="Items\Relics\BerserkersBrew.png" />
     <None Remove="Items\Relics\BleedingMoonStone.png" />
     <None Remove="Items\Relics\BleedingMoonStone_Old.png" />
     <None Remove="Items\Relics\BloodGem.png" />

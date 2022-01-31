@@ -50,7 +50,7 @@ namespace ApacchiisClassesMod2.UI
         float L5Scale = 1f;
         float R5Scale = 1f;
         string L5 = "+35 Transfusion Damage";
-        string R5 = "-5% Ult Cots";
+        string R5 = "-5% Ult Cost";
 
         float L6Scale = 1f;
         float R6Scale = 1f;
