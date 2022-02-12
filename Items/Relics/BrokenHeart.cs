@@ -25,6 +25,7 @@ namespace ApacchiisClassesMod2.Items.Relics
             Item.rare = ItemRarityID.Quest;
 
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
+            Item.GetGlobalItem<ACMGlobalItem>().desc = desc;
         }
 
         public override void UpdateVanity(Player player)

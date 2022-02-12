@@ -8,6 +8,11 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Items\BlueCloth.png" />
     <None Remove="Items\ClassBook.png" />
     <None Remove="Items\Classes\BloodMage.png" />
@@ -35,6 +40,7 @@
     <None Remove="Items\Relics\BrokenHear_Old.png" />
     <None Remove="Items\Relics\Croissant.png" />
     <None Remove="Items\Relics\CursedCandle.png" />
+    <None Remove="Items\Relics\FlanPudding.png" />
     <None Remove="Items\Relics\LeysMushroom.png" />
     <None Remove="Items\Relics\MoonStone.png" />
     <None Remove="Items\Relics\MushroomConcentrate.png" />
@@ -44,7 +50,11 @@
     <None Remove="Items\Relics\NiterihsNecklace.png" />
     <None Remove="Items\Relics\NiterihsRing.png" />
     <None Remove="Items\Relics\OldBelt.png" />
+    <None Remove="Items\Relics\OldShield.png" />
     <None Remove="Items\Relics\RandomRelic.png" />
+    <None Remove="Items\Relics\RandomRelic_Old.png" />
+    <None Remove="Items\Relics\SleepingBabySqueaker.png" />
+    <None Remove="Items\Relics\SleepingBabySqueaker_OO.png" />
     <None Remove="Items\Relics\StrangeGem.png" />
     <None Remove="Items\Relics\StrangeMushroom.png" />
     <None Remove="Items\Relics\TearsOfLife.png" />
@@ -69,8 +79,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 </Project>

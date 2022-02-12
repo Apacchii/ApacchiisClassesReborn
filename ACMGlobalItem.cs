@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using ApacchiisClassesMod2.Items.Relics;
 using static Terraria.ModLoader.ModContent;
 using Terraria.Utilities;
+using Terraria.ModLoader.IO;
 
 namespace ApacchiisClassesMod2
 {
@@ -16,7 +17,9 @@ namespace ApacchiisClassesMod2
         public bool isClass = false;
         public bool isRelic = false;
 
-        //public List<string> relicList = new List<string>()
+        public string desc;
+
+        //public List<int> relicList = new List<int>()
         //{
         //};
 
@@ -53,17 +56,9 @@ namespace ApacchiisClassesMod2
 
         public override GlobalItem Clone(Item item, Item itemClone)
         {
+            
             return base.Clone(item, itemClone);
         }
-
-        //public override void UpdateInventory(Item item, Player player)
-        //{
-        //    if (isRelic && !relicList.Contains(item.Name))
-        //    {
-        //        relicList.Add(item.Name);
-        //    }
-        //    base.UpdateInventory(item, player);
-        //}
 
         public override bool? PrefixChance(Item item, int pre, UnifiedRandom rand)
         {
@@ -243,6 +238,30 @@ namespace ApacchiisClassesMod2
                 foreach (TooltipLine line in tooltips)
                     if (line.mod == "Terraria" && line.Name == "SocialDesc")
                         line.text = GetInstance<BerserkersBrew>().desc;
+            }
+
+            if (item.type == ItemType<SleepingBabySqueaker>())
+            {
+                tooltips.RemoveAll(x => x.Name == "Terraria" || x.Name == "Social");
+                foreach (TooltipLine line in tooltips)
+                    if (line.mod == "Terraria" && line.Name == "SocialDesc")
+                        line.text = GetInstance<SleepingBabySqueaker>().desc;
+            }
+
+            if (item.type == ItemType<OldShield>())
+            {
+                tooltips.RemoveAll(x => x.Name == "Terraria" || x.Name == "Social");
+                foreach (TooltipLine line in tooltips)
+                    if (line.mod == "Terraria" && line.Name == "SocialDesc")
+                        line.text = GetInstance<OldShield>().desc;
+            }
+
+            if (item.type == ItemType<FlanPudding>())
+            {
+                tooltips.RemoveAll(x => x.Name == "Terraria" || x.Name == "Social");
+                foreach (TooltipLine line in tooltips)
+                    if (line.mod == "Terraria" && line.Name == "SocialDesc")
+                        line.text = GetInstance<FlanPudding>().desc;
             }
             #endregion
         }

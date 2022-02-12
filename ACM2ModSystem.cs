@@ -6,7 +6,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using ApacchiisClassesMod2.UI;
 using ApacchiisClassesMod2.UI.HUD;
-using ApacchiisClassesMod2.UI.Specializations;
+using ApacchiisClassesMod2.UI.Other;
+//using ApacchiisClassesMod2.UI.Specializations;
 using Terraria.UI;
 using System.Collections.Generic;
 
@@ -30,12 +31,15 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
+        internal RelicsUI RelicsUI;
+        internal UserInterface _RelicsUI;
+
         internal VanguardTalents VanguardTalents;
         internal UserInterface _VanguardTalents;
 
         internal BloodMageTalents BloodMageTalents;
         internal UserInterface _BloodMageTalents;
-        internal BloodMageSpecs BloodMageSpecs;
+        //internal BloodMageSpecs BloodMageSpecs;
         internal UserInterface _BloodMageSpecs;
 
         internal CommanderTalents CommanderTalents;
@@ -56,6 +60,19 @@ namespace ApacchiisClassesMod2
 
         public override void Load()
         {
+            //for (int i = 0; i < ItemLoader.ItemCount; i++)
+            //{
+            //    if (ItemLoader.GetItem(i).Item.GetGlobalItem<ACMGlobalItem>().isRelic)
+            //    {
+            //        Main.NewText("Relic Found");
+            //        if (!Player.GetModPlayer<ACMPlayer>().relicList.Contains(ItemLoader.GetItem(i).Item.type))
+            //        {
+            //            Main.NewText("Item Added");
+            //            Player.GetModPlayer<ACMPlayer>().relicList.Add(ItemLoader.GetItem(i).Item.type);
+            //        }
+            //    }
+            //}
+
             ClassAbility1 = KeybindLoader.RegisterKeybind(Mod, "Class Ability: 1", "Q");
             ClassAbility2 = KeybindLoader.RegisterKeybind(Mod, "Class Ability: 2", "C");
             ClassAbilityUltimate = KeybindLoader.RegisterKeybind(Mod, "Class Ability: Ultimate", "V");
@@ -69,12 +86,15 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
+                RelicsUI = new RelicsUI();
+                _RelicsUI = new UserInterface();
+
                 VanguardTalents = new VanguardTalents();
                 _VanguardTalents = new UserInterface();
 
                 BloodMageTalents = new BloodMageTalents();
                 _BloodMageTalents = new UserInterface();
-                BloodMageSpecs = new BloodMageSpecs();
+                //BloodMageSpecs = new BloodMageSpecs();
                 _BloodMageSpecs = new UserInterface();
 
                 CommanderTalents = new CommanderTalents();
@@ -96,6 +116,9 @@ namespace ApacchiisClassesMod2
 
             if (_HUD?.CurrentState != null)
                 _HUD.Update(gameTime);
+
+            if (_RelicsUI?.CurrentState != null)
+                _RelicsUI.Update(gameTime);
 
             if (_VanguardTalents?.CurrentState != null)
                 _VanguardTalents.Update(gameTime);
@@ -128,6 +151,18 @@ namespace ApacchiisClassesMod2
                         if (_lastUpdateUiGameTime != null && _ClassesMenu?.CurrentState != null)
                         {
                             _ClassesMenu.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: RelicsUI",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _RelicsUI?.CurrentState != null)
+                        {
+                            _RelicsUI.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
                     },

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -15,7 +16,12 @@ namespace ApacchiisClassesMod2
 {
 	public class ACMPlayer : ModPlayer
 	{
-        int resetHUD = 60;
+        public List<int> relicList = new List<int>()
+        {
+        };
+        bool updatedRelicList = false;
+
+        int resetHUD = 1800;
         public bool levelUpText = false;
 
         #region Relics
@@ -24,6 +30,9 @@ namespace ApacchiisClassesMod2
         public bool hasUnstableConcoction;
         bool isUnstableConcoctionReady;
         public bool hasNeterihsToken;
+        public bool hasSqueaker;
+        public bool hasOldShield;
+        public bool hasFlanPudding;
         #endregion
 
         public string equippedClass;
@@ -52,6 +61,8 @@ namespace ApacchiisClassesMod2
         int healthToRegenMediumTimer = 0;
         public int healthToRegenSlow;
         int healthToRegenSlowTimer = 0;
+        public int healthToRegenSnail;
+        int healthToRegenSnailTimer = 0;
 
         public bool devTool = false;
 
@@ -156,7 +167,7 @@ namespace ApacchiisClassesMod2
         public int bloodMagePassiveBaseMaxStacks = 20;
         public int bloodMagePassiveMaxStacks;
         public int bloodMagePassiveCurrentStacks;
-        public float bloodMageBasePassiveRegen = .001f;
+        public float bloodMageBasePassiveRegen = .0007f;
         public float bloodMagePassiveRegen;
 
         public float bloodMageSiphonHealMax = .15f;
@@ -272,6 +283,8 @@ namespace ApacchiisClassesMod2
             hasAghanims = false;
             hasUnstableConcoction = false;
             hasNeterihsToken = false;
+            hasSqueaker = false;
+            hasOldShield = false;
             #endregion
 
             abilityPower = 1f;
@@ -319,7 +332,7 @@ namespace ApacchiisClassesMod2
             bloodMagePassiveBaseMaxStacks = 20;
             bloodMagePassiveMaxStacks = bloodMagePassiveBaseMaxStacks + 2 * bloodMageLevel;
             bloodMageBaseDamageGain = .1f;
-            bloodMageBasePassiveRegen = .0008f;
+            bloodMageBasePassiveRegen = .0007f;
             bloodMageBaseUltRegen = .02f;
             bloodMageSiphonBaseDamage = 20;
             bloodMageSiphonHealMax = .15f;
@@ -465,7 +478,12 @@ namespace ApacchiisClassesMod2
                 timesDied++;
                 canAddDeaths = false;
             }
-                
+
+            healthToRegen = 0;
+            healthToRegenMedium = 0;
+            healthToRegenSlow = 0;
+            healthToRegenSnail = 0;
+
             bloodMagePassiveCurrentStacks = 0;
             bloodMageBloodEnchantment = false;
             base.UpdateDead();
@@ -504,13 +522,16 @@ namespace ApacchiisClassesMod2
             if (commanderBannerBuffDuration > 0)
                 damage = (int)(damage * commanderBannerEndurance);
 
+            if (hasOldShield)
+                damage = (int)(damage * .88f);
+
             base.ModifyHitByProjectile(proj, ref damage, ref crit);
         }
 
         public override void OnHitByNPC(NPC npc, int damage, bool crit)
         {
             InBattle();
-            if(ultCharge < ultChargeMax)
+            if (ultCharge < ultChargeMax)
                 ultCharge = (int)(ultCharge * .94f);
 
             int hitDir;
@@ -522,8 +543,40 @@ namespace ApacchiisClassesMod2
             if (hasVanguard && !npc.dontTakeDamage)
                 Player.ApplyDamageToNPC(npc, (int)(Player.statDefense * vanguardPassiveReflectAmount), 0, hitDir, false);
 
-            if(hasNeterihsToken)
+            if (hasNeterihsToken)
                 Player.immuneTime += 60;
+            if (hasSqueaker)
+            {
+                Player.immuneTime += 20;
+                SoundEngine.PlaySound(SoundID.Critter, Player.Center);
+            }
+
+            if (hasFlanPudding)
+            {
+                int heal = (int)(damage * .08f);
+                if (heal < 1)
+                    heal = 1;
+
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                {
+                    for (int i = 0; i < 255; i++)
+                    {
+                        if (Main.player[i].active)
+                        {
+                            ModPacket packet = Mod.GetPacket();
+                            packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayerSnail);
+                            packet.Write((byte)i);
+                            packet.Write(heal);
+                            packet.Send(-1, -1);
+                        }
+                    }
+                }
+                else
+                {
+                    healthToRegenSnail += heal;
+                    Player.HealEffect(heal);
+                }
+            }
 
             base.OnHitByNPC(npc, damage, crit);
         }
@@ -536,6 +589,38 @@ namespace ApacchiisClassesMod2
 
             if (hasNeterihsToken)
                 Player.immuneTime += 60;
+            if (hasSqueaker)
+            {
+                Player.immuneTime += 20;
+                SoundEngine.PlaySound(SoundID.Critter, Player.Center);
+            }
+
+            if (hasFlanPudding)
+            {
+                int heal = (int)(damage * .08f);
+                if (heal < 1)
+                    heal = 1;
+
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                {
+                    for (int i = 0; i < 255; i++)
+                    {
+                        if (Main.player[i].active)
+                        {
+                            ModPacket packet = Mod.GetPacket();
+                            packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayerSnail);
+                            packet.Write((byte)i);
+                            packet.Write(heal);
+                            packet.Send(-1, -1);
+                        }
+                    }
+                }
+                else
+                {
+                    healthToRegenSnail += heal;
+                    Player.HealEffect(heal);
+                }
+            }
 
             base.OnHitByProjectile(proj, damage, crit);
         }
@@ -545,7 +630,7 @@ namespace ApacchiisClassesMod2
             if (target.type != NPCID.TargetDummy)
                 InBattle();
 
-            if(Player.name == "Modding Man" || devTool)
+            if (Player.name == "Modding Man" || devTool)
                 InBattle();
 
             if (target.life <= 0)
@@ -605,8 +690,10 @@ namespace ApacchiisClassesMod2
 
             if (proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanims)
             {
-                Player.statLife += (int)(damage * .08f);
-                Player.HealEffect((int)(damage * .08f));
+                int heal = (int)(damage * .08f);
+                healthToRegen += heal;
+                Player.HealEffect(heal);
+
             }
                 
 
@@ -670,8 +757,6 @@ namespace ApacchiisClassesMod2
 
         public override void PreUpdateBuffs()
         {
-            
-
             base.PreUpdateBuffs();
         }
 
@@ -700,7 +785,7 @@ namespace ApacchiisClassesMod2
             }
 
             healthToRegenMediumTimer++;
-            if(healthToRegenMediumTimer % 3 == 0)
+            if(healthToRegenMediumTimer % 4 == 0)
             {
                 if(healthToRegenMedium > 0)
                 {
@@ -710,7 +795,7 @@ namespace ApacchiisClassesMod2
             }
 
             healthToRegenSlowTimer++;
-            if (healthToRegenSlowTimer % 6 == 0)
+            if (healthToRegenSlowTimer % 8 == 0)
             {
                 if (healthToRegenSlow > 0)
                 {
@@ -719,9 +804,19 @@ namespace ApacchiisClassesMod2
                 }
             }
 
+            healthToRegenSnailTimer++;
+            if (healthToRegenSnailTimer % 20 == 0)
+            {
+                if (healthToRegenSnail > 0)
+                {
+                    Player.statLife++;
+                    healthToRegenSnail--;
+                }
+            }
+
             resetHUD--;
             if (resetHUD <= 0)
-                resetHUD = 60;
+                resetHUD = 1800;
             if (globalSingleSecondTimer == 0)
                 globalSingleSecondTimer = 60;
             globalSingleSecondTimer--;
@@ -850,22 +945,9 @@ namespace ApacchiisClassesMod2
                 base.PreUpdate();
         }
 
-        public override void PostUpdate()
+        public override void PostUpdateBuffs()
         {
-            if (Main.netMode != NetmodeID.Server && equippedClass != "")
-            {
-                if (GetInstance<ACM2ModSystem>()._HUD.CurrentState == null)
-                    GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
-            }
-            else
-                GetInstance<ACM2ModSystem>()._HUD.SetState(null);
-
-            if(resetHUD == 0)
-            {
-                GetInstance<ACM2ModSystem>()._HUD.SetState(null);
-                GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
-            }
-            base.PostUpdate();
+            base.PostUpdateBuffs();
         }
 
         public override void PostUpdateEquips()
@@ -1203,6 +1285,58 @@ namespace ApacchiisClassesMod2
                 Player.GetCritChance(DamageClass.Ranged) += 15;
 
             base.PostUpdateEquips();
+        }
+
+        public override void PostUpdate()
+        {
+            if (!updatedRelicList)
+            {
+                for (int i = 0; i < ItemLoader.ItemCount; i++)
+                {
+                    Item newItem = new Item();
+                    try
+                    {
+                        newItem.SetDefaults(i);
+                    }
+                    catch
+                    {
+                        newItem.netDefaults(i);
+                    }
+
+                    ACMGlobalItem acm = newItem.GetGlobalItem<ACMGlobalItem>();
+
+                    if (acm != null)
+                        if (acm.isRelic && !relicList.Contains(i))
+                            relicList.Add(i);
+                }
+                updatedRelicList = true;
+            }
+
+            //if ( && equippedClass != "")
+            //{
+            //    if (GetInstance<ACM2ModSystem>()._HUD.CurrentState == null)
+            //        GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+            //}
+            //else
+            //    GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+
+            if (Main.netMode != NetmodeID.Server)
+            {
+                if (equippedClass != "" && GetInstance<ACM2ModSystem>()._HUD.CurrentState == null)
+                    GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+
+                if (resetHUD == 1 && equippedClass != "")
+                {
+                    GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+                    GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+                }
+            }
+            
+            if(equippedClass == "")
+                GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+
+
+            base.PostUpdate();
         }
 
         public override void OnRespawn(Player player)

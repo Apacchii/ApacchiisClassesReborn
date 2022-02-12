@@ -217,12 +217,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 float dist = Projectile.Distance(player.Center);
 
-                if (dist < 10)
+                if (dist < 32)
                 {
-                    if (player.statLife < player.statLifeMax2)
+                    player.GetModPlayer<ACMPlayer>().healthToRegen += healing;
+                    player.HealEffect(healing);
+
+                    // Aghanim's ally healing
+                    if (Main.netMode == NetmodeID.MultiplayerClient && player.GetModPlayer<ACMPlayer>().hasAghanims)
                     {
-                        player.statLife += healing;
-                        player.HealEffect(healing);
+                        for (int i = 0; i < 255; i++)
+                        {
+                            if (Main.player[i].active)
+                            {
+                                ModPacket packet = Mod.GetPacket();
+                                packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayerMedium);
+                                packet.Write((byte)i);
+                                packet.Write((int)(healing * .25f));
+                                packet.Send(-1, -1);
+                            }
+                        }
                     }
 
                     SoundEngine.PlaySound(SoundID.Item3);

@@ -9,7 +9,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 	public class Croissant : ModItem
 	{
         public string desc = "'Well Fed', 'Plenty Satisfied' and 'Exquisitely Satisfied' buffs now grant 50% bonus stats\n" +
-                             "Passively grans you 3 defense";
+                             "Passively grants you 3 defense";
 
         public override void SetStaticDefaults()
         {
@@ -26,6 +26,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 			Item.rare = ItemRarityID.Quest;
 
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
+            Item.GetGlobalItem<ACMGlobalItem>().desc = desc;
         }
 
         public override void UpdateVanity(Player player)

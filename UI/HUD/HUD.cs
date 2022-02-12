@@ -25,10 +25,12 @@ namespace ApacchiisClassesMod2.UI.HUD
         Bar curBar;
         UIText text;
         UIText inCombat;
+        UIText healthRegen;
 
         UIText Blood;
 
         float q = 1f;
+        float lifeRegenLeftOffset = GetInstance<ACMConfigClient>().HealingHUDOffset;
 
         public override void OnInitialize()
         {
@@ -94,6 +96,11 @@ namespace ApacchiisClassesMod2.UI.HUD
             text2.HAlign = .5f;
             backBar2.Append(text2);
 
+            healthRegen = new UIText("");
+            //healthRegen.Left.Set(Main.screenWidth - 24*22, 0f);
+            healthRegen.VAlign = .04f;
+            healthRegen.HAlign = lifeRegenLeftOffset; //.0825f
+
             #region Class-Specific
             Blood = new UIText("Blood: ", .8f);
             Blood.Top.Set(-45, 0f);
@@ -119,8 +126,23 @@ namespace ApacchiisClassesMod2.UI.HUD
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
-            
+            lifeRegenLeftOffset = GetInstance<ACMConfigClient>().HealingHUDOffset;
+            int healthToRegenTotal = acmPlayer.healthToRegen + acmPlayer.healthToRegenMedium + acmPlayer.healthToRegenSlow + acmPlayer.healthToRegenSnail;
 
+            if(healthToRegenTotal > 0)
+            {
+                Append(healthRegen);
+                healthRegen.HAlign = lifeRegenLeftOffset;
+                healthRegen.SetText($"{healthToRegenTotal} [i:{ItemID.Heart}]  >", 1.25f, false);
+                healthRegen.TextColor = Color.LightGreen;
+            }
+            else
+            {
+                healthRegen.SetText("");
+                healthRegen.Remove();
+            }
+
+            
             text1.SetText("");
             text1.SetText("");
 

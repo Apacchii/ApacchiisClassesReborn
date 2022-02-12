@@ -31,12 +31,16 @@ namespace ApacchiisClassesMod2
         //    };
         //}
 
+        
+
         public override void Load()
         {
             ClassAbility1 = KeybindLoader.RegisterKeybind(this, "Class Ability: 1", "Q");
             ClassAbility2 = KeybindLoader.RegisterKeybind(this, "Class Ability: 2", "C");
             ClassAbilityUltimate = KeybindLoader.RegisterKeybind(this, "Class Ability: Ultimate", "V");
             Menu = KeybindLoader.RegisterKeybind(this, "Menu", "N");
+
+            
 
             base.Load();
         }
@@ -51,6 +55,8 @@ namespace ApacchiisClassesMod2
             HealPlayerFast,
             HealPlayerMedium,
             HealPlayerSlow,
+            HealPlayerSnail,
+            SyncRegenStats,
             SyncPlayerHealth,
             BuffPlayer,
             SyncPlayerBuffs,
@@ -135,9 +141,12 @@ namespace ApacchiisClassesMod2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         ModPacket packet = GetPacket();
-                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
-                        packet.Write((byte)PlayerNumber2);
-                        packet.Write(Main.player[PlayerNumber2].statLife);
+                        packet.Write((byte)ACMHandlePacketMessage.SyncRegenStats);
+                        packet.Write(PlayerNumber2);
+                        packet.Write(totalHealAmount);
+                        packet.Write(0);
+                        packet.Write(0);
+                        packet.Write(0);
                         packet.Send(-1, -1);
                     }
                     break;
@@ -153,9 +162,12 @@ namespace ApacchiisClassesMod2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         ModPacket packet = GetPacket();
-                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
-                        packet.Write((byte)PlayerNumber3);
-                        packet.Write(Main.player[PlayerNumber3].statLife);
+                        packet.Write((byte)ACMHandlePacketMessage.SyncRegenStats);
+                        packet.Write(PlayerNumber3);
+                        packet.Write(0);
+                        packet.Write(totalHealAmountMedium);
+                        packet.Write(0);
+                        packet.Write(0);
                         packet.Send(-1, -1);
                     }
                     break;
@@ -171,9 +183,33 @@ namespace ApacchiisClassesMod2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         ModPacket packet = GetPacket();
-                        packet.Write((byte)ACMHandlePacketMessage.SyncPlayerHealth);
-                        packet.Write((byte)PlayerNumber4);
-                        packet.Write(Main.player[PlayerNumber4].statLife);
+                        packet.Write((byte)ACMHandlePacketMessage.SyncRegenStats);
+                        packet.Write(PlayerNumber4);
+                        packet.Write(0);
+                        packet.Write(0);
+                        packet.Write(totalHealAmountSlow);
+                        packet.Write(0);
+                        packet.Send(-1, -1);
+                    }
+                    break;
+
+                case ACMHandlePacketMessage.HealPlayerSnail:
+
+                    byte PlayerNumber5 = reader.ReadByte();
+                    int totalHealAmountSnail = reader.ReadInt32();
+
+                    Main.player[PlayerNumber5].GetModPlayer<ACMPlayer>().healthToRegenSnail += totalHealAmountSnail;
+                    Main.player[PlayerNumber5].HealEffect(totalHealAmountSnail);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)ACMHandlePacketMessage.SyncRegenStats);
+                        packet.Write(PlayerNumber5);
+                        packet.Write(0);
+                        packet.Write(0);
+                        packet.Write(0);
+                        packet.Write(totalHealAmountSnail);
                         packet.Send(-1, -1);
                     }
                     break;
@@ -202,6 +238,21 @@ namespace ApacchiisClassesMod2
                     int PlayerHealth = reader.ReadInt32();
 
                     Main.player[PlayerNumber].statLife = PlayerHealth;
+                    break;
+
+                case ACMHandlePacketMessage.SyncRegenStats:
+
+                    PlayerNumber = reader.ReadByte();
+                    int regenFast = reader.ReadInt32();
+                    int regenMedium = reader.ReadInt32();
+                    int regenSlow = reader.ReadInt32();
+                    int regenSnail = reader.ReadInt32();
+
+                    Main.player[PlayerNumber].GetModPlayer<ACMPlayer>().healthToRegen += regenFast;
+                    Main.player[PlayerNumber].GetModPlayer<ACMPlayer>().healthToRegenMedium += regenMedium;
+                    Main.player[PlayerNumber].GetModPlayer<ACMPlayer>().healthToRegenSlow += regenSlow;
+                    Main.player[PlayerNumber].GetModPlayer<ACMPlayer>().healthToRegenSnail += regenSnail;
+
                     break;
             }
         }

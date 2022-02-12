@@ -6,6 +6,15 @@ This mod focuses solely on the classes and is completely reimagined and hopefull
 
 -> BETA VERSION, NOT ALL FEATURES ARE IMPLEMENTED YET <-
 
+Freatures:
+- 4 Classes (as of now)
+- As many levels as bosses you have in your playthrough (can be capped)
+- A dedicated slot for classes
+- A unique talent tree for each class
+- A relic system with lots of different relics
+- A dedicated slot for relics
+- Highly customizable game/mod balancing via mod configuration
+
 As of now there are 4 classes, 1 for each vanilla damage type.
 Each class has 1 passive ability, 2 active abilities, 1 ultimate ability and a Talent Tree specific for that class.
 

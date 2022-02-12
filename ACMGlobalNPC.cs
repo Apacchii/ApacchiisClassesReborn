@@ -29,6 +29,11 @@ namespace ApacchiisClassesMod2
             base.ResetEffects(npc);
         }
 
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            base.UpdateLifeRegen(npc, ref damage);
+        }
+
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if(!npc.boss && !npc.friendly && npc.lifeMax > 5)

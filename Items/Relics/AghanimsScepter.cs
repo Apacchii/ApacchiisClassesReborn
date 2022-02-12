@@ -26,6 +26,7 @@ namespace ApacchiisClassesMod2.Items.Relics
             Item.rare = ItemRarityID.Quest;
 
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
+            Item.GetGlobalItem<ACMGlobalItem>().desc = desc;
         }
 
         public override void UpdateVanity(Player player)
@@ -36,8 +37,8 @@ namespace ApacchiisClassesMod2.Items.Relics
 
             if (acmPlayer.hasBloodMage)
             {
-                acmPlayer.abilityPower += .17f;
-                acmPlayer.cooldownReduction -= .06f;
+                acmPlayer.abilityPower += .15f;
+                acmPlayer.cooldownReduction -= .05f;
             }
                 
 
@@ -70,9 +71,10 @@ namespace ApacchiisClassesMod2.Items.Relics
             switch (modPlayer.equippedClass)
             {
                 case "Blood Mage":
-                    effect.text = "- Ability power is increased by 17%\n" +
-                                  "- Cooldown reduction increased by 6%\n" +
-                                  "- Transfusion now also heals for 8% of the damage it deals";
+                    effect.text = "- Ability power is increased by 15%\n" +
+                                  "- Cooldown reduction increased by 5%\n" +
+                                  "- Transfusion now also heals for 8% of the damage it deals\n" +
+                                  "- Transfusion now heals teammates at a medium rate for 25% of the healing you get";
                     break;
                 case "Commander":
                     effect.text = "- Banner cooldown decreased by 6 seconds\n" +

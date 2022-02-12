@@ -6,23 +6,23 @@ using Terraria.ModLoader;
 
 namespace ApacchiisClassesMod2.Items.Relics
 {
-	public class BerserkersBrew : ModItem
+	public class OldShield : ModItem
 	{
-        public string desc = "Increases potion sickness duration by 8 seconds\nPotions heal for an additional 35% of your missing health";
+        public string desc = "Decreases damage taken from projectiles by 12%";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Relic] Berserker's Brew");
+            DisplayName.SetDefault("[Relic] Old Shield");
             Tooltip.SetDefault(desc);
         }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Item.width = 30;
 			Item.height = 30;
 			Item.accessory = true;	
-			Item.value = Item.sellPrice(0, 5, 0, 0);
-            Item.rare = ItemRarityID.Quest;
+			Item.value = Item.sellPrice(0, 5, 0 ,0);
+			Item.rare = ItemRarityID.Quest;
 
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
             Item.GetGlobalItem<ACMGlobalItem>().desc = desc;
@@ -30,10 +30,9 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void UpdateVanity(Player player)
         {
-            var acmPlayer = player.GetModPlayer<ACMPlayerOtherEffects>();
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasRelic = true;
-            acmPlayer.hasBerserkersBrew = true;
-            player.potionDelayTime += 60 * 10;
+            acmPlayer.hasOldShield = true;
 
             base.UpdateVanity(player);
         }

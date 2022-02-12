@@ -72,13 +72,13 @@ namespace ApacchiisClassesMod2.UI
             "Thank you for your support, @Dr.Void!",
 
             "You can change the max level a class can reach in the mod's config (10-100).",
-            $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Hit List' [i:{ModContent.ItemType<Items.ClassBook>()}.]",
+            $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Hit List' [i:{ItemType<Items.ClassBook>()}].",
             "You can opt to be able to allocate points on both Talent rows by enabling 'Double Talents' in the mod's config.",
             "Ability Power increases how much effect, such as damage, an ability has.",
             "Cooldown Reduction reduces the cooldown of all your non-ultimate abilities.",
 
-            $"You can craft new classes by crafting 'White Cloth' [i:{ModContent.ItemType<Items.WhiteCloth>()}] on a 'Loom' [i:{ItemID.Loom}.]",
-            $"You can re-allocate your Talent Points by crafting and consuming a dose of 'ZIP' [i:{ModContent.ItemType<Items.ZIP>()}.]",
+            $"You can craft new classes by crafting 'White Cloth' [i:{ItemType<Items.WhiteCloth>()}] on a 'Loom' [i:{ItemID.Loom}].",
+            $"You can re-allocate your Talent Points by crafting and consuming a dose of 'ZIP' [i:{ItemType<Items.ZIP>()}].",
             "You can make it so classes don't give you bonus stats by enabling 'Hidden Accessory Disables Stats' in the mod's config.", // Limit for text
             "You build up your ultimate by being in battle. You are considered to be in battle for 3s everytime you hit or are hit.",
             "Your ultimate build up decays at half the rate it builds up if you haven't been in battle for 5 seconds.",
@@ -98,11 +98,12 @@ namespace ApacchiisClassesMod2.UI
             "This menu can also be opened via a hotkey, you just need to assign one under Settings > Controls > ACM2: Menu.",
             "Enemies deal 10% more damage overall by default. This can be changed in the mod's config.",
             "Relics can be equipped right next to the class' banner slot.",
-            "Relics have a low chance to drop from any non-boxx enemy defeated"
+            "Relics have a low chance to drop from any non-boxx enemy defeated.",
+            $"If your 'Health To Regen [i:{ItemID.Heart}]' HUD next to your life bar/hearts is out of place, you can change it in the mod's config."
         };
         int chosenTip = 0;
         int prevTip = -1;
-        int tipsNumber = 32;
+        int tipsNumber = 33;
 
         public override void OnInitialize()
         {
@@ -155,12 +156,12 @@ namespace ApacchiisClassesMod2.UI
             specsButton.Left.Set(-105, 0f);
             specsButton.Width.Set(200, 0f);
             specsButton.Height.Set(50, 0f);
-            //specsButton.OnClick += OpenSpecialization;
+            specsButton.OnClick += OpenRelics;
             specsButton.BackgroundColor = new Color(75, 75, 75);
             specsButton.BorderColor = new Color(25, 25, 25);
             Append(specsButton);
 
-            specsText = new UIText("WIP");
+            specsText = new UIText("Relics");
             specsText.VAlign = .5f;
             specsText.HAlign = .5f;
             specsButton.Append(specsText);
@@ -536,8 +537,8 @@ namespace ApacchiisClassesMod2.UI
                                             "This drink will increase the damage you deal temporarily.");
                         abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
 
-                        abilityEffect1.SetText("Damage Bonus: " + (decimal)(acmPlayer.scoutColaDamageBonus) * 100 + "% + " + acmPlayer.scoutColaDamageBonusLevel * 100 + "% p/Level(" + (decimal)(acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel * 100) + "%) = " + (decimal)((acmPlayer.scoutColaDamageBonus + acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel) * 100) + "%");
-                        abilityEffect2.SetText("Duration: " + acmPlayer.scoutColaDuration / 60 + "s");
+                        abilityEffect1.SetText($"Damage Dealt: {(decimal)(acmPlayer.scoutColaDamageBonus) * 100}% {acmPlayer.scoutColaDamageBonusLevel * 100}% p/Level({(decimal)(acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel * 100)}%) = {(decimal)((acmPlayer.scoutColaDamageBonus + acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel) * 100)}%");
+                        abilityEffect2.SetText($"Duration: {acmPlayer.scoutColaDuration / 60}s");
                         break;
                 }
             }
@@ -622,8 +623,7 @@ namespace ApacchiisClassesMod2.UI
                         //castType.SetText("-No Target-");
                         abilityName.SetText("[Regeneration]");
                         abilityText.SetText("Quickly regenerate the blood of you and all your allies over time, regenerating a percentage of the\n" +
-                                            "healed player's max health at a medium rate for a limited number of ticks.\n" +
-                                            "[Currently only heals yourself, and not allies, im working on it]");
+                                            "healed player's max health at a medium rate for a limited number of ticks.");
                         abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
                         abilityEffect1.SetText("Max Health Heal: " + (decimal)acmPlayer.bloodMageBaseUltRegen * 100 + "% + 0.1% p/Level(" + acmPlayer.bloodMageLevel * 0.1f * 100 + "%) = " + (acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .1f) + "%");
                         abilityEffect2.SetText("Ticks: " + acmPlayer.bloodMageUltTicks + " ticks");
@@ -684,15 +684,16 @@ namespace ApacchiisClassesMod2.UI
                 GetInstance<ACM2ModSystem>()._ScoutTalents.SetState(new ScoutTalents());
         }
 
-        private void OpenSpecialization(UIMouseEvent evt, UIElement listeningElement)
+        private void OpenRelics(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
             GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
-            SoundEngine.PlaySound(SoundID.MenuOpen);
 
-            if (acmPlayer.hasBloodMage)
-                GetInstance<ACM2ModSystem>()._BloodMageSpecs.SetState(new Specializations.BloodMageSpecs());
+            if (GetInstance<ACM2ModSystem>()._RelicsUI.CurrentState == null)
+                GetInstance<ACM2ModSystem>()._RelicsUI.SetState(new Other.RelicsUI());
+
+            SoundEngine.PlaySound(SoundID.MenuOpen);
         }
     }
 }

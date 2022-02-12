@@ -6,7 +6,6 @@ namespace ApacchiisClassesMod2
     [Label("Server Config")]
     public class ACMConfigServer : ModConfig
     {
-        // You MUST specify a ConfigScope.
         public override ConfigScope Mode => ConfigScope.ServerSide;
 
         public static ACMConfigServer Instance;
@@ -19,11 +18,11 @@ namespace ApacchiisClassesMod2
         //public bool configGlobalLevels { get; set; }
 
         [Slider]
-        [DefaultValue(50)]
+        [DefaultValue(100)]
         [Increment(5)]
         [Range(10, 100)]
         [Label("Max Class Level")]
-        [Tooltip("Changes the maximum level all classes can reach\n[Default: 50]")]
+        [Tooltip("Changes the maximum level all classes can reach\n[Default: 100]")]
         public int maxClassLevel { get; set; }
 
         [Slider]

@@ -6,21 +6,25 @@ using Terraria.ModLoader;
 
 namespace ApacchiisClassesMod2.Items.Relics
 {
-	public class NiterihsEarring : ModItem
+	public class SleepingBabySqueaker : ModItem
 	{
-        public string desc = "Increases crit chance by 3%";
+        public string desc = "Reduces your base max health by 60%\n" +
+                             "Increases damage dealt by 82%\n" +
+                             "During invulnerability frames your mobility is highly increased\n" +
+                             "Increases invulnerability frames by 20";
+        string donator = "Matty";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Relic] Niterih's Earring");
-            Tooltip.SetDefault(desc);
+            DisplayName.SetDefault("[Relic] Sleeping Baby Squeaker");
+            Tooltip.SetDefault(desc + $"\n[c/e796e8:> Donator Item <]\n[c/e796e8:[Thank you for your support, {donator}!][c/e796e8:]]");
         }
-
-		public override void SetDefaults()
+        
+        public override void SetDefaults()
 		{
 			Item.width = 30;
 			Item.height = 30;
-			Item.accessory = true;
+			Item.accessory = true;	
 			Item.value = Item.sellPrice(0, 5, 0, 0);
             Item.rare = ItemRarityID.Quest;
 
@@ -32,7 +36,16 @@ namespace ApacchiisClassesMod2.Items.Relics
         {
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasRelic = true;
-            player.GetCritChance(DamageClass.Generic) += 3;
+            acmPlayer.hasSqueaker = true;
+            acmPlayer.lifeMult -= .6f;
+            player.GetDamage(DamageClass.Generic) += .82f;
+
+            if (player.immune)
+            {
+                player.moveSpeed += 1f;
+                player.runAcceleration += .06f;
+                player.jumpSpeedBoost += 3f;
+            }
 
             base.UpdateVanity(player);
         }

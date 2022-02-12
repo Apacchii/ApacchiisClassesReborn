@@ -6,13 +6,14 @@ using Terraria.ModLoader;
 
 namespace ApacchiisClassesMod2.Items.Relics
 {
-	public class BerserkersBrew : ModItem
+	public class FlanPudding : ModItem
 	{
-        public string desc = "Increases potion sickness duration by 8 seconds\nPotions heal for an additional 35% of your missing health";
+        public string desc = "Being hit by enemies causes all players to slowly regenerate 8% of the damage you took\n" +
+                             "Increases max health by 3%";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Relic] Berserker's Brew");
+            DisplayName.SetDefault("[Relic] Flan Pudding");
             Tooltip.SetDefault(desc);
         }
 
@@ -30,10 +31,10 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void UpdateVanity(Player player)
         {
-            var acmPlayer = player.GetModPlayer<ACMPlayerOtherEffects>();
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasRelic = true;
-            acmPlayer.hasBerserkersBrew = true;
-            player.potionDelayTime += 60 * 10;
+            acmPlayer.hasFlanPudding = true;
+            acmPlayer.lifeMult += .03f;
 
             base.UpdateVanity(player);
         }
