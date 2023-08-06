@@ -10,12 +10,11 @@ namespace ApacchiisClassesMod2.Projectiles.Commander
 {
     public class WarBanner : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
         bool flag = false;
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("War Banner");
+            // DisplayName.SetDefault("War Banner");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }
@@ -39,6 +38,8 @@ namespace ApacchiisClassesMod2.Projectiles.Commander
 
         public override void AI()
         {
+            Player player = Main.player[Main.myPlayer];
+
             if (!flag)
             {
                 Projectile.position.Y -= Projectile.height / 4;
@@ -63,6 +64,12 @@ namespace ApacchiisClassesMod2.Projectiles.Commander
             {
                 if (Vector2.Distance(origin, Main.player[i].Center) <= radius && Collision.CanHitLine(origin, 1, 1, Main.player[i].Center, 1, 1))
                     Main.player[i].AddBuff(ModContent.BuffType<Buffs.Commander.WarBanner>(), Main.player[i].GetModPlayer<ACMPlayer>().commanderBannerPersist);
+            }
+
+            if (player.GetModPlayer<ACMPlayer>().bannerFollowsPlayer)
+            {
+                Projectile.position = Main.player[Projectile.owner].Center;
+                Projectile.position.Y -= 64;
             }
         }
 

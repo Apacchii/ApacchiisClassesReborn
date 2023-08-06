@@ -1,0 +1,829 @@
+
+Mods: {
+	ApacchiisClassesMod2: {
+		Items: {
+			RandomRelic: {
+				# Items
+				DisplayName: Рандомная Реликвия
+				/* Tooltip:
+					'''
+					Gives you a random relic
+					Right click to open
+					''' */
+			}
+
+			ClassBook: {
+				DisplayName: Книга Классов
+				/* Tooltip:
+					'''
+					[Can also be used to open the Classes Menu]
+					Defeated bosses:
+
+					''' */
+			}
+
+			WhiteCloth: {
+				DisplayName: Белая Ткань
+				/* Tooltip: Used to craft your class damage type of choice */
+			}
+
+			BlueCloth: {
+				DisplayName: Синии Ткань
+				/* Tooltip: Used to craft 'Magic Damage' classes */
+			}
+
+			GreenCloth: {
+				DisplayName: Зеленая  Ткань
+				/* Tooltip: Used to craft 'Ranged Damage' classes */
+			}
+
+			OrangeCloth: {
+				DisplayName: Оранжевая Ткань
+				/* Tooltip: Used to craft 'Summon Damage' classes */
+			}
+
+			PinkCloth: {
+				DisplayName: Розовая Ткань
+				/* Tooltip: Used to craft '???' classes */
+			}
+
+			RedCloth: {
+				DisplayName: Красная Ткань
+				/* Tooltip: Used to craft 'Melee Damage' classes */
+			}
+
+			# Classes
+			BloodMage.DisplayName: Class: Кровавый Маг
+			Commander.DisplayName: Class: Командир
+			Scout.DisplayName: Class: Скаут
+			Soulmancer.DisplayName: Class: Заклинатель Душ
+			Vanguard.DisplayName: Class: Авангард
+			/* Gambler.DisplayName: Class: Gambler */
+			/* Plague.DisplayName: Class: Plague */
+
+			BloodSpray: {
+				# Class Weapons
+				DisplayName: Струя Крови
+				/* Tooltip:
+					'''
+					Uses 1 health
+					Fires a spray of 3 blobs of your own blood
+					''' */
+			}
+
+			FadingDagger: {
+				DisplayName: Изчезающий Кинжал
+				/* Tooltip: Critical hits deal an additional 4 damage */
+			}
+
+			SeekingSpirit: {
+				DisplayName: Ищущий
+				/* Tooltip: Fires a homing spirit at enemies */
+			}
+
+			SoulBurner: {
+				DisplayName: Испепилитель Душ
+				/* Tooltip: Holding this weapon increases your Soulmancer's class passive chance by 25% */
+			}
+
+			TrainingRapier: {
+				DisplayName: Тренировачная Рапира
+				/* Tooltip: While holding this weapon you reduce any damage taken from enemies by 6 */
+			}
+
+			AghanimsScepter: {
+				# Relics
+				DisplayName: -Реликвии- Скипетр Агханима
+				/* Tooltip:
+					'''
+					[Effect varies on class]
+					Upgrades some of your class' abilities and/or stats
+					''' */
+			}
+
+			DevCooldownAcc: {
+				/* DisplayName: DevCooldownAcc */
+				/* Tooltip:
+					'''
+					[Dev Item]
+					'Used by the developer to test class abilities'
+					Reduces ability cooldowns by 98%
+					Ultimate charges 10x faster
+					''' */
+			}
+
+			/* Crusader.DisplayName: Crusader */
+
+			LostRune: {
+				/* DisplayName: Lost Rune */
+				/* Tooltip:
+					'''
+					Consuming grants you 1 rune draw
+					'An ancient rune, yet to engrave'
+					''' */
+			}
+
+			/* LostRuneFragment.DisplayName: Lost Rune Fragment */
+
+			AccountantRat: {
+				/* DisplayName: "[Relic] Accountant Rat" */
+				/* Tooltip:
+					'''
+					Causes all the damage you take to be dealt to you as a damage over time effect over 5 seconds
+					Damage taken increased by 20%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Matty!][c/e796e8:]]
+					''' */
+			}
+
+			ArcaneBlade: {
+				/* DisplayName: "[Relic] Arcane Blade" */
+				/* Tooltip:
+					'''
+					Hitting enemies with melee weapons restores 8% of the damage dealt as mana (max 20) [0.5s Cooldown]
+					Increases max mana by 5%
+					Increases melee damage by 2%
+					''' */
+			}
+
+			BerserkersBrew: {
+				/* DisplayName: "[Relic] Berserker's Brew" */
+				/* Tooltip:
+					'''
+					Increases potion sickness duration by 15 seconds
+					Potions heal for an additional 32% of your missing health
+					''' */
+			}
+
+			BleedingMoonStone: {
+				/* DisplayName: "[Relic] Bleeding Moon Stone" */
+				/* Tooltip:
+					'''
+					Casting an ability slowly heals you for 2% max health
+					Casting your ultimate rapidly heals you for 7.5% max health
+					''' */
+			}
+
+			BloodGem: {
+				/* DisplayName: "[Relic] Blood Gem" */
+				/* Tooltip:
+					'''
+					Your projectile and minion hits heal you for 1% max health (4s Cooldown)
+					Your non-projectile melee hits heal you for 2% max health (2s Cooldown)
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Matty!][c/e796e8:]]
+					''' */
+			}
+
+			BrokenHeart: {
+				/* DisplayName: "[Relic] Broken Heart" */
+				/* Tooltip:
+					'''
+					Reduces potion sickness duration by 6 seconds
+					Potions heal for an additional 7.5% of your max health
+					''' */
+			}
+
+			ChaosAccelerant: {
+				/* DisplayName: "[Relic] Chaos Accelerant" */
+				/* Tooltip:
+					'''
+					Increases ability power by 65%
+					Increases cooldown reduction by 35%
+					Decreases ult cost by 20%
+					Reduces healing power by 60%
+					Decreases all weapon damage by 22%
+					Decreases max health by 40%
+					Decreases max mana by 40%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Eloraeon!][c/e796e8:]]
+					''' */
+			}
+
+			ChocolateBar: {
+				/* DisplayName: "[Relic] Chocolate Bar" */
+				/* Tooltip:
+					'''
+					1.5 Seconds after taking damage from an enemy, regen 11% of the damage you took + 2.5% of your max health
+					[Does not stack, only the last hit you take before the heal will have effect]
+					''' */
+			}
+
+			ChocolatePudding: {
+				/* DisplayName: "[Relic] Chocolate Pudding" */
+				/* Tooltip:
+					'''
+					Every 2 seconds, being hit by enemies causes you and all other players to very slowly regenerate 3% of your max health to themselves
+					Increases max health by 3%
+					''' */
+			}
+
+			Croissant: {
+				/* DisplayName: "[Relic] Croissant" */
+				/* Tooltip:
+					'''
+					'Well Fed', 'Plenty Satisfied' and 'Exquisitely Satisfied' buffs now grant 50% bonus stats
+					Increases defense by 4 defense
+					''' */
+			}
+
+			CursedCandle: {
+				/* DisplayName: "[Relic] Cursed Candle" */
+				/* Tooltip:
+					'''
+					Reduces ability cooldowns by 8%
+					Increases your ability power by 15%
+					Increases your healing power by 6%
+					''' */
+			}
+
+			DarkSign: {
+				/* DisplayName: "[Relic] Dark Sign" */
+				/* Tooltip:
+					'''
+					Reduces max health by 15%
+					Increases defense by 3
+					Increases crit damage by 8%
+					Increases crit chance by 2%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Dr.Oktober!][c/e796e8:]]
+					''' */
+			}
+
+			DerelictCactusRing: {
+				/* DisplayName: "[Relic] Derelict Cactus Ring" */
+				/* Tooltip:
+					'''
+					Increases healing power by 13%
+					Increases max health by 2%
+					''' */
+			}
+
+			EldritchInoculation: {
+				/* DisplayName: "[Relic] Eldritch Inoculation" */
+				/* Tooltip:
+					'''
+					Increases ability power by 30%
+					Increases healing power by 7%
+					Increases ultimate cost by 45%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Grumpy!][c/e796e8:]]
+					''' */
+			}
+
+			Hourglass: {
+				/* DisplayName: "[Relic] Hourglass" */
+				/* Tooltip: Reduces ability cooldowns by 12% */
+			}
+
+			LeysMushroom: {
+				/* DisplayName: "[Relic] Ley's Mushroom" */
+				/* Tooltip:
+					'''
+					[Relic upgrades in Hardmode]
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Ris!][c/e796e8:]]
+					''' */
+			}
+
+			LuckyLeaf: {
+				/* DisplayName: "[Relic] Lucky Leaf" */
+				/* Tooltip:
+					'''
+					Increases dodge chance by 8%
+					Increases crit chance by 4%
+					Reduces your max health by 16%
+					''' */
+			}
+
+			MajorsCare: {
+				/* DisplayName: "[Relic] Major's Care" */
+				/* Tooltip:
+					'''
+					Increases max health by 5%
+					Movement speed decreased by 8%
+					Every 5 seconds you heal yourself and any nearby players for 1% of your max health
+					You cannot hurt friendly bunnies
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, MajorCare!][c/e796e8:]]
+					''' */
+			}
+
+			ManaBag: {
+				/* DisplayName: "[Relic] Mana Bag" */
+				/* Tooltip:
+					'''
+					Regenerates 2% of your max mana per second
+					Increases magic damage by 1%
+					Increases max mana by 5%
+					Reduces mana costs by 3%
+					''' */
+			}
+
+			ManaInhibitor: {
+				/* DisplayName: "[Relic] Mana Inhibitor" */
+				/* Tooltip:
+					'''
+					Grants 10% reduced mana costs while under the effects of 'Mana Sickness'
+					Increases max mana by 5%
+					''' */
+			}
+
+			MinionsRightsContract: {
+				/* DisplayName: "[Relic] Minion's Rights Contract" */
+				/* Tooltip:
+					'''
+					Increases minion slots by 1
+					Reduces whip damage by 18%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, CaineSenpai!][c/e796e8:]]
+					''' */
+			}
+
+			MushroomConcentrate: {
+				/* DisplayName: "[Relic] Mushroom Concentrate" */
+				/* Tooltip:
+					'''
+					Reduces potion sickness duration by 8 seconds when consuming mushrooms
+					Mushrooms heal you 4x more plus 6% of your missing health
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Chelsea!][c/e796e8:]]
+					''' */
+			}
+
+			Nessie: {
+				/* DisplayName: "[Relic] Nessie" */
+				/* Tooltip:
+					'''
+					The next time you would take damage, dodge it instead.
+					(60s Cooldowm)
+					''' */
+			}
+
+			NiterihsBracelet: {
+				/* DisplayName: "[Relic] Niterih's Bracelet" */
+				/* Tooltip: Increases damage by 4% */
+			}
+
+			NiterihsEarring: {
+				/* DisplayName: "[Relic] Niterih's Earring" */
+				/* Tooltip: Increases crit chance by 3% */
+			}
+
+			NiterihsLuckyToken: {
+				/* DisplayName: "[Relic] Niterih's Lucky Token" */
+				/* Tooltip: Increases invulnerability time after being hit by 1 second */
+			}
+
+			NiterihsNecklace: {
+				/* DisplayName: "[Relic] Niterih's Necklace" */
+				/* Tooltip: Increases max health by 6% */
+			}
+
+			NiterihsRing: {
+				/* DisplayName: "[Relic] Niterih's Ring" */
+				/* Tooltip:
+					'''
+					Increases defense by 5%
+					Increases defense by 2
+					''' */
+			}
+
+			OldBelt: {
+				/* DisplayName: "[Relic] Old Belt" */
+				/* Tooltip:
+					'''
+					Critical hits deal 10% bonus damage
+					Increases critical strike chance by 1%
+					''' */
+			}
+
+			OldBlood: {
+				/* DisplayName: "[Relic] Dark Sign" */
+				/* Tooltip:
+					'''
+					Reduces defense by 10%
+					Increases dodge chance by 5%
+					Increases damage by 4%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Dr.Oktober!][c/e796e8:]]
+					''' */
+			}
+
+			OldShield: {
+				/* DisplayName: "[Relic] Old Shield" */
+				/* Tooltip: Decreases damage taken from projectiles by 14% */
+			}
+
+			Peanut: {
+				/* DisplayName: "[Relic] The 173rd Peanut" */
+				/* Tooltip:
+					'''
+					Decreases max health by 16%
+					Decreases damage dealt by 8%
+					Increases crit damage by 14%
+					Increases crit chance by 4%
+					Increases movement speed by 10%
+					Increases movement acceleration by 1.73%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Peanutbutta187!][c/e796e8:]]
+					''' */
+			}
+
+			PocketSlime: {
+				/* DisplayName: "[Relic] Pocket Slime" */
+				/* Tooltip:
+					'''
+					Grants you immunity to knockback
+					Reduces max health by 5%
+					''' */
+			}
+
+			PorcelainMask: {
+				/* DisplayName: "[Relic] The Porcelain Mask" */
+				/* Tooltip:
+					'''
+					Increases minion slots by 1
+					Reduces defense by 21%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Icarus' Bullet!][c/e796e8:]]
+					''' */
+			}
+
+			RapidFirecannon: {
+				/* DisplayName: "[Relic] Rapid Firecannon" */
+				/* Tooltip:
+					'''
+					Decreases damage by 35%
+					Increases attack speed by 28%
+					Decreases ability power by 25%
+					Increases cooldown reduction by 13%
+					Decreases ultimate cost by 5%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Derin!][c/e796e8:]]
+					''' */
+			}
+
+			ScalingWarbanner: {
+				/* DisplayName: "[Relic] Scaling Warbanner" */
+				/* Tooltip:
+					'''
+					Increases non-negative stats gained from class banners by 10%
+					Increases by an additional 8% in Hardmode
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Derin!][c/e796e8:]]
+					''' */
+			}
+
+			SleepingBabySqueaker: {
+				/* DisplayName: "[Relic] Sleeping Baby Squeaker" */
+				/* Tooltip:
+					'''
+					Reduces your max health by 80%
+					Increases damage dealt by 35%
+					During invulnerability frames your mobility is highly increased
+					Increases invulnerability frames by 15
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Matty!][c/e796e8:]]
+					''' */
+			}
+
+			Stopwatch: {
+				/* DisplayName: "[Relic] Golden Stopwatch" */
+				/* Tooltip:
+					'''
+					Reduces ultimate cost by 9%
+					Increases healing power by 5%
+					''' */
+			}
+
+			StrangeGem: {
+				/* DisplayName: "[Relic] Strange Gem" */
+				/* Tooltip:
+					'''
+					Increases damage by 2%
+					Increases crit chance by 3%
+					''' */
+			}
+
+			StrangeMushroom: {
+				/* DisplayName: "[Relic] Strange Mushroom" */
+				/* Tooltip:
+					'''
+					Reduces potion sickness duration to 5 seconds when consuming mushrooms
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Chelsea!][c/e796e8:]]
+					''' */
+			}
+
+			TearsOfLife: {
+				/* DisplayName: "[Relic] Tears Of Life" */
+				/* Tooltip:
+					'''
+					Gives you immunity to all vanilla damage over time debuffs
+					Decreases max health by 3%
+					''' */
+			}
+
+			TheosCollar: {
+				/* DisplayName: "[Relic] Theo's Collar" */
+				/* Tooltip:
+					'''
+					Increases damage by 3.5%
+					Increases attack speed by 5%
+					Increases dodge chance by 3%
+					[c/e796e8:> Donator Item <]
+					[c/e796e8:[Thank you for your support, Dr.Void!][c/e796e8:]]
+					''' */
+			}
+
+			TornWhipPart: {
+				/* DisplayName: "[Relic] Torn Whip Part" */
+				/* Tooltip:
+					'''
+					Increases whip range by 7%
+					Increases whip damage by 2%
+					''' */
+			}
+
+			UnstableConcoction: {
+				/* DisplayName: "[Relic] Unstable Concoction" */
+				/* Tooltip:
+					'''
+					Casting an ability causes your next attack to deal 3x the damage
+					Increases cooldown reduction by 4%
+					''' */
+			}
+
+			VoidMirror: {
+				/* DisplayName: "[Relic] Void Mirror" */
+				/* Tooltip: Increases dodge chance by 4% */
+			}
+
+			WornGloves: {
+				/* DisplayName: "[Relic] Worn Gloves" */
+				/* Tooltip:
+					'''
+					Increases defense by 5
+					Increases damage by 2%
+					''' */
+			}
+
+			ZIP: {
+				/* DisplayName: Zeta Interacting Protein (ZIP) */
+				/* Tooltip:
+					'''
+					Use to reset class level and talents back to 0
+					[c/c83319:[CANNOT BE REVERTED][c/c83319:]]
+					'Cautious use can erase selective memories'
+					''' */
+			}
+		}
+
+		# Player Stats
+		PlayerStatsText: Статы Игрока
+		MagicDamage: Магический Урон
+		MagicCrit: Шанс Магического Крита
+		MeleeDamage: Урон В Ближнем Бою
+		MeleeCrit: Шанс Ближнего Крита
+		RangedDamage: Дистанционный Урон
+		RangedCrit: Шанс Дистанционного Крита
+		SummonDamage: Урон Призываемого Существа
+		/* SummonCrit: Summon Crit */
+		AllDamage: Любой Урон
+		AllCrit: Любой Крит
+		MaxHealth: Максимальное Здоровье
+		MaxMana: Максимальная Мана
+		Defense: Защита
+		ManaCost: Потребление Маны
+		MaxMinions: Максимальное Миньонов
+		WhipRange: Длина Кнута
+		DamageReduction: Сопротивление Урону
+		MovementSpeed: Скорость Движения
+		MovementAcceleration: Скорость Ускорения
+		AttackSpeed: Скорость Урона
+		AbilityPower: Сила Способности
+		HealingPower: Сила Лечения
+		CooldownReduction: Снижение Перезарядка
+		UltCost: Цена Ульты
+		UltCostReduction: Снижение Цены Ульты
+		DodgeChance: Шанс Уворота
+		TimesDied: Раз Умер
+		EnemiesKilled: Врагов Убил
+		DamageTaken: Полученого Урона
+		HighestCrit: Высочайший Крит
+		# General
+		Level: Уровень
+		HoldToPreviewAbilities: Зажмите 'ВВЕРХ' Чтобы Просмотреть Способности
+		ClassPrefix: Класс
+		Passive: Пасивная Способность
+		Ability1: Способность 1
+		Ability2: Способность 2
+		Ultimate: Ульта
+		RelicPrefix: Реликвия
+		GivesRelic: Даёт тебе рандомную реликвии
+		EquipableRelic: Оснащаемая Реликвия
+		/* EquipableFighter: Equipable Fighter Class */
+		/* EquipableCarry: Equipable Carry Class */
+		/* EquipableSupport: Equipable Support Class */
+		/* EquipableTank: Equipable Tank Class */
+		Talents: Талант
+		Specializations: Специализация
+		UnlocksAfter10Text: Открывается после траты 10 очков навыка в дереве навыков
+		Locked: Закрыто
+		RelicsList: Лист реликвий
+		Runes: Руны
+		# -------------------------------------------------------------------------------------------------------------------------------
+		# FOR CLASSES, YOU DONT NEED TO TRANSLATE ABILITY/CLASS NAMES IF YOU DON'T WANT TO OR IF THERE ISN'T A DIRECT/CORRECT TRANSLATION
+		# -------------------------------------------------------------------------------------------------------------------------------
+
+		# Blood Mage
+		BloodMage_P_Name: Кровавый Колодец
+		BloodMage_P_Prev: Каждую секунду Во время сражения получите ячейку 'Крови', каждая ячейка немного увеличевает вашу регенерацую здоровья.
+		BloodMage_A1_Name: Пересадка Крови
+		BloodMage_A1_Prev: Киньте каплю собственной крови которая будет следовать за ближайшим врагом, нанесёт урон, и вернётся к вам с частью его крови, выстонавливая ваше здоровье.
+		BloodMage_A2_Name: Кровавое Зачеревание
+		BloodMage_A2_Prev: Зачеруйте ваше оружие собственной кровью, постепенно теряя ваше здоровье но увеличивая наносимый урон.
+		/* BloodMage_A2_Prev_2: Increase the damage you deal and refunds the health cost if an enemy is hit. */
+		BloodMage_Ult_Name: Регенерация
+		BloodMage_Ult_Prev: Регенераируйте ваше здоровье и ваших союзников каждую секунду через время.
+		/* BloodMage_Aghanims: a */
+		# Commander
+		Commander_P_Name: Воля Командира
+		Commander_P_Prev: За каждого слота миньона вы получайте малое количество сопротивление урона.
+		Commander_A1_Name: Военного Знамя
+		Commander_A1_Prev: Поставьте военное знаме перед вашими ногами, все игроки стоящие внутри этой области увеличат урон и снизят получаймый урон.
+		Commander_A2_Name: Боевой Клич
+		Commander_A2_Prev: Кричит Громко, устрашая врагов вокруг вас увеличивая их получаймый урон которые они получают на некий период времени.
+		Commander_Ult_Name: Вдохновение
+		Commander_Ult_Prev: Вдохновите вас и ваших союзников, надиляя всем гарантированые критические удары на некий период времени.  (affects minions).
+		/* Commander_Aghanims: a */
+		# Crusader
+		/* Crusader_P_Name: Tenacity */
+		/* Crusader_P_Prev: Reduce damage taken by 3%. This effect is increased by an additional 4% while under the effects of a healing buff. */
+		/* Crusader_A1_Name: Protection */
+		/* Crusader_A1_Prev: Apply a healing buff to all players that slowly heals them each second. Players regen health at a rate of 1% of their max health p/sec. */
+		/* Crusader_A2_Name: Hallowed Hammer */
+		/* Crusader_A2_Prev: Throw a hallowed hammer towards your cursor, the hammer will damage all enemies in its path. */
+		/* Crusader_Ult_Name: Guardian Angel */
+		/* Crusader_Ult_Prev: A guardian angel watches over everyone, granting all players a reduction to the damage they take for 10s. */
+		/* Crusader_Aghanims: a */
+		# Scout
+		Scout_P_Name: Подвижность
+		Scout_P_Prev: Скаут может делать двойной прыжок и имеет увеличинаю скорость движения.
+		Scout_P_DisableDoubleJump: Отключить Пасивный Двойной прыжок Скаута
+		Scout_P_EnableDoubleJump: Включить Пасивный Двойной прыжок Скаута
+		Scout_A1_Name: Хит-А-Сода
+		Scout_A1_Prev: Возьмите глоток вашего самодельного энергетика, увеличивая наносимый урон на время.
+		Scout_A2_Name: Взрывная Ловушка
+		Scout_A2_Prev: Поставьте взрывную ловушку с малой перезарядкой под вашим курсором, враги которые окажутся слишком близко к ловушке получат урон.
+		Scout_Ult_Name: Ядерный-Лещ (TM)
+		Scout_Ult_Prev_1: Станьте Бесмертным на
+		Scout_Ult_Prev_2: секунд, и получите увеличат повышанную мобильность на некий период времени.
+		/* Scout_Aghanims: a */
+		# Soulmancer
+		Soulmancer_P_Name: Вырывание Души
+		Soulmancer_P_Prev_1: Ударяя врагов магическим оружием имеет шанс вырвать фрагмент их души, причиняя вред ближайшим врагам.
+		Soulmancer_P_Prev_2: Те фрагменты души могут нанести критический урон.
+		Soulmancer_A1_Name: Потребление
+		Soulmancer_A1_Prev: На короткое время когда у тебя меньше 50% ОЗ, каждый раз когда вы атакуйте врага фрагментом души верните
+		Soulmancer_A1_Prev_2: его себе, потребляя его и давая вам малый процент вашего максимального здоровья за каждый фрагмент.
+		Soulmancer_A2_Name: Раскол Души
+		Soulmancer_A2_Prev: Расколите души ближайших врагов нанеся тяжёлый урон и вырывая допольнительные фрагменты за каждую раскаленную душу.
+		Soulmancer_Ult_Name: Самопожертвование
+		Soulmancer_Ult_Prev: Стремительно вырьвите фрагменты вашей души, слегка истощая ваше здоровье за каждый фрагмент. Каждый фрагмент души наносит 1.5x урона у [Вырывание Души].
+		/* Soulmancer_Aghanims: a */
+		# Vanguard
+		Vanguard_P_Name: Зачеруйте Броню
+		Vanguard_P_Prev: Враги получают урон когда ударяя вас.
+		Vanguard_A1_Name: Копьё Света
+		Vanguard_A1_Prev: киньте копьё света, то копьё если оно близко к врагу, нанося всем врагам в окружении копья.
+		Vanguard_A2_Name: Баррьер Света
+		Vanguard_A2_Prev: Произнесите светового баррьера вокруг вас, снижая получаймый урон.
+		Vanguard_Ult_Name: Меч Правосудия
+		Vanguard_Ult_Prev: Гиганский меч падает с неба, нанеся тяжёлый урон и казня врагов.
+		/* Vanguard_Aghanims: a */
+		# Gambler
+		/* Gambler_P_Name: Luck of the Draw */
+		/* Gambler_P_Prev: Any damage you deal is randomized to deal between 75% and 125% damage. */
+		/* Gambler_P_Feedback_Enabled: Click to disable the passive's visual feedback. */
+		/* Gambler_P_Feedback_Disabled: Click to enable the passive's visual feedback. */
+		/* Gambler_A1_Name: Roll the Dice */
+		/* Gambler_A1_Prev: Roll 3 dice, the dice will target enemies and strike them. */
+		/* Gambler_A2_Name: Lucky Streak */
+		/* Gambler_A2_Prev: Your passive's minimum and maximum damage dealt is temporarily increased. */
+		/* Gambler_Ult_Name: Jackpot */
+		/* Gambler_Ult_Prev: For a duration, increase your attack speed, ability power and reduce your [Roll the Dice]'s ability cooldown. */
+		/* Gambler_Ult_Prev2: Additionally your class' crit loss per level is inverted making it positive instead. */
+		/* Gambler_Aghanims: a */
+		# Plague
+		/* Plague_P_Name: Lethality */
+		/* Plague_P_Prev: Your minions can critically strike. Crit chance is increased vs diseased enemies. */
+		/* Plague_A1_Name: Infect */
+		/* Plague_A1_Prev: Release several insects to damage enemies and infect enemies with a plague. */
+		/* Plague_A1_Prev2: Enemies affected by the plague take damage over time. */
+		/* Plague_A2_Name: Bacterial Burst */
+		/* Plague_A2_Prev: Deal damage to any enemy affected by plague and re-apply it's damage over time. */
+		/* Plague_Ult_Name: Outburst */
+		/* Plague_Ult_Prev: Float in the air momentarily, being immune to damage and dealing heavy damage to any enemies around. */
+		/* Plague_Ult_Prev2: Enemies around the player are also infected with the plague. */
+		Plague_P_Desc: Your minions can critically strike. Crit chance is increased vs diseased enemies.
+		Plague_A1_Desc: Release several insects to infect enemies with a plague.
+		Plague_A1_Desc2: Enemies affected by the plague take damage over time.
+		Plague_A1_Desc3: The plague spreads from enemy to enemy if they get too close to each other.
+		Plague_A2_Desc: Deal damage to any enemy affected by plague and re-apply it's damage over time.
+		Plague_Ult_Desc: Float in the air momentarily, being immune to damage and dealing heavy damage to any enemies around.
+		Plague_Ult_Desc2: Enemies around the player are also infected with the plague.
+		Plague_Aghanims: a
+
+		Buffs: {
+			Inspire: {
+				/* DisplayName: "[Inspire]" */
+				/* Description: Every attack is a critical strike */
+			}
+
+			WarBanner: {
+				/* DisplayName: "[Commander's War Banner]" */
+				/* Description:
+					'''
+					Increased damage dealt
+					Reduced damage taken
+					''' */
+			}
+
+			GuardianAngel: {
+				/* DisplayName: "[Guardian Angel]" */
+				/* Description: Reducing damage taken by a lot */
+			}
+
+			Jackpot: {
+				/* DisplayName: Jackpot */
+				/* Description:
+					'''
+					Your class' banner crit loss is now inverted, granting you positive crit chance instead
+					Attack speed increased
+					Cooldown reduction increased
+					''' */
+			}
+
+			LuckyStreak: {
+				/* DisplayName: Lucky Streak */
+				/* Description: Increasing your passive's minimum and maximum damage deatl */
+			}
+
+			InventorPassive: {
+				/* DisplayName: On-The-Go Maintenance */
+				/* Description: Increasing both your and your turret's attack speed */
+			}
+
+			LeysAttackSpeed: {
+				/* DisplayName: Ley's Mushroom Attack Speed */
+				/* Description: Increasing attack speed */
+			}
+
+			LeysCrit: {
+				/* DisplayName: Ley's Mushroom Critical Strikes */
+				/* Description: Increasing critial strike chance */
+			}
+
+			LeysDamage: {
+				/* DisplayName: Ley's Mushroom Damage */
+				/* Description: Increasing damage dealt */
+			}
+
+			LeysEndurance: {
+				/* DisplayName: Ley's Mushroom Endurance */
+				/* Description: Decreasing damage taken */
+			}
+		}
+
+		Projectiles: {
+			/* BloodEnchantment.DisplayName: Blood Enchantment Effect */
+			/* BloodEnchantment2.DisplayName: Blood Enchantment Effect */
+			/* BloodEnchantment3.DisplayName: Blood Enchantment Effect */
+			/* BloodEnchantment4.DisplayName: Blood Enchantment Effect */
+			/* Transfusion.DisplayName: Transfusion */
+			/* BattleCry.DisplayName: Battle Cry */
+			/* WarBanner.DisplayName: War Banner */
+			/* Dice.DisplayName: Gambler's Die */
+			/* Cog.DisplayName: Inventor's Cog */
+			/* Sentry.DisplayName: Inventor's Turret */
+			/* SentryShot.DisplayName: Sentry Shot */
+			/* MajorsCareProj.DisplayName: Major's Care */
+			/* PlagueInsect.DisplayName: Plague Insect */
+			/* ScoutTrap.DisplayName: Scout's Trap */
+			/* SoulFragment.DisplayName: Soul Fragment */
+			/* SoulFragmentAbsorb.DisplayName: Absorved Soul Fragment */
+			/* SoulShatter.DisplayName: Soul Shatter */
+			/* VanguardSpear.DisplayName: Vanguard's Spear */
+			/* VanguardUltimate.DisplayName: Vanguard's Sword */
+			/* BloodSpray.DisplayName: Blood Spray */
+			/* FadingDagger.DisplayName: Fading Dagger */
+			/* SeekingSpirit.DisplayName: Seeking Spirit */
+			/* SoulBurn.DisplayName: Soul Burn */
+			/* TrainingRapier.DisplayName: Training Rapier */
+		}
+
+		/* Tiles.LostRuneFragment.MapEntry: Lost Rune Fragment */
+	}
+}

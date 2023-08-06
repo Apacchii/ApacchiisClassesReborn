@@ -10,9 +10,9 @@ namespace ApacchiisClassesMod2.Buffs.Commander
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Inspire]");
-            Description.SetDefault("Every attack is a critical strike");
-            Main.buffNoSave[Type] = false;
+            // DisplayName.SetDefault("[Inspire]");
+            // Description.SetDefault("Every attack is a critical strike");
+            Main.buffNoSave[Type] = true;
             Main.debuff[Type] = false;
             base.SetStaticDefaults();
         }

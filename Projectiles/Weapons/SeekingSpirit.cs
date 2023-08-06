@@ -10,13 +10,11 @@ namespace ApacchiisClassesMod2.Projectiles.Weapons
 {
     public class SeekingSpirit : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
-
         public override string Texture => "ApacchiisClassesMod2/Projectiles/Invisible";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Seeking Spirit");
+            // DisplayName.SetDefault("Seeking Spirit");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }

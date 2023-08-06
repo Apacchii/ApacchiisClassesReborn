@@ -13,7 +13,7 @@ namespace ApacchiisClassesMod2.Projectiles.Weapons
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Fading Dagger");
+            // DisplayName.SetDefault("Fading Dagger");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }

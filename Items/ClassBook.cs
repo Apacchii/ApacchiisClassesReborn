@@ -11,8 +11,7 @@ namespace ApacchiisClassesMod2.Items
 	{
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Class Book");
-            Tooltip.SetDefault("[Can be used to open the Classes Menu]\nDefeated bosses:\n");
+            // Tooltip.SetDefault("[Can also be used to open the Classes Menu]\nDefeated bosses:\n");
         }
 
         public override void SetDefaults()
@@ -39,44 +38,75 @@ namespace ApacchiisClassesMod2.Items
         {
             Player Player = Main.player[Main.myPlayer];
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
-            TooltipLine lineKills = new TooltipLine(Mod, "Kills", "Something went wrong! Report on discord!");
+            TooltipLine lineKills = new TooltipLine(Mod, "Kills", "Something went wrong! Please report on discord!");
             TooltipLine classLine = new TooltipLine(Mod, "Class", "Class: " + modPlayer.equippedClass);
             TooltipLine level = new TooltipLine(Mod, "Level", " [" + modPlayer.equippedClass + "]");
 
             if (modPlayer.equippedClass == "")
             {
-                lineKills = new TooltipLine(Mod, "Kills", "Something went wrong! No class is currently equipped!");
+                lineKills = new TooltipLine(Mod, "Kills", "Something went wrong! No class is currently equipped or currently equipped class is not recognized!");
                 level = new TooltipLine(Mod, "Level", "");
             }
                 
             if (modPlayer.hasVanguard)
             {
+                modPlayer.vanguardDefeatedBosses.Sort();
                 lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.vanguardDefeatedBosses));
-                level = new TooltipLine(Mod, "Level", "Level  [" + modPlayer.vanguardDefeatedBosses.Count + "/" + ACMConfigServer.Instance.maxClassLevel + "]");
+                level = new TooltipLine(Mod, "Level", "Level  [" + modPlayer.vanguardDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
             }
                 
             if (modPlayer.hasBloodMage)
             {
+                modPlayer.bloodMageDefeatedBosses.Sort();
                 lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.bloodMageDefeatedBosses));
-                level = new TooltipLine(Mod, "Level", "Level  [" + modPlayer.bloodMageDefeatedBosses.Count + "/" + ACMConfigServer.Instance.maxClassLevel + "]");
+                level = new TooltipLine(Mod, "Level", "Level  [" + modPlayer.bloodMageDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
             }
 
             if (modPlayer.hasCommander)
-            { 
+            {
+                modPlayer.commanderDefeatedBosses.Sort();
                 lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.commanderDefeatedBosses));
-                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.commanderDefeatedBosses.Count + "/" + ACMConfigServer.Instance.maxClassLevel + "]");
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.commanderDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
             }
 
             if (modPlayer.hasScout)
             {
+                modPlayer.scoutDefeatedBosses.Sort();
                 lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.scoutDefeatedBosses));
-                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.scoutDefeatedBosses.Count + "/" + ACMConfigServer.Instance.maxClassLevel + "]");
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.scoutDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
             }
 
+            if (modPlayer.hasSoulmancer)
+            {
+                modPlayer.soulmancerDefeatedBosses.Sort();
+                lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.soulmancerDefeatedBosses));
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.soulmancerDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
+            }
 
-            lineKills.overrideColor = new Color(95, 30, 145);
-            classLine.overrideColor = Color.Aqua;
-            level.overrideColor = Color.Orange;
+            if (modPlayer.hasCrusader)
+            {
+                modPlayer.crusaderDefeatedBosses.Sort();
+                lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.crusaderDefeatedBosses));
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.crusaderDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
+            }
+
+            if (modPlayer.equippedClass == "Gambler")
+            {
+                modPlayer.gamblerDefeatedBosses.Sort();
+                lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.gamblerDefeatedBosses));
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.gamblerDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
+            }
+
+            if (modPlayer.equippedClass == "Plague")
+            {
+                modPlayer.gamblerDefeatedBosses.Sort();
+                lineKills = new TooltipLine(Mod, "Kills", string.Join("\n", modPlayer.plagueDefeatedBosses));
+                level = new TooltipLine(Mod, "Level", "Level [" + modPlayer.plagueDefeatedBosses.Count + "/" + Configs._ACMConfigServer.Instance.maxClassLevel + "]");
+            }
+
+            lineKills.OverrideColor = new Color(230, 80, 80);
+            classLine.OverrideColor = Color.Aqua;
+            level.OverrideColor = Color.Orange;
             tooltips.Add(classLine);
             tooltips.Add(level);
             tooltips.Add(lineKills);
@@ -86,6 +116,12 @@ namespace ApacchiisClassesMod2.Items
         }
 
         public override bool? UseItem(Player player)
+        {
+
+            return base.UseItem(player);
+        }
+
+        public override void UseAnimation(Player player)
         {
             if (Main.myPlayer == player.whoAmI)
             {
@@ -100,7 +136,7 @@ namespace ApacchiisClassesMod2.Items
                     SoundEngine.PlaySound(SoundID.MenuClose);
                 }
             }
-            return base.UseItem(player);
+            base.UseAnimation(player);
         }
 
         //public override void UseAnimation(Player player)

@@ -13,8 +13,8 @@ namespace ApacchiisClassesMod2.Items.Accessories
 	{
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("DevCooldownAcc");
-            Tooltip.SetDefault("[Dev Item]\nUsed by the developer to test class abilities\nReduces ability cooldowns by 98%\nUltimate charges 10x faster");
+            // DisplayName.SetDefault("DevCooldownAcc");
+            // Tooltip.SetDefault("[Dev Item]\n'Used by the developer to test class abilities'\nReduces ability cooldowns by 98%\nUltimate charges 10x faster");
         }
 		public override void SetDefaults()
 		{
@@ -36,13 +36,13 @@ namespace ApacchiisClassesMod2.Items.Accessories
             player.GetModPlayer<ACMPlayer>().devTool = true;
         }
 
-        public override bool CanEquipAccessory(Player player, int slot, bool modded)
-        {
-            if (player.name == "Modding" || player.name == "Modding Man")
-                return true;
-            else
-                return false;
-        }
+        //public override bool CanEquipAccessory(Player player, int slot, bool modded)
+        //{
+        //    if (player.name == "Modding" || player.name == "Modding Man")
+        //        return true;
+        //    else
+        //        return false;
+        //}
     }
 }
 

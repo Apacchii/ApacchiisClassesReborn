@@ -8,8 +8,7 @@ namespace ApacchiisClassesMod2.Items
 	{
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Blue Cloth");
-            Tooltip.SetDefault("Used to craft 'Magic Damage' classes");
+            // Tooltip.SetDefault("Used to craft 'Magic Damage' classes");
         }
 
 		public override void SetDefaults()

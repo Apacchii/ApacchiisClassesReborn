@@ -1,26 +1,22 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace ApacchiisClassesMod2.Projectiles.Vanguard
 {
 	public class VanguardSpear : ModProjectile
 	{
-        Player Player = Main.player[Main.myPlayer];
-
         //public override string Texture => "ApacchiisClassesMod2/Projectiles/Invisible";
 
         bool flag = false;
+        int range;
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Vanguard's Spear");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            // DisplayName.SetDefault("Vanguard's Spear");
         }
 
         public override void SetDefaults()
@@ -28,11 +24,9 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.width = 14;
-            Projectile.originalDamage = 1;
             Projectile.height = 14;
             Projectile.timeLeft = 60;
             Projectile.aiStyle = 0;
-            //aiType = ProjectileID.WoodenArrowFriendly;
             Projectile.ignoreWater = false;
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
@@ -45,9 +39,20 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             return false;
         }
 
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+
+            
+
+            base.ModifyHitNPC(target, ref modifiers);
+        }
+
         public override void AI()
         {
-            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
             Projectile.spriteDirection = Projectile.direction;
@@ -57,116 +62,92 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             d1.noGravity = true;
             d2.noGravity = true;
 
-            if (Projectile.timeLeft == 1)
-            {
-                if(acmPlayer.vanguardTalent_6 == "L")
-                {
-                    Projectile.width = 600;
-                    Projectile.height = 600;
-                }
-                else
-                {
-                    Projectile.width = 300;
-                    Projectile.height = 300;
-                }
-               
-                if (!flag)
-                {
-                    if(acmPlayer.vanguardTalent_6 == "L")
-                    {
-                        Projectile.position.X -= 300;
-                        Projectile.position.Y -= 300;
-                    }
-                    else
-                    {
-                        Projectile.position.X -= 150;
-                        Projectile.position.Y -= 150;
-                    }
-                    flag = true;
-                }
-
-                Projectile.damage = (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower);
-
-                SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-
-                
-                if(acmPlayer.vanguardTalent_6 == "L")
-                {
-                    for (int i = 0; i < 50; i++)
-                    {
-                        var d3 = Dust.NewDustDirect(Projectile.position, 600, 600, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.Next(-20, 20), 0, Color.White, 2f);
-                        var d4 = Dust.NewDustDirect(Projectile.position, 600, 600, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.Next(-10, 10), 0, Color.White, 1f);
-                        d3.noGravity = true;
-                        d4.noGravity = false;
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 100; i++)
-                    {
-                        var d3 = Dust.NewDustDirect(Projectile.position, 300, 300, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.Next(-20, 20), 0, Color.White, 2f);
-                        var d4 = Dust.NewDustDirect(Projectile.position, 300, 300, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.Next(-10, 10), 0, Color.White, 1f);
-                        d3.noGravity = true;
-                        d4.noGravity = false;
-                    }
-                }
-            }
+            if (acmPlayer.vanguardTalent_4 == "L")
+                range = 800;
             else
+                range = 400;
+
+            for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.hardMode)
-                    Projectile.damage = 5;
-                else
-                    Projectile.damage = 2;
+                if (Main.npc[i].active)
+                {
+                    if (Vector2.Distance(Projectile.Center, Main.npc[i].Center) <= 100 && !Main.npc[i].townNPC && !Main.npc[i].dontTakeDamage && Main.npc[i].type != NPCID.DD2Bartender && Main.npc[i].type != NPCID.DD2EterniaCrystal && Main.npc[i].type != NPCID.DD2LanePortal && !Main.npc[i].friendly)
+                    {
+                        int hitDir;
+                        if (Main.npc[i].position.X < Main.player[Projectile.owner].position.X)
+                            hitDir = -1;
+                        else
+                            hitDir = 1;
+
+                        if (acmPlayer.vanguardTalent_6 == "L") // Double range
+                        {
+                            Projectile.width = 800;
+                            Projectile.height = 800;
+                            range = 800;
+                        }
+                        else
+                        {
+                            Projectile.width = 400;
+                            Projectile.height = 400;
+                            range = 400;
+                        }
+
+                        if (!flag)
+                        {
+                            if (acmPlayer.vanguardTalent_6 == "L")
+                            {
+                                Projectile.position.X -= 400;
+                                Projectile.position.Y -= 400;
+                            }
+                            else
+                            {
+                                Projectile.position.X -= 200;
+                                Projectile.position.Y -= 200;
+                            }
+                            flag = true;
+                        }
+
+                        for (int i2 = 0; i2 < Main.maxNPCs; i2++)
+                            if (Vector2.Distance(Projectile.Center, Main.npc[i2].Center) <= range && !Main.npc[i2].townNPC && !Main.npc[i2].dontTakeDamage && Main.npc[i2].type != NPCID.DD2Bartender && Main.npc[i2].type != NPCID.DD2EterniaCrystal && Main.npc[i2].type != NPCID.DD2LanePortal && !Main.npc[i2].friendly)
+                            {
+                                if (Main.npc[i2].realLife != 0)
+                                    player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower * player.GetModPlayer<ACMPlayer>().abilityPower / 4), 5f, hitDir, false);
+                                else
+                                    player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower * player.GetModPlayer<ACMPlayer>().abilityPower), 5f, hitDir, false);
+                            }
+
+
+                        SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+
+                        if (acmPlayer.vanguardTalent_6 == "L")
+                        {
+                            for (int x = 0; x < 30; x++)
+                            {
+                                var d3 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-20f, 20f), 0, Color.White, 2.25f);
+                                var d4 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
+                                d3.noGravity = true;
+                                d4.noGravity = false;
+                            }
+                        }
+                        else
+                        {
+                            for (int y = 0; y < 70; y++)
+                            {
+                                var d3 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-10f, 10f), 0, Color.White, 2.25f);
+                                var d4 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
+                                d3.noGravity = true;
+                                d4.noGravity = false;
+                            }
+                        }
+
+                        Projectile.Kill();
+                    }
+                }
             }
-                
+
             base.AI();
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-            //target.GetGlobalNPC<ACMGlobalNPC>().vanguardSpearPos = projectile.Center;
-            if(!target.boss && target.type != NPCID.TargetDummy && Projectile.timeLeft > 5)
-            {
-                target.Center = Projectile.Center;
-                //target.GetGlobalNPC<ACMGlobalNPC>().vanguardSpeared = true;
-            }
-
-            if (target.boss && Projectile.timeLeft > 5)
-                Projectile.timeLeft = 5;
-
-            //if(projectile.timeLeft <= 2)
-            //    target.GetGlobalNPC<ACMGlobalNPC>().vanguardSpeared = false;
-
-            target.immune[Projectile.owner] = 0;
-           
-            base.OnHitNPC(target, damage, knockback, crit);
-        }
-
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //    //Redraw the projectile with the color not influenced by light
-        //    Vector2 drawOrigin = new Vector2(Main.ProjectileTexture[Projectile.type].Width * 0.5f, Projectile.height * 0.5f);
-        //    for (int k = 0; k < Projectile.oldPos.Length; k++)
-        //    {
-        //        Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-        //        Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-        //        spriteBatch.Draw(Main.ProjectileTexture[Projectile.type], drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0f);
-        //    }
-        //    return true;
-        //}
-
-        public override bool? CanHitNPC(NPC target)
-        {
-            if (!target.townNPC && !target.CountsAsACritter)
-            {
-                if (Projectile.timeLeft == 4 || Projectile.timeLeft == 5 || Projectile.timeLeft == 6)
-                    return false;
-                else
-                    return true;
-            }
-            else
-            { return false; }
-        }
     }
 }
 

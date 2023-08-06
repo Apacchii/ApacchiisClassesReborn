@@ -10,16 +10,13 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
 {
 	public class VanguardUltimate : ModProjectile
 	{
-        Player Player = Main.player[Main.myPlayer];
-
         //public override string Texture => "ApacchiisClassesMod2/Projectiles/Invisible";
 
-        bool flag = false;
         int x = 2;
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Vanguard's Sword");
+            // DisplayName.SetDefault("Vanguard's Sword");
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
@@ -30,7 +27,7 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             Projectile.hostile = false;
             Projectile.width = 500;
             Projectile.height = 398;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 60;
             Projectile.aiStyle = 0;
             //aiType = ProjectileID.WoodenArrowFriendly;
             Projectile.ignoreWater = true;
@@ -66,28 +63,20 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             base.AI();
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            target.immune[Projectile.owner] = 1;
-
-            if (target.type == NPCID.TheDestroyer || target.type == NPCID.TheDestroyerBody || target.type == NPCID.TheDestroyerTail)
-                damage /= 4;
-            if (target.type == NPCID.EaterofWorldsBody || target.type == NPCID.EaterofWorldsHead || target.type == NPCID.EaterofWorldsTail)
-                damage /= 5;
-
-            base.OnHitNPC(target, damage, knockback, crit);
-        }
-
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        {
-            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
 
             if (!target.boss && target.life <= target.life / 2)
-                target.StrikeNPC(target.life * 10, 0f, -target.direction);
+                target.SimpleStrikeNPC(target.life * 10, -target.direction);
             else if (target.boss && target.life <= (int)(target.life * acmPlayer.vanguardUltimateBossExecute))
-                target.StrikeNPC(target.life * 10, 0f, -target.direction);
+                target.SimpleStrikeNPC(target.life * 10, -target.direction);
 
-            base.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+            if (target.realLife != 0)
+                modifiers.FinalDamage /= 3;
+
+            base.ModifyHitNPC(target, ref modifiers);
         }
 
         //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)

@@ -8,6 +8,8 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using Terraria.Localization;
+using Terraria.GameContent;
 
 namespace ApacchiisClassesMod2.UI
 {
@@ -27,6 +29,8 @@ namespace ApacchiisClassesMod2.UI
         UIText className;
         UIPanel buttonTalents;
         UIText talentsText;
+        UIPanel relicsButton;
+        UIText relicsText;
         UIPanel specsButton;
         UIText specsText;
         UIPanel tips;
@@ -62,51 +66,66 @@ namespace ApacchiisClassesMod2.UI
 
         string[] tip =
         {
-            "Thank you for your support, @Dr.Oktober!",
-            "Thank you for your support, @Grass!",
-            "Thank you for your support, @Chelsea!",
-            "Thank you for your support, @Jesus Wie D!",
-            "Thank you for your support, @Matty!",
-            "Thank you for your support, @Peanutbutta187!",
-            "Thank you for your support, @ris!",
-            "Thank you for your support, @Dr.Void!",
+            $"[i:{ItemID.Heart}] Thank you for your support, @CaineSenpai! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Capraeus! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Degeneracy! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Derin! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Dr.Oktober! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Dr.Void! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Eloraeon! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Chelsea! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Grass! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Grumpy! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Icarus'Bullet! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Jesus Wie D! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @MajorCare! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Matty! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Peanutbutta187! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @ris! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Serenity! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Sheseck! [i:{ItemID.Heart}]",
+
+
 
             "You can change the max level a class can reach in the mod's config (10-100).",
-            $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Hit List' [i:{ModContent.ItemType<Items.ClassBook>()}.]",
-            "You can opt to be able to allocate points on both Talent rows by enabling 'Double Talents' in the mod's config.",
+            $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Class Book' [i:{ItemType<Items.ClassBook>()}].",
+            $"The 'Class Book' [i:{ItemType<Items.ClassBook>()}] displays bosses defeated in alphabetical order.",
             "Ability Power increases how much effect, such as damage, an ability has.",
             "Cooldown Reduction reduces the cooldown of all your non-ultimate abilities.",
-
-            $"You can craft new classes by crafting 'White Cloth' [i:{ModContent.ItemType<Items.WhiteCloth>()}] on a 'Loom' [i:{ItemID.Loom}.]",
-            $"You can re-allocate your Talent Points by crafting and consuming a dose of 'ZIP' [i:{ModContent.ItemType<Items.ZIP>()}.]",
+            $"You can craft new classes by crafting 'White Cloth' [i:{ItemType<Items.WhiteCloth>()}] on a 'Loom' [i:{ItemID.Loom}].",
             "You can make it so classes don't give you bonus stats by enabling 'Hidden Accessory Disables Stats' in the mod's config.", // Limit for text
             "You build up your ultimate by being in battle. You are considered to be in battle for 3s everytime you hit or are hit.",
             "Your ultimate build up decays at half the rate it builds up if you haven't been in battle for 5 seconds.",
-
-            "Everytime you are hit by an enemy you lose 6% of your current ultimate charge.",
             "Statue-spawned enemies do not count towards your highest dps, highest crit, enemies killed and damage dealt stats.",
             "If your HUD ever gets stuck and doesn't update anymore, you can type '/acr resetHUD' in chat and it'll fix itself.",
             "Join the discord on the mod's description/workshop page for help, reporting bugs, or just chatting.",
-            "This mod is still in development, more classes will release once some planned features are released.",
-
-            "Talent Points are awarded every time you level up, spend them on the Talent Tree by clicking the button bellow.",
-            "A use for excess Talent Points will come in the future.",
-            $"Only one Talent from each row of the Talent Tree can be active at a time, unless you have 'Double Talents' active.",
+            "This mod is still in development, more classes will come in the future!",
+            "Skill Points are awarded every time you level up, spend them by clicking on one of the buttons below!",
             "The HUD on the bottom left of the screen will tell you the current cooldown of all your abilities.",
             "Some vanilla items grant you increased ability power, reduced ability cooldowns and reduced ultimate costs.",
-
             "This menu can also be opened via a hotkey, you just need to assign one under Settings > Controls > ACM2: Menu.",
-            "Enemies deal 10% more damage overall by default. This can be changed in the mod's config.",
+            "Enemies deal 5% more damage overall by default. This can be changed in the mod's config.",
             "Relics can be equipped right next to the class' banner slot.",
-            "Relics have a low chance to drop from any non-boxx enemy defeated"
+            "Relics have a low chance to drop from any non-boss enemy defeated.",
+            "If you ever change your mind, right clicking your class' specializations removes points so you can use them elsewhere.",
+            "Base health is the health you get from anything but class stats.",
+            "Base defense is the defense you get from anything but class stats.",
+            "All relics have the same drop chance.",
+            $"This server's settings has a {(decimal)Configs._ACMConfigServer.Instance.classStatMult}x multiplier for class stats!",
+            $"This server's settings has a {(decimal)Configs._ACMConfigServer.Instance.enemyDamageMultiplier}x multiplier for all enemy damage!",
+            $"Healing Power does NOT affect potions [i:{ItemID.LesserHealingPotion}] or healing from other mods!]",
+            $"You get Ability Power based on your currently held weapon's base DPS, the higher it is, the more you get!",
+            $"Bottom left HUD too big or intrusive for your liking ? Enable 'Compact HUD' on the mod's Client Config!",
+            $"Do you keep forgetting to use your abilities ? Enable 'Blinking HUD' on the mod's Client Config!"
         };
         int chosenTip = 0;
         int prevTip = -1;
-        int tipsNumber = 32;
+        int tipsNumber;
 
         public override void OnInitialize()
         {
             tipTimer = 0;
+            tipsNumber = tip.Length;
             selectedClass = Player.GetModPlayer<ACMPlayer>().equippedClass;
             chosenTip = Main.rand.Next(0, tipsNumber);
             if(chosenTip == prevTip)
@@ -135,10 +154,10 @@ namespace ApacchiisClassesMod2.UI
             buttonTalents.HAlign = .5f;
             buttonTalents.VAlign = .5f;
             buttonTalents.Top.Set(335, 0f);
-            buttonTalents.Left.Set(105, 0f);
+            buttonTalents.Left.Set(210, 0f);
             buttonTalents.Width.Set(200, 0f);
             buttonTalents.Height.Set(50, 0f);
-            buttonTalents.OnClick += OpenTalents;
+            buttonTalents.OnLeftClick += OpenTalents;
             buttonTalents.BackgroundColor = new Color(75, 75, 75);
             buttonTalents.BorderColor = new Color(25, 25, 25);
             Append(buttonTalents);
@@ -148,19 +167,36 @@ namespace ApacchiisClassesMod2.UI
             talentsText.HAlign = .5f;
             buttonTalents.Append(talentsText);
 
+            relicsButton = new UIPanel();
+            relicsButton.HAlign = .5f;
+            relicsButton.VAlign = .5f;
+            relicsButton.Top.Set(335, 0f);
+            relicsButton.Left.Set(-210, 0f);
+            relicsButton.Width.Set(200, 0f);
+            relicsButton.Height.Set(50, 0f);
+            relicsButton.OnLeftClick += OpenRelics;
+            relicsButton.BackgroundColor = new Color(75, 75, 75);
+            relicsButton.BorderColor = new Color(25, 25, 25);
+            Append(relicsButton);
+
+            relicsText = new UIText("Relics List");
+            relicsText.VAlign = .5f;
+            relicsText.HAlign = .5f;
+            relicsButton.Append(relicsText);
+
             specsButton = new UIPanel();
             specsButton.HAlign = .5f;
             specsButton.VAlign = .5f;
             specsButton.Top.Set(335, 0f);
-            specsButton.Left.Set(-105, 0f);
+            //specsButton.Left.Set(-105, 0f);
             specsButton.Width.Set(200, 0f);
             specsButton.Height.Set(50, 0f);
-            //specsButton.OnClick += OpenSpecialization;
+            specsButton.OnLeftClick += OpenSpecs;
             specsButton.BackgroundColor = new Color(75, 75, 75);
             specsButton.BorderColor = new Color(25, 25, 25);
             Append(specsButton);
 
-            specsText = new UIText("WIP");
+            specsText = new UIText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Runes")}");
             specsText.VAlign = .5f;
             specsText.HAlign = .5f;
             specsButton.Append(specsText);
@@ -171,7 +207,7 @@ namespace ApacchiisClassesMod2.UI
             extraFunctionButton.Top.Set(-280, 0f);
             extraFunctionButton.Width.Set(710, 0f);
             extraFunctionButton.Height.Set(50, 0f);
-            extraFunctionButton.OnClick += ExtraFunction;
+            extraFunctionButton.OnLeftClick += ExtraFunction;
             extraFunctionButton.BackgroundColor = new Color(75, 75, 75);
             extraFunctionButton.BorderColor = new Color(25, 25, 25);
 
@@ -192,6 +228,7 @@ namespace ApacchiisClassesMod2.UI
             tipsText = new UIText("" + tip[chosenTip], .9f);
             tipsText.VAlign = .5f;
             tipsText.HAlign = .5f;
+            tipsText.Left.Set(-10, 0f);
             tips.Append(tipsText);
 
             passiveButton = new UIPanel();
@@ -230,22 +267,22 @@ namespace ApacchiisClassesMod2.UI
             ability3Button.BorderColor = new Color(25, 25, 25);
             background.Append(ability3Button);
 
-            passiveStaticText = new UIText("Passive");
+            passiveStaticText = new UIText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Passive")}");
             passiveStaticText.VAlign = .5f;
             passiveStaticText.HAlign = .5f;
             passiveButton.Append(passiveStaticText);
 
-            ability1StaticText = new UIText("Ability 1");
+            ability1StaticText = new UIText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Ability1")}");
             ability1StaticText.VAlign = .5f;
             ability1StaticText.HAlign = .5f;
             ability1Button.Append(ability1StaticText);
 
-            ability2StaticText = new UIText("Ability 2");
+            ability2StaticText = new UIText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Ability2")}");
             ability2StaticText.VAlign = .5f;
             ability2StaticText.HAlign = .5f;
             ability2Button.Append(ability2StaticText);
 
-            ability3StaticText = new UIText("Ultimate");
+            ability3StaticText = new UIText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Ultimate")}");
             ability3StaticText.VAlign = .5f;
             ability3StaticText.HAlign = .5f;
             ability3Button.Append(ability3StaticText);
@@ -257,7 +294,11 @@ namespace ApacchiisClassesMod2.UI
 
             abilityText = new UIText("");
             abilityText.Top.Set(250, 0f);
-            abilityText.Left.Set(50, 0f);
+            abilityText.Left.Set(0, 0f);
+            abilityText.Width.Set(800, 0f);
+            abilityText.IsWrapped = true;
+            abilityText.PaddingRight = 35f;
+            abilityText.PaddingLeft = 35f;
             background.Append(abilityText);
 
             castType = new UIText("");
@@ -307,7 +348,7 @@ namespace ApacchiisClassesMod2.UI
             ultimateCharge.SetText(acmPlayer.ultCharge + " / " + acmPlayer.ultChargeMax);
 
             tipTimer++;
-            if (tipTimer >= 300)
+            if (tipTimer >= 330)
             {
                 tipTimer = 0;
                 chosenTip = Main.rand.Next(0, tipsNumber);
@@ -316,10 +357,10 @@ namespace ApacchiisClassesMod2.UI
                 prevTip = chosenTip;
                 tipsText.SetText("" + tip[chosenTip]);
             }
-                
 
+            specsText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Runes")} ({acmPlayer.cardsPoints})");
             selectedClass = Player.GetModPlayer<ACMPlayer>().equippedClass;
-            className.SetText("Class: " + selectedClass);
+            className.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.ClassPrefix")}: " + selectedClass);
             abilityName.SetText("");
             abilityText.SetText("");
             castType.SetText("");
@@ -329,22 +370,31 @@ namespace ApacchiisClassesMod2.UI
             abilityEffect3.SetText("");
             abilityEffect4.SetText("");
 
+            extraFunctionText.Remove();
+            extraFunctionButton.Remove();
+
             if (acmPlayer.hasScout)
             {
                 Append(extraFunctionButton);
                 extraFunctionButton.Append(extraFunctionText);
 
                 if (acmPlayer.scoutCanDoubleJump)
-                    extraFunctionText.SetText("Disable scout's passive double jump");
+                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_DisableDoubleJump")}");
                 else
-                    extraFunctionText.SetText("Enable scout's passive double jump");
+                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_EnableeDoubleJump")}");
             }
-            else
+            
+            if(acmPlayer.equippedClass == "Gambler")
             {
-                extraFunctionText.Remove();
-                extraFunctionButton.Remove();
+                Append(extraFunctionButton);
+                extraFunctionButton.Append(extraFunctionText);
+
+                if (acmPlayer.gamblerPassiveFeedback)
+                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Gambler_P_Feedback_Enabled")}");
+                else
+                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Gambler_P_Feedback_Disabled")}");
             }
-                
+
             if(extraFunctionButton.IsMouseHovering)
             {
                 Main.LocalPlayer.mouseInterface = true;
@@ -354,6 +404,7 @@ namespace ApacchiisClassesMod2.UI
             {
                 extraFunctionButton.BorderColor = new Color(25, 25, 25);
             }
+
 
             if (buttonTalents.IsMouseHovering || talentsText.IsMouseHovering)
             {
@@ -369,6 +420,22 @@ namespace ApacchiisClassesMod2.UI
             else
             {
                 buttonTalents.BorderColor = new Color(25, 25, 25);
+            }
+
+            if (relicsButton.IsMouseHovering || relicsText.IsMouseHovering)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+                relicsButton.BorderColor = Color.Yellow;
+
+                if (!tick)
+                {
+                    SoundEngine.PlaySound(SoundID.MenuTick);
+                    tick = true;
+                }
+            }
+            else
+            {
+                relicsButton.BorderColor = new Color(25, 25, 25);
             }
 
             if (specsButton.IsMouseHovering || specsText.IsMouseHovering)
@@ -406,20 +473,24 @@ namespace ApacchiisClassesMod2.UI
 
             if(!passiveButton.IsMouseHovering && ! ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering)
             {
-                abilityName.SetText("-Player Stats-" +
-                                    $"\nTimes died: {acmPlayer.timesDied}" +
-                                    $"\nEnemies killed: {acmPlayer.enemiesKilled}" +
-                                    $"\nDamage Dealt: {acmPlayer.damageDealt} " +
-                                    $"\nHighest DPS: {acmPlayer.highestDPS} " +
-                                    $"\nHighest Crit: {acmPlayer.highestCrit} " +
-                                    $"\nEndurance: {(decimal)((acmPlayer.trueEndurance + Player.endurance - 1f) * 100)}%" +
-                                    $"\nAbility Power: {(decimal)(acmPlayer.abilityPower * 100)}%" +
-                                    $"\nCooldown Reduction: {-(int)((acmPlayer.cooldownReduction - 1f) * 100)}%" +
-                                    $"\nUltimate Cost: {(int)(acmPlayer.ultCooldownReduction * 100)}%");
+                abilityName.SetText($"-{Language.GetTextValue("Mods.ApacchiisClassesMod2.PlayerStatsText")}-" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.TimesDied")}: {acmPlayer.timesDied}" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.EnemiesKilled")}: {acmPlayer.enemiesKilled}" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.DamageTaken")}: {acmPlayer.totalDamageTaken} " +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.HighestCrit")}: {acmPlayer.highestCrit} " +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.DamageReduction")}: {(Player.endurance * 100).ToString("F2")}%" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.AbilityPower")}: {(acmPlayer.abilityPower * 100).ToString("F2")}%" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.HealingPower")}: {(acmPlayer.healingPower * 100).ToString("F2")}%" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.CooldownReduction")}: {(int)-((acmPlayer.cooldownReduction - 1f) * 100)}%" +
+                                    $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.UltCost")}: {(int)(acmPlayer.ultCooldownReduction * 100)}%");
 
+                abilityCooldown.SetText("\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}: {(acmPlayer.dodgeChance * 100).ToString("F2")}%\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}: {acmPlayer.Player.maxMinions}" +
+                                       $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%");
             }
 
-            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering)
+            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering)
                 tick = false;
 
             if (passiveButton.IsMouseHovering)
@@ -431,58 +502,15 @@ namespace ApacchiisClassesMod2.UI
                     tick = true;
                 }
 
-                switch (selectedClass)
-                {
-                    case "Vanguard":
-                        //castType.SetText("-Constant Passive-");
-                        abilityName.SetText("[Enchanted Armor]");
-                        abilityText.SetText("Your armor is enchanted with light properties.\n" +
-                                            "Enemies that directly attack you take a percentage of your defense as mitigable damage.");
-                        abilityEffect1.SetText($"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f}% = {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level{acmPlayer.vanguardLevel * 2.5f}%)");
-                        break;
+                abilityText.Width.Set(FontAssets.MouseText.Value.MeasureString(acmPlayer.P_Desc).X * 2, 0f);
+                abilityName.SetText($"[{acmPlayer.P_Name}]");
+                abilityText.SetText($"{acmPlayer.P_Desc}");
 
-                    case "Blood Mage":
-                        //castType.SetText("-Constant Passive-");
-                        abilityName.SetText("[Blood Well]");
-                        abilityText.SetText("Every second in battle earn a stack of 'Blood'.\n" +
-                                            "Each stack will regenerate a small percentage of yourhealth each second.\n" +
-                                            "Stacks decay out of battle and are lost on death.");
-                        if (acmPlayer.bloodMageTalent_9 == "L")
-                            abilityText.SetText("Every second in battle earn a stack of 'Blood'.\n" +
-                                            "Each stack will regenerate a small percentage of yourhealth each second.\n" +
-                                            "Stacks decay out of battle and are lost on death.\n" +
-                                            "[Talent] Now also grants 0.08% bonus magic damage per stack of 'Blood'");
-                        else
-                            abilityText.SetText("Every second in battle earn a stack of 'Blood'.\n" +
-                                            "Each stack will regenerate a small percentage of yourhealth each second.\n" +
-                                            "Stacks decay out of battle and are lost on death.");
-                        abilityEffect1.SetText("Regen: " + acmPlayer.bloodMageBasePassiveRegen * 100 + "% p/Stack = " + (decimal)(acmPlayer.bloodMagePassiveRegen * (acmPlayer.bloodMagePassiveMaxStacks + acmPlayer.bloodMageLevel * 2) * 100) + "% at max stacks");
-                        abilityEffect2.SetText("Max Stacks: " + acmPlayer.bloodMagePassiveBaseMaxStacks + " + 2 p/Level(" + acmPlayer.bloodMageLevel * 2 + ") = " + acmPlayer.bloodMagePassiveMaxStacks);
-                        if (acmPlayer.bloodMageTalent_9 == "L")
-                            abilityEffect4.SetText($"Max Bonus Damage: {(decimal)(acmPlayer.bloodMagePassiveMaxStacks * .008f * 100)}%");
-                        break;
-
-                    case "Commander":
-                        abilityName.SetText("[Commander's Will]");
-                        abilityText.SetText("Gain bonus damage reduction for each minion slot you have.");
-
-                        abilityEffect1.SetText($"Endurance: {(decimal)(acmPlayer.commanderPassiveEndurance * acmPlayer.Player.maxMinions * 100)}%");
-                        abilityEffect2.SetText($"Max Minions: {acmPlayer.Player.maxMinions}");
-                        break;
-
-                    case "Scout":
-                        abilityName.SetText("[Scout's Agility]");
-                        abilityText.SetText("The scout has a free double jump and has increased movement speed.");
-
-                        if(acmPlayer.scoutCanDoubleJump)
-                            abilityEffect1.SetText("Double Jump: Enabled");
-                        else
-                            abilityEffect1.SetText("Double Jump: Disabled");
-
-                        abilityEffect2.SetText($"Speed Bonus: {(int)(acmPlayer.scoutPassiveSpeedBonus * 100)}%");
-
-                        break;
-                }
+                if (passiveButton.IsMouseHovering)
+                abilityEffect1.SetText(acmPlayer.P_Effect_1);
+                abilityEffect2.SetText(acmPlayer.P_Effect_2);
+                abilityEffect3.SetText(acmPlayer.P_Effect_3);
+                abilityEffect4.SetText(acmPlayer.P_Effect_4);
             }
 
             if (ability1Button.IsMouseHovering)
@@ -494,52 +522,16 @@ namespace ApacchiisClassesMod2.UI
                     tick = true;
                 }
 
-                switch (selectedClass)
-                {
-                    case "Vanguard":
-                        //castType.SetText("-Cursor Target-");
-                        abilityName.SetText("[Spear Of Light]");
-                        abilityText.SetText("Throw a spear of light that will drag enemies along with it.\n" +
-                                            "If the spear collides with terrain or 1.5 seconds have passed, the spear will explode dealing damage\n" +
-                                            "to all enemies in the area.");
-                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
-                        abilityEffect1.SetText($"Explosion Damage: {(int)(acmPlayer.vanguardSpearBaseDamage + acmPlayer.vanguardLevel * 8)} = {acmPlayer.vanguardSpearBaseDamage} + 8 p/Level ({acmPlayer.vanguardLevel * 8})");
-                        break;
+                abilityCooldown.SetText($"Cooldown: {(decimal)acmPlayer.ability1MaxCooldown}s");
 
-                    case "Blood Mage":
-                        //castType.SetText("-Cursor Target-");
-                        abilityName.SetText("[Transfusion]");
-                        abilityText.SetText("Throw a blob of your own blood to seek out an enemy, when the blob hits its target it will return to\n" +
-                                            "you with a bit of the enemy's blood heal you for 10% of the enemy's max health.\n" +
-                                            $"(Healing cannot be greater than {acmPlayer.bloodMageSiphonHealMax * 100}% of your max health)");
-                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
-                        abilityEffect1.SetText($"Damage: {(decimal)(acmPlayer.bloodMageSiphonBaseDamage + acmPlayer.bloodMageLevel * 5)} = {acmPlayer.bloodMageSiphonBaseDamage} + 5 p/Level({ acmPlayer.bloodMageLevel * 5})");
-                        abilityEffect2.SetText($"Max Healing: {(decimal)acmPlayer.bloodMageSiphonHealMax * 100}% of your max health");
-                        break;
+                abilityText.Width.Set(FontAssets.MouseText.Value.MeasureString(acmPlayer.A1_Desc).X * 2, 0f);
+                abilityName.SetText($"[{acmPlayer.A1_Name}]");
+                abilityText.SetText($"{acmPlayer.A1_Desc}");
 
-                    case "Commander":
-                        abilityName.SetText("[War banner]");
-                        abilityText.SetText("Place a war banner at your feet." +
-                                            "Players inside the banner's radius are granted damage reduction and\n" +
-                                            "increased damage.\n" +
-                                            "This buff persists for a while after leaving the banner's radius.");
-                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
-
-                        abilityEffect1.SetText($"Endurance: {(decimal)((1f - acmPlayer.commanderBannerEndurance) * 100)}%");
-                        abilityEffect2.SetText("Bonus Damage: " + (int)((acmPlayer.commanderBannerDamage - 1f) * 100) + "%");
-                        abilityEffect4.SetText("Duration: " + acmPlayer.commanderBannerDuration / 60 + "s + 0.5s p/Level(" + acmPlayer.commanderLevel * .4f + "s) = " + (decimal)((acmPlayer.commanderLevel * 24 + acmPlayer.commanderBannerDuration) / 60) + "s");
-                        break;
-
-                    case "Scout":
-                        abilityName.SetText("[Hit-a-Soda]");
-                        abilityText.SetText("Take a sip from an energy drink you made yourself.\n" +
-                                            "This drink will increase the damage you deal temporarily.");
-                        abilityCooldown.SetText($"Cooldown: {acmPlayer.ability1MaxCooldown / 60}s");
-
-                        abilityEffect1.SetText("Damage Bonus: " + (decimal)(acmPlayer.scoutColaDamageBonus) * 100 + "% + " + acmPlayer.scoutColaDamageBonusLevel * 100 + "% p/Level(" + (decimal)(acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel * 100) + "%) = " + (decimal)((acmPlayer.scoutColaDamageBonus + acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel) * 100) + "%");
-                        abilityEffect2.SetText("Duration: " + acmPlayer.scoutColaDuration / 60 + "s");
-                        break;
-                }
+                abilityEffect1.SetText(acmPlayer.A1_Effect_1);
+                abilityEffect2.SetText(acmPlayer.A1_Effect_2);
+                abilityEffect3.SetText(acmPlayer.A1_Effect_3);
+                abilityEffect4.SetText(acmPlayer.A1_Effect_4);
             }
 
             if (ability2Button.IsMouseHovering)
@@ -551,48 +543,21 @@ namespace ApacchiisClassesMod2.UI
                     tick = true;
                 }
 
+                abilityCooldown.SetText($"Cooldown: {(decimal)acmPlayer.ability2MaxCooldown}s");
+
+                abilityText.Width.Set(FontAssets.MouseText.Value.MeasureString(acmPlayer.A2_Desc).X * 2, 0f);
+                abilityName.SetText($"[{acmPlayer.A2_Name}]");
+                abilityText.SetText($"{acmPlayer.A2_Desc}");
+
+                abilityEffect1.SetText(acmPlayer.A2_Effect_1);
+                abilityEffect2.SetText(acmPlayer.A2_Effect_2);
+                abilityEffect3.SetText(acmPlayer.A2_Effect_3);
+                abilityEffect4.SetText(acmPlayer.A2_Effect_4);
+
                 switch (selectedClass)
                 {
-                    case "Vanguard":
-                        //castType.SetText("-No Target-");
-                        abilityName.SetText("[Light Barrier]");
-                        abilityText.SetText("Surround yourself in a barrier of light. Any damage taken when the barrier is active will be\n" +
-                                            "reduced by a percentage.");
-                        abilityCooldown.SetText("Cooldown: " + (decimal)(acmPlayer.ability2MaxCooldown / 60) + "s");
-                        abilityEffect1.SetText("Damage Reduction: " + (decimal)(acmPlayer.vanguardShieldDamageReduction * 100) + "%");
-                        abilityEffect2.SetText("Duration: " + (decimal)(acmPlayer.vanguardShieldBaseDuration / 60) + "s + 0.3s p/Level(" + (decimal)(acmPlayer.vanguardLevel * 0.3) + "s) = " + (decimal)(acmPlayer.vanguardShieldBaseDuration / 60 + acmPlayer.vanguardLevel * 0.3f) + "s");
-                        break;
-
                     case "Blood Mage":
-                        //castType.SetText("-No Target Toggle-");
-                        abilityName.SetText("[Blood Enchantment]");
-                        abilityText.SetText("Enchant you weapon with your own blood, draining your health each second, but increasing the\n" +
-                                            "damage you deal.");
                         abilityCooldown.SetText("[Toggleable]");
-                        abilityEffect1.SetText("Bonus Damage: " + (decimal)(acmPlayer.bloodMageBaseDamageGain * 100) + "% + 0.5% p/Level(" + acmPlayer.bloodMageLevel * 0.5f + "%) = " + (decimal)(acmPlayer.bloodMageBaseDamageGain * 100 + acmPlayer.bloodMageLevel * .5f) + "%");
-                        abilityEffect2.SetText("Health Drain: " + (decimal)(acmPlayer.bloodMageBaseHealthDrain * 100) + "% p/Sec");
-                        break;
-
-                    case "Commander":
-                        abilityName.SetText("[Battle Cry]");
-                        abilityText.SetText("Scream loudly, intimidating enemies around you and knocking them back, increasing the damage they\n" +
-                                            "take for a period of time.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability2MaxCooldown / 60 + "s");
-
-                        abilityEffect1.SetText("Bonus Damage: " + (decimal)(acmPlayer.commanderCryBonusDamage * 100) + "% + 1% p/Level(" + acmPlayer.commanderLevel + "%) = " + (int)((acmPlayer.commanderCryBonusDamage + acmPlayer.commanderLevel * .01f) * 100) + "%");
-                        abilityEffect3.SetText("Debuff Duration: " + (decimal)(acmPlayer.commanderCryDuration / 60) + "s");
-                        abilityEffect2.SetText("Damage: " + acmPlayer.commanderCryBaseDamage + " + " + acmPlayer.commanderCryDamageLevel + " p/lvl(" + acmPlayer.commanderCryDamageLevel * acmPlayer.commanderLevel + ") = " + (int)(acmPlayer.commanderCryBaseDamage + acmPlayer.commanderCryDamageLevel * acmPlayer.commanderLevel));
-                        break;
-
-                    case "Scout":
-                        abilityName.SetText("[Explosive Trap]");
-                        abilityText.SetText("Place an explosive trap under your cursor's position, it'll take some time to arm itself.\n" +
-                                            "The trap will explode if an enemy gets too close, dealing damage to all enemies within 2x the trap's\n" +
-                                            "detection range.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ability2MaxCooldown / 60 + "s");
-
-                        abilityEffect1.SetText("Damage: " + acmPlayer.scoutTrapBaseDamage + " + " + acmPlayer.scoutTrapDamageLevel + " p/Level(" + acmPlayer.scoutTrapDamageLevel * acmPlayer.scoutLevel + ") = " + (acmPlayer.scoutTrapBaseDamage + acmPlayer.scoutTrapDamageLevel * acmPlayer.scoutLevel));
-                        abilityEffect2.SetText("Detection Range: " + acmPlayer.scoutTrapRange);
                         break;
                 }
             }
@@ -606,52 +571,37 @@ namespace ApacchiisClassesMod2.UI
                     tick = true;
                 }
 
-                switch (selectedClass)
-                {
-                    case "Vanguard":
-                        //castType.SetText("-Point Target-");
-                        abilityName.SetText("[Sword Of Judgement]");                                                                            //100 chars p/line
-                        abilityText.SetText("Call in a giant sword from the heavens. The sword hits enemies all around it, dealing massive damage\n" +
-                                            "and executing enemies below 50% health.\n" +
-                                            "(Bosses are executed below " + acmPlayer.vanguardUltimateBossExecute * 100 + "% health)");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
-                        abilityEffect1.SetText("Damage: " + acmPlayer.vanguardSwordBaseDamage + " + 14 p/Level(" + acmPlayer.vanguardLevel * 14 + ") = " + (int)(acmPlayer.vanguardSwordBaseDamage + (acmPlayer.vanguardLevel * 14)));
-                        break;
+                abilityCooldown.SetText($"Cooldown: {(decimal)(acmPlayer.ultChargeMax / 60)}s In Battle");
 
-                    case "Blood Mage":
-                        //castType.SetText("-No Target-");
-                        abilityName.SetText("[Regeneration]");
-                        abilityText.SetText("Quickly regenerate the blood of you and all your allies over time, regenerating a percentage of the\n" +
-                                            "healed player's max health at a medium rate for a limited number of ticks.\n" +
-                                            "[Currently only heals yourself, and not allies, im working on it]");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
-                        abilityEffect1.SetText("Max Health Heal: " + (decimal)acmPlayer.bloodMageBaseUltRegen * 100 + "% + 0.1% p/Level(" + acmPlayer.bloodMageLevel * 0.1f * 100 + "%) = " + (acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .1f) + "%");
-                        abilityEffect2.SetText("Ticks: " + acmPlayer.bloodMageUltTicks + " ticks");
-                        break;
+                abilityText.Width.Set(FontAssets.MouseText.Value.MeasureString(acmPlayer.Ult_Desc).X * 2, 0f);
+                abilityName.SetText($"[{acmPlayer.Ult_Name}]");
+                abilityText.SetText($"{acmPlayer.Ult_Desc}");
 
-                    case "Commander":
-                        abilityName.SetText("[Inspire]");
-                        abilityText.SetText("Inspire all players, causing them to always land critical hits on enemies.\n" +
-                                            "Minions can also crit during this duration");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
-
-                        abilityEffect1.SetText("Duration: " + acmPlayer.commanderUltDuration / 60 + "s + 0.25s p/Level(" + (decimal)(acmPlayer.commanderLevel * .15f) + "s) = " + (decimal)((acmPlayer.commanderLevel * 15 + acmPlayer.commanderUltDuration) / 60) + "s");
-                        break;
-
-                    case "Scout":
-                        abilityName.SetText("[Nuclear-Slap (TM)]");
-                        abilityText.SetText("Become invincible for " + acmPlayer.scoutUltInvDuration / 60 + " seconds and gain increased movement speed, jump height and\n" +
-                                            "auto jump for a longer duration.");
-                        abilityCooldown.SetText("Cooldown: " + acmPlayer.ultChargeMax / 60 + "s In Battle");
-
-                        abilityEffect1.SetText("Mobility Duration: " + acmPlayer.scoutUltDuration / 60 + "s");
-                        abilityEffect2.SetText("Speed Bonus: " + (int)(acmPlayer.scoutUltSpeed * 100) + "% + " + (int)(acmPlayer.scoutUltSpeedLevel * 100) + "% p/Level(" + (decimal)(acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel * 100) + "%) = " + (decimal)((acmPlayer.scoutUltSpeed + acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel) * 100) + "%");
-                        abilityEffect4.SetText("Jump Height: " + (int)(acmPlayer.scoutUltJump * 100) + "%");
-                        break;
-                }
+                abilityEffect1.SetText(acmPlayer.Ult_Effect_1);
+                abilityEffect2.SetText(acmPlayer.Ult_Effect_2);
+                abilityEffect3.SetText(acmPlayer.Ult_Effect_3);
+                abilityEffect4.SetText(acmPlayer.Ult_Effect_4);
             }
 
+            //if(acmPlayer.equippedClass == "Gambler")
+            //{
+            //    abilityEffect3.Left.Set(480, 0f);
+            //    abilityEffect4.Left.Set(480, 0f)
+            //}
+
             base.Update(gameTime);
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            //if (specsButton.IsMouseHovering || specsText.IsMouseHovering)
+            //{
+            //    if (acmPlayer.spentSkillPointsGlobal < 10)
+            //        Main.hoverItemName = "Unlocks after spending 10 skill points on the talent tree";
+            //}
+                base.DrawSelf(spriteBatch);
         }
 
         private void ExtraFunction(UIMouseEvent evt, UIElement listeningElement)
@@ -664,7 +614,12 @@ namespace ApacchiisClassesMod2.UI
                     acmPlayer.scoutCanDoubleJump = false;
                 else
                     acmPlayer.scoutCanDoubleJump = true;
-            
+
+            if (acmPlayer.equippedClass == "Gambler")
+                if (acmPlayer.gamblerPassiveFeedback)
+                    acmPlayer.gamblerPassiveFeedback = false;
+                else
+                    acmPlayer.gamblerPassiveFeedback = true;
         }
 
         private void OpenTalents(UIMouseEvent evt, UIElement listeningElement)
@@ -682,17 +637,36 @@ namespace ApacchiisClassesMod2.UI
                 GetInstance<ACM2ModSystem>()._CommanderTalents.SetState(new CommanderTalents());
             if (acmPlayer.hasScout)
                 GetInstance<ACM2ModSystem>()._ScoutTalents.SetState(new ScoutTalents());
+            if (acmPlayer.hasSoulmancer)
+                GetInstance<ACM2ModSystem>()._SoulmancerTalents.SetState(new SoulmancerTalents());
+            if (acmPlayer.hasCrusader)
+                GetInstance<ACM2ModSystem>()._CrusaderTalents.SetState(new CrusaderTalents());
+            if (acmPlayer.equippedClass == "Gambler")
+                GetInstance<ACM2ModSystem>()._GamblerTalents.SetState(new GamblerTalents());
+            if (acmPlayer.equippedClass == "Plague")
+                GetInstance<ACM2ModSystem>()._PlagueTalents.SetState(new PlagueTalents());
         }
 
-        private void OpenSpecialization(UIMouseEvent evt, UIElement listeningElement)
+        private void OpenRelics(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
             GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
-            SoundEngine.PlaySound(SoundID.MenuOpen);
 
-            if (acmPlayer.hasBloodMage)
-                GetInstance<ACM2ModSystem>()._BloodMageSpecs.SetState(new Specializations.BloodMageSpecs());
+            if (GetInstance<ACM2ModSystem>()._RelicsUI.CurrentState == null)
+                GetInstance<ACM2ModSystem>()._RelicsUI.SetState(new Other.RelicsUI());
+
+            SoundEngine.PlaySound(SoundID.MenuOpen);
+        }
+
+        private void OpenSpecs(UIMouseEvent evt, UIElement listeningElement)
+        {
+            //Cards
+            if (GetInstance<ACM2ModSystem>()._MyDeck.CurrentState == null)
+                GetInstance<ACM2ModSystem>()._MyDeck.SetState(new Specializations.MyDeck());
+
+                GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
+
         }
     }
 }

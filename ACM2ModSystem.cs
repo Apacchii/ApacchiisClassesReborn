@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using ApacchiisClassesMod2.UI;
 using ApacchiisClassesMod2.UI.HUD;
+using ApacchiisClassesMod2.UI.Other;
 using ApacchiisClassesMod2.UI.Specializations;
 using Terraria.UI;
 using System.Collections.Generic;
@@ -14,8 +15,6 @@ namespace ApacchiisClassesMod2
 {
     public class ACM2ModSystem : ModSystem
     {
-        Player Player = Main.player[Main.myPlayer];
-
         public static ModKeybind ClassAbility1;
         public static ModKeybind ClassAbility2;
         public static ModKeybind ClassAbilityUltimate;
@@ -30,13 +29,14 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
+        internal RelicsUI RelicsUI;
+        internal UserInterface _RelicsUI;
+
         internal VanguardTalents VanguardTalents;
         internal UserInterface _VanguardTalents;
 
         internal BloodMageTalents BloodMageTalents;
         internal UserInterface _BloodMageTalents;
-        internal BloodMageSpecs BloodMageSpecs;
-        internal UserInterface _BloodMageSpecs;
 
         internal CommanderTalents CommanderTalents;
         internal UserInterface _CommanderTalents;
@@ -44,14 +44,39 @@ namespace ApacchiisClassesMod2
         internal ScoutTalents ScoutTalents;
         internal UserInterface _ScoutTalents;
 
-        //public ACM2()
+        internal SoulmancerTalents SoulmancerTalents;
+        internal UserInterface _SoulmancerTalents;
+
+        internal SoulmancerTalents CrusaderTalents;
+        internal UserInterface _CrusaderTalents;
+
+        internal GamblerTalents GamblerTalents;
+        internal UserInterface _GamblerTalents;
+
+        internal PlagueTalents PlagueTalents;
+        internal UserInterface _PlagueTalents;
+
+        internal GeneralCards Cards;
+        internal UserInterface _Cards;
+        internal MyDeck MyDeck;
+        internal UserInterface _MyDeck;
+
+        //Achievements Mod
+        //public override void PostSetupContent()
         //{
-        //    Properties = new ModProperties()
-        //    {
-        //        Autoload = true,
-        //        AutoloadGores = true,
-        //        AutoloadSounds = true
-        //    };
+        //    //Try when 'Achievements Mod' releases on 1.4.4 - NOT WORKING
+        //    if (ModLoader.TryGetMod("TMLAchievements", out Mod achievsMod))
+        //        achievsMod.Call("AddAchievement",
+        //        this, //Mod name reference
+        //        "NitehrisTreasury", //Name, no spaces ?
+        //        Terraria.Achievements.AchievementCategory.Collector,
+        //        "ApacchiisClassesMod2/Achievements/test",
+        //        null, //Image border, null = none
+        //        false, //Show progress bar
+        //        false, //Show icon in inventory
+        //        40f, //Order for icon in inventory, higher is later, 36f is Champion Of Terraria
+        //        new string[] { "Craft_" + ModContent.ItemType<Items.Relics.NiterihsJewelryBox>() });
+        //    base.PostSetupContent();
         //}
 
         public override void Load()
@@ -69,19 +94,37 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
+                RelicsUI = new RelicsUI();
+                _RelicsUI = new UserInterface();
+
                 VanguardTalents = new VanguardTalents();
                 _VanguardTalents = new UserInterface();
 
                 BloodMageTalents = new BloodMageTalents();
                 _BloodMageTalents = new UserInterface();
-                BloodMageSpecs = new BloodMageSpecs();
-                _BloodMageSpecs = new UserInterface();
 
                 CommanderTalents = new CommanderTalents();
                 _CommanderTalents = new UserInterface();
 
                 ScoutTalents = new ScoutTalents();
                 _ScoutTalents = new UserInterface();
+
+                SoulmancerTalents = new SoulmancerTalents();
+                _SoulmancerTalents = new UserInterface();
+
+                CrusaderTalents = new SoulmancerTalents();
+                _CrusaderTalents = new UserInterface();
+
+                GamblerTalents = new GamblerTalents();
+                _GamblerTalents = new UserInterface();
+
+                PlagueTalents = new PlagueTalents();
+                _PlagueTalents = new UserInterface();
+
+                Cards = new GeneralCards();
+                _Cards = new UserInterface();
+                MyDeck = new MyDeck();
+                _MyDeck =new UserInterface();
             }
 
             base.Load();
@@ -93,23 +136,31 @@ namespace ApacchiisClassesMod2
 
             if (_ClassesMenu?.CurrentState != null)
                 _ClassesMenu.Update(gameTime);
-
             if (_HUD?.CurrentState != null)
                 _HUD.Update(gameTime);
+            if (_Cards?.CurrentState != null)
+                _Cards.Update(gameTime);
+            if (_MyDeck?.CurrentState != null)
+                _MyDeck?.Update(gameTime);
 
+            if (_RelicsUI?.CurrentState != null)
+                _RelicsUI.Update(gameTime);
             if (_VanguardTalents?.CurrentState != null)
                 _VanguardTalents.Update(gameTime);
-
             if (_BloodMageTalents?.CurrentState != null)
                 _BloodMageTalents.Update(gameTime);
-            if (_BloodMageSpecs?.CurrentState != null)
-                _BloodMageSpecs.Update(gameTime);
-
             if (_CommanderTalents?.CurrentState != null)
                 _CommanderTalents.Update(gameTime);
-
             if (_ScoutTalents?.CurrentState != null)
                 _ScoutTalents.Update(gameTime);
+            if (_SoulmancerTalents?.CurrentState != null)
+                _SoulmancerTalents.Update(gameTime);
+            if (_CrusaderTalents?.CurrentState != null)
+                _CrusaderTalents.Update(gameTime);
+            if (_GamblerTalents?.CurrentState != null)
+                _GamblerTalents.Update(gameTime);
+            if (_PlagueTalents?.CurrentState != null)
+                _PlagueTalents.Update(gameTime);
 
             base.UpdateUI(gameTime);
         }
@@ -128,6 +179,18 @@ namespace ApacchiisClassesMod2
                         if (_lastUpdateUiGameTime != null && _ClassesMenu?.CurrentState != null)
                         {
                             _ClassesMenu.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: RelicsUI",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _RelicsUI?.CurrentState != null)
+                        {
+                            _RelicsUI.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
                     },
@@ -196,19 +259,78 @@ namespace ApacchiisClassesMod2
                         return true;
                     },
                        InterfaceScaleType.UI));
-                #endregion
 
-                #region Skills
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "ApacchiisClassesMod2: Skills",
+                    "ApacchiisClassesMod2: Talents",
                     delegate
                     {
-                        if (_lastUpdateUiGameTime != null && _BloodMageSpecs?.CurrentState != null)
-                            _BloodMageSpecs.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-
+                        if (_lastUpdateUiGameTime != null && _SoulmancerTalents?.CurrentState != null)
+                        {
+                            _SoulmancerTalents.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
                         return true;
                     },
                        InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: Talents",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _CrusaderTalents?.CurrentState != null)
+                        {
+                            _CrusaderTalents.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: Talents",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _GamblerTalents?.CurrentState != null)
+                        {
+                            _GamblerTalents.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: Talents",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _PlagueTalents?.CurrentState != null)
+                        {
+                            _PlagueTalents.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+                #endregion
+
+                #region Cards
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                   "ApacchiisClassesMod2: Cards",
+                   delegate
+                   {
+                       if (_lastUpdateUiGameTime != null && _Cards?.CurrentState != null)
+                           _Cards.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+
+                       return true;
+                   },
+                      InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                   "ApacchiisClassesMod2: My Deck",
+                   delegate
+                   {
+                       if (_lastUpdateUiGameTime != null && _MyDeck?.CurrentState != null)
+                           _MyDeck.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+
+                       return true;
+                   },
+                      InterfaceScaleType.UI));
                 #endregion
             }
             base.ModifyInterfaceLayers(layers);

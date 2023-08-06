@@ -10,8 +10,8 @@ namespace ApacchiisClassesMod2.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ley's Mushroom Damage");
-            Description.SetDefault("Increasing damage dealt");
+            // DisplayName.SetDefault("Ley's Mushroom Damage");
+            // Description.SetDefault("Increasing damage dealt");
             Main.buffNoSave[Type] = false;
             Main.debuff[Type] = false;
             base.SetStaticDefaults();

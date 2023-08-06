@@ -10,13 +10,12 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
 {
     public class ScoutTrap : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
         bool hasHitEnemy = false;
         float degree = 0;
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Scout's Trap");
+            // DisplayName.SetDefault("Scout's Trap");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }
@@ -38,6 +37,7 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
 
         public override void AI()
         {
+            Player player = Main.player[Main.myPlayer];
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
 
             if (degree < 360f)
@@ -79,15 +79,12 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
             }
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (target.type == NPCID.TheDestroyer || target.type == NPCID.TheDestroyerTail || target.type == NPCID.TheDestroyerBody)
-                damage /= 4;
+            if (target.realLife != 0)
+                modifiers.FinalDamage /= 4;
 
-            if (target.type == NPCID.EaterofWorldsBody || target.type == NPCID.EaterofWorldsTail || target.type == NPCID.EaterofWorldsHead)
-                damage /= 3;
-
-            base.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+            base.ModifyHitNPC(target, ref modifiers);
         }
 
         public override void Kill(int timeLeft)
@@ -96,7 +93,7 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
 
             for (int i = 0; i < 50; i++)
             {
-                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width * 2, Projectile.height * 2, 31, 0f, 0f, 100, default(Color), 2f);
+                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width * 2, Projectile.height * 2, DustID.Smoke, 0f, 0f, 100, default(Color), 2f);
                 Main.dust[dustIndex].velocity *= 1.4f;
             }
 

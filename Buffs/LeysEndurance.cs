@@ -10,8 +10,8 @@ namespace ApacchiisClassesMod2.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ley's Mushroom Endurance");
-            Description.SetDefault("Decreasing damage taken");
+            // DisplayName.SetDefault("Ley's Mushroom Endurance");
+            // Description.SetDefault("Decreasing damage taken");
             Main.buffNoSave[Type] = false;
             Main.debuff[Type] = false;
             base.SetStaticDefaults();

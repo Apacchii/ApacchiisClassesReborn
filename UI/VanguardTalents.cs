@@ -8,6 +8,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using ApacchiisClassesMod2.Configs;
 
 namespace ApacchiisClassesMod2.UI
 {
@@ -30,7 +31,7 @@ namespace ApacchiisClassesMod2.UI
         float L1Scale = 1f;
         float R1Scale = 1f;
         string L1 = "+2 Defense";
-        string R1 = "+5% Cooldown Reduction";
+        string R1 = "+6% Cooldown Reduction";
 
         float L2Scale = 1f;
         float R2Scale = 1f;
@@ -55,22 +56,22 @@ namespace ApacchiisClassesMod2.UI
         float L6Scale = 1f;
         float R6Scale = 1f;
         string L6 = "2x Spear Explosion Range";
-        string R6 = "+50% Passive Reflect";
+        string R6 = "+35% Passive Reflect";
 
         float L7Scale = 1f;
         float R7Scale = .9f;
         string L7 = "+2% Melee Crit";
-        string R7 = "Spear Heals 2.4% Max Health";
+        string R7 = "Spear Heals 2.6% Max Health";
 
         float L8Scale = 1f;
         float R8Scale = 1f;
-        string L8 = "+35 Ult Damage";
+        string L8 = "+28 Ult Damage";
         string R8 = "+0.8s Barrier Duration";
 
         float L9Scale = .9f;
         float R9Scale = 1f;
         string L9 = "Barrier Provides 1.2% HP Regen";
-        string R9 = "15% Cooldown Reduction";
+        string R9 = "17% Cooldown Reduction";
 
         float L10Scale = 1f;
         float R10Scale = 1f;
@@ -135,6 +136,12 @@ namespace ApacchiisClassesMod2.UI
         UIText text10_Left;
         UIText text10_Right;
 
+        UIPanel leftSink;
+        UIText leftSinkText;
+        UIPanel rightSink;
+        UIText rightSinkText;
+        UIText rightStaticSinkText;
+        UIText leftStaticSinkText;
 
         public override void OnInitialize()
         {
@@ -156,13 +163,13 @@ namespace ApacchiisClassesMod2.UI
             close.Height.Set(50, 0f);
             close.BackgroundColor = new Color(150, 75, 75);
             close.BorderColor = new Color(25, 25, 25);
-            close.OnClick += Close;
+            close.OnLeftClick += Close;
             Append(close);
 
             closeText = new UIText("Close");
             closeText.VAlign = .5f;
             closeText.HAlign = .5f;
-            closeText.OnClick += Close;
+            closeText.OnLeftClick += Close;
             close.Append(closeText);
 
 
@@ -178,9 +185,11 @@ namespace ApacchiisClassesMod2.UI
             //background.Append(infoLeft);
 
             textInfoLeft = new UIText("");
-            textInfoLeft.VAlign = .3f;
-            textInfoLeft.HAlign = .5f;
-            //infoLeft.Append(textInfoLeft);
+            textInfoLeft.Top.Set(5, 0f);
+            textInfoLeft.Left.Set(5, 0f);
+            textInfoLeft.IsWrapped = true;
+            textInfoLeft.Height.Set(700, 0f);
+            textInfoLeft.Width.Set(300, 0f);
 
             infoRight = new UIPanel();
             infoRight.VAlign = .5f;
@@ -211,7 +220,7 @@ namespace ApacchiisClassesMod2.UI
             button1_Left.Height.Set(bHeight, 0f);
             button1_Left.BackgroundColor = new Color(75, 75, 75);
             button1_Left.BorderColor = new Color(25, 25, 25);
-            button1_Left.OnClick += Button1L;
+            button1_Left.OnLeftClick += Button1L;
             background.Append(button1_Left);
 
             button1_Right = new UIPanel();
@@ -221,19 +230,19 @@ namespace ApacchiisClassesMod2.UI
             button1_Right.Height.Set(bHeight, 0f);
             button1_Right.BackgroundColor = new Color(75, 75, 75);
             button1_Right.BorderColor = new Color(25, 25, 25);
-            button1_Right.OnClick += Button1R;
+            button1_Right.OnLeftClick += Button1R;
             background.Append(button1_Right);
 
             text1_Left = new UIText("" + L1, L1Scale);
             text1_Left.VAlign = .5f;
             text1_Left.HAlign = .5f;
-            text1_Left.OnClick += Button1L;
+            text1_Left.OnLeftClick += Button1L;
             button1_Left.Append(text1_Left);
 
             text1_Right = new UIText("" + R1, R1Scale);
             text1_Right.VAlign = .5f;
             text1_Right.HAlign = .5f;
-            text1_Right.OnClick += Button1R;
+            text1_Right.OnLeftClick += Button1R;
             button1_Right.Append(text1_Right);
 
 
@@ -245,7 +254,7 @@ namespace ApacchiisClassesMod2.UI
             button2_Left.Height.Set(bHeight, 0f);
             button2_Left.BackgroundColor = new Color(75, 75, 75);
             button2_Left.BorderColor = new Color(25, 25, 25);
-            button2_Left.OnClick += Button2L;
+            button2_Left.OnLeftClick += Button2L;
             background.Append(button2_Left);
 
             button2_Right = new UIPanel();
@@ -255,19 +264,19 @@ namespace ApacchiisClassesMod2.UI
             button2_Right.Height.Set(bHeight, 0f);
             button2_Right.BackgroundColor = new Color(75, 75, 75);
             button2_Right.BorderColor = new Color(25, 25, 25);
-            button2_Right.OnClick += Button2R;
+            button2_Right.OnLeftClick += Button2R;
             background.Append(button2_Right);
 
             text2_Left = new UIText("" + L2, L2Scale);
             text2_Left.VAlign = .5f;
             text2_Left.HAlign = .5f;
-            text2_Left.OnClick += Button2L;
+            text2_Left.OnLeftClick += Button2L;
             button2_Left.Append(text2_Left);
 
             text2_Right = new UIText("" + R2, R2Scale);
             text2_Right.VAlign = .5f;
             text2_Right.HAlign = .5f;
-            text2_Right.OnClick += Button2R;
+            text2_Right.OnLeftClick += Button2R;
             button2_Right.Append(text2_Right);
 
 
@@ -279,7 +288,7 @@ namespace ApacchiisClassesMod2.UI
             button3_Left.Height.Set(bHeight, 0f);
             button3_Left.BackgroundColor = new Color(75, 75, 75);
             button3_Left.BorderColor = new Color(25, 25, 25);
-            button3_Left.OnClick += Button3L;
+            button3_Left.OnLeftClick += Button3L;
             background.Append(button3_Left);
 
             button3_Right = new UIPanel();
@@ -289,19 +298,19 @@ namespace ApacchiisClassesMod2.UI
             button3_Right.Height.Set(bHeight, 0f);
             button3_Right.BackgroundColor = new Color(75, 75, 75);
             button3_Right.BorderColor = new Color(25, 25, 25);
-            button3_Right.OnClick += Button3R;
+            button3_Right.OnLeftClick += Button3R;
             background.Append(button3_Right);
 
             text3_Left = new UIText("" + L3, L3Scale);
             text3_Left.VAlign = .5f;
             text3_Left.HAlign = .5f;
-            text3_Left.OnClick += Button3L;
+            text3_Left.OnLeftClick += Button3L;
             button3_Left.Append(text3_Left);
 
             text3_Right = new UIText("" + R3, R3Scale);
             text3_Right.VAlign = .5f;
             text3_Right.HAlign = .5f;
-            text3_Right.OnClick += Button3R;
+            text3_Right.OnLeftClick += Button3R;
             button3_Right.Append(text3_Right);
 
 
@@ -313,7 +322,7 @@ namespace ApacchiisClassesMod2.UI
             button4_Left.Height.Set(bHeight, 0f);
             button4_Left.BackgroundColor = new Color(75, 75, 75);
             button4_Left.BorderColor = new Color(25, 25, 25);
-            button4_Left.OnClick += Button4L;
+            button4_Left.OnLeftClick += Button4L;
             background.Append(button4_Left);
 
             button4_Right = new UIPanel();
@@ -323,19 +332,19 @@ namespace ApacchiisClassesMod2.UI
             button4_Right.Height.Set(bHeight, 0f);
             button4_Right.BackgroundColor = new Color(75, 75, 75);
             button4_Right.BorderColor = new Color(25, 25, 25);
-            button4_Right.OnClick += Button4R;
+            button4_Right.OnLeftClick += Button4R;
             background.Append(button4_Right);
 
             text4_Left = new UIText("" + L4, L4Scale);
             text4_Left.VAlign = .5f;
             text4_Left.HAlign = .5f;
-            text4_Left.OnClick += Button4L;
+            text4_Left.OnLeftClick += Button4L;
             button4_Left.Append(text4_Left);
 
             text4_Right = new UIText("" + R4, R4Scale);
             text4_Right.VAlign = .5f;
             text4_Right.HAlign = .5f;
-            text4_Right.OnClick += Button4R;
+            text4_Right.OnLeftClick += Button4R;
             button4_Right.Append(text4_Right);
 
 
@@ -347,7 +356,7 @@ namespace ApacchiisClassesMod2.UI
             button5_Left.Height.Set(bHeight, 0f);
             button5_Left.BackgroundColor = new Color(75, 75, 75);
             button5_Left.BorderColor = new Color(25, 25, 25);
-            button5_Left.OnClick += Button5L;
+            button5_Left.OnLeftClick += Button5L;
             background.Append(button5_Left);
 
             button5_Right = new UIPanel();
@@ -357,19 +366,19 @@ namespace ApacchiisClassesMod2.UI
             button5_Right.Height.Set(bHeight, 0f);
             button5_Right.BackgroundColor = new Color(75, 75, 75);
             button5_Right.BorderColor = new Color(25, 25, 25);
-            button5_Right.OnClick += Button5R;
+            button5_Right.OnLeftClick += Button5R;
             background.Append(button5_Right);
 
             text5_Left = new UIText("" + L5, L5Scale);
             text5_Left.VAlign = .5f;
             text5_Left.HAlign = .5f;
-            text5_Left.OnClick += Button5L;
+            text5_Left.OnLeftClick += Button5L;
             button5_Left.Append(text5_Left);
 
             text5_Right = new UIText("" + R5, R5Scale);
             text5_Right.VAlign = .5f;
             text5_Right.HAlign = .5f;
-            text5_Right.OnClick += Button5R;
+            text5_Right.OnLeftClick += Button5R;
             button5_Right.Append(text5_Right);
 
 
@@ -381,7 +390,7 @@ namespace ApacchiisClassesMod2.UI
             button6_Left.Height.Set(bHeight, 0f);
             button6_Left.BackgroundColor = new Color(75, 75, 75);
             button6_Left.BorderColor = new Color(25, 25, 25);
-            button6_Left.OnClick += Button6L;
+            button6_Left.OnLeftClick += Button6L;
             background.Append(button6_Left);
 
             button6_Right = new UIPanel();
@@ -391,19 +400,19 @@ namespace ApacchiisClassesMod2.UI
             button6_Right.Height.Set(bHeight, 0f);
             button6_Right.BackgroundColor = new Color(75, 75, 75);
             button6_Right.BorderColor = new Color(25, 25, 25);
-            button6_Right.OnClick += Button6R;
+            button6_Right.OnLeftClick += Button6R;
             background.Append(button6_Right);
 
             text6_Left = new UIText("" + L6, L6Scale);
             text6_Left.VAlign = .5f;
             text6_Left.HAlign = .5f;
-            text6_Left.OnClick += Button6L;
+            text6_Left.OnLeftClick += Button6L;
             button6_Left.Append(text6_Left);
 
             text6_Right = new UIText("" + R6, R6Scale);
             text6_Right.VAlign = .5f;
             text6_Right.HAlign = .5f;
-            text6_Right.OnClick += Button6R;
+            text6_Right.OnLeftClick += Button6R;
             button6_Right.Append(text6_Right);
 
 
@@ -415,7 +424,7 @@ namespace ApacchiisClassesMod2.UI
             button7_Left.Height.Set(bHeight, 0f);
             button7_Left.BackgroundColor = new Color(75, 75, 75);
             button7_Left.BorderColor = new Color(25, 25, 25);
-            button7_Left.OnClick += Button7L;
+            button7_Left.OnLeftClick += Button7L;
             background.Append(button7_Left);
 
             button7_Right = new UIPanel();
@@ -425,19 +434,19 @@ namespace ApacchiisClassesMod2.UI
             button7_Right.Height.Set(bHeight, 0f);
             button7_Right.BackgroundColor = new Color(75, 75, 75);
             button7_Right.BorderColor = new Color(25, 25, 25);
-            button7_Right.OnClick += Button7R;
+            button7_Right.OnLeftClick += Button7R;
             background.Append(button7_Right);
 
             text7_Left = new UIText("" + L7, L7Scale);
             text7_Left.VAlign = .5f;
             text7_Left.HAlign = .5f;
-            text7_Left.OnClick += Button7L;
+            text7_Left.OnLeftClick += Button7L;
             button7_Left.Append(text7_Left);
 
             text7_Right = new UIText("" + R7, R7Scale);
             text7_Right.VAlign = .5f;
             text7_Right.HAlign = .5f;
-            text7_Right.OnClick += Button7R;
+            text7_Right.OnLeftClick += Button7R;
             button7_Right.Append(text7_Right);
 
 
@@ -449,7 +458,7 @@ namespace ApacchiisClassesMod2.UI
             button8_Left.Height.Set(bHeight, 0f);
             button8_Left.BackgroundColor = new Color(75, 75, 75);
             button8_Left.BorderColor = new Color(25, 25, 25);
-            button8_Left.OnClick += Button8L;
+            button8_Left.OnLeftClick += Button8L;
             background.Append(button8_Left);
 
             button8_Right = new UIPanel();
@@ -459,19 +468,19 @@ namespace ApacchiisClassesMod2.UI
             button8_Right.Height.Set(bHeight, 0f);
             button8_Right.BackgroundColor = new Color(75, 75, 75);
             button8_Right.BorderColor = new Color(25, 25, 25);
-            button8_Right.OnClick += Button8R;
+            button8_Right.OnLeftClick += Button8R;
             background.Append(button8_Right);
 
             text8_Left = new UIText("" + L8, L8Scale);
             text8_Left.VAlign = .5f;
             text8_Left.HAlign = .5f;
-            text8_Left.OnClick += Button8L;
+            text8_Left.OnLeftClick += Button8L;
             button8_Left.Append(text8_Left);
 
             text8_Right = new UIText("" + R8, R8Scale);
             text8_Right.VAlign = .5f;
             text8_Right.HAlign = .5f;
-            text8_Right.OnClick += Button8R;
+            text8_Right.OnLeftClick += Button8R;
             button8_Right.Append(text8_Right);
 
 
@@ -483,7 +492,7 @@ namespace ApacchiisClassesMod2.UI
             button9_Left.Height.Set(bHeight, 0f);
             button9_Left.BackgroundColor = new Color(75, 75, 75);
             button9_Left.BorderColor = new Color(25, 25, 25);
-            button9_Left.OnClick += Button9L;
+            button9_Left.OnLeftClick += Button9L;
             background.Append(button9_Left);
 
             button9_Right = new UIPanel();
@@ -493,19 +502,19 @@ namespace ApacchiisClassesMod2.UI
             button9_Right.Height.Set(bHeight, 0f);
             button9_Right.BackgroundColor = new Color(75, 75, 75);
             button9_Right.BorderColor = new Color(25, 25, 25);
-            button9_Right.OnClick += Button9R;
+            button9_Right.OnLeftClick += Button9R;
             background.Append(button9_Right);
 
             text9_Left = new UIText("" + L9, L9Scale);
             text9_Left.VAlign = .5f;
             text9_Left.HAlign = .5f;
-            text9_Left.OnClick += Button9L;
+            text9_Left.OnLeftClick += Button9L;
             button9_Left.Append(text9_Left);
 
             text9_Right = new UIText("" + R9, R9Scale);
             text9_Right.VAlign = .5f;
             text9_Right.HAlign = .5f;
-            text9_Right.OnClick += Button9R;
+            text9_Right.OnLeftClick += Button9R;
             button9_Right.Append(text9_Right);
 
 
@@ -517,7 +526,7 @@ namespace ApacchiisClassesMod2.UI
             button10_Left.Height.Set(bHeight, 0f);
             button10_Left.BackgroundColor = new Color(75, 75, 75);
             button10_Left.BorderColor = new Color(25, 25, 25);
-            button10_Left.OnClick += Button10L;
+            button10_Left.OnLeftClick += Button10L;
             background.Append(button10_Left);
 
             button10_Right = new UIPanel();
@@ -527,20 +536,58 @@ namespace ApacchiisClassesMod2.UI
             button10_Right.Height.Set(bHeight, 0f);
             button10_Right.BackgroundColor = new Color(75, 75, 75);
             button10_Right.BorderColor = new Color(25, 25, 25);
-            button10_Right.OnClick += Button10R;
+            button10_Right.OnLeftClick += Button10R;
             background.Append(button10_Right);
 
             text10_Left = new UIText("" + L10, L10Scale);
             text10_Left.VAlign = .5f;
             text10_Left.HAlign = .5f;
-            text10_Left.OnClick += Button10L;
+            text10_Left.OnLeftClick += Button10L;
             button10_Left.Append(text10_Left);
 
             text10_Right = new UIText("" + R10, R10Scale);
             text10_Right.VAlign = .5f;
             text10_Right.HAlign = .5f;
-            text10_Right.OnClick += Button10R;
+            text10_Right.OnLeftClick += Button10R;
             button10_Right.Append(text10_Right);
+
+            //
+
+            leftSink = new UIPanel();
+            leftSink.Left.Set(0f, 0f);
+            leftSink.Top.Set(95, 0f);
+            leftSink.Width.Set(bWidth, 0f);
+            leftSink.Height.Set(bHeight * 2, 0f);
+            leftSink.BackgroundColor = new Color(100, 75, 25);
+            leftSink.BorderColor = new Color(25, 25, 25);
+            leftSink.OnLeftClick += LeftSink_LClick;
+            leftSink.OnRightClick += LeftSink_RClick;
+
+            leftSinkText = new UIText("", .9f);
+            leftSinkText.VAlign = .6f;
+            leftSinkText.HAlign = .5f;
+
+            rightSink = new UIPanel();
+            rightSink.Left.Set(bRightSpace, 0f);
+            rightSink.Top.Set(95, 0f);
+            rightSink.Width.Set(bWidth, 0f);
+            rightSink.Height.Set(bHeight * 2, 0f);
+            rightSink.BackgroundColor = new Color(100, 75, 25);
+            rightSink.BorderColor = new Color(25, 25, 25);
+            rightSink.OnLeftClick += RightSink_LClick;
+            rightSink.OnRightClick += RightSink_RClick;
+
+            rightSinkText = new UIText("", .9f);
+            rightSinkText.VAlign = .6f;
+            rightSinkText.HAlign = .5f;
+
+            rightStaticSinkText = new UIText("Skillpoint Sink", .75f);
+            rightStaticSinkText.Top.Set(-2, 0f);
+            rightStaticSinkText.HAlign = .5f;
+
+            leftStaticSinkText = new UIText("Skillpoint Sink", .75f);
+            leftStaticSinkText.Top.Set(-2, 0f);
+            leftStaticSinkText.HAlign = .5f;
 
             base.OnInitialize();
         }
@@ -549,10 +596,10 @@ namespace ApacchiisClassesMod2.UI
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
-            if(close.IsMouseHovering || button1_Left.IsMouseHovering || button1_Right.IsMouseHovering || button2_Left.IsMouseHovering || button2_Right.IsMouseHovering || button3_Left.IsMouseHovering || button3_Right.IsMouseHovering || button4_Left.IsMouseHovering || button4_Right.IsMouseHovering || button5_Left.IsMouseHovering || button5_Right.IsMouseHovering || button6_Left.IsMouseHovering || button6_Right.IsMouseHovering || button7_Left.IsMouseHovering || button7_Right.IsMouseHovering || button8_Left.IsMouseHovering || button8_Right.IsMouseHovering || button9_Left.IsMouseHovering || button9_Right.IsMouseHovering || button10_Left.IsMouseHovering || button10_Right.IsMouseHovering)
+            if(close.IsMouseHovering || button1_Left.IsMouseHovering || button1_Right.IsMouseHovering || button2_Left.IsMouseHovering || button2_Right.IsMouseHovering || button3_Left.IsMouseHovering || button3_Right.IsMouseHovering || button4_Left.IsMouseHovering || button4_Right.IsMouseHovering || button5_Left.IsMouseHovering || button5_Right.IsMouseHovering || button6_Left.IsMouseHovering || button6_Right.IsMouseHovering || button7_Left.IsMouseHovering || button7_Right.IsMouseHovering || button8_Left.IsMouseHovering || button8_Right.IsMouseHovering || button9_Left.IsMouseHovering || button9_Right.IsMouseHovering || button10_Left.IsMouseHovering || button10_Right.IsMouseHovering || leftSink.IsMouseHovering || rightSink.IsMouseHovering)
                 Main.LocalPlayer.mouseInterface = true;
 
-            classText.SetText(className + ": " + acmPlayer.vanguardTalentPoints + " Talent Points (TP)");
+            classText.SetText(className + ": " + acmPlayer.vanguardSkillPoints + " Skill Points");
 
             if (button1_Left.IsMouseHovering)
                 button1_Left.BorderColor = Color.Yellow;
@@ -635,7 +682,7 @@ namespace ApacchiisClassesMod2.UI
             else
                 button10_Right.BorderColor = new Color(25, 25, 25);
 
-            if (acmPlayer.vanguardSpentTalentPoints < 1 && acmPlayer.vanguardTalent_2 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 1 && acmPlayer.vanguardTalent_2 == "N")
             {
                 button2_Left.BackgroundColor = new Color(50, 50, 50);
                 button2_Right.BackgroundColor = new Color(50, 50, 50);
@@ -646,7 +693,7 @@ namespace ApacchiisClassesMod2.UI
                 button2_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 2 && acmPlayer.vanguardTalent_3 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 2 && acmPlayer.vanguardTalent_3 == "N")
             {
                 button3_Left.BackgroundColor = new Color(50, 50, 50);
                 button3_Right.BackgroundColor = new Color(50, 50, 50);
@@ -657,7 +704,7 @@ namespace ApacchiisClassesMod2.UI
                 button3_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 3 && acmPlayer.vanguardTalent_4 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 3 && acmPlayer.vanguardTalent_4 == "N")
             {
                 button4_Left.BackgroundColor = new Color(50, 50, 50);
                 button4_Right.BackgroundColor = new Color(50, 50, 50);
@@ -668,7 +715,7 @@ namespace ApacchiisClassesMod2.UI
                 button4_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 4 && acmPlayer.vanguardTalent_5 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 4 && acmPlayer.vanguardTalent_5 == "N")
             {
                 button5_Left.BackgroundColor = new Color(50, 50, 50);
                 button5_Right.BackgroundColor = new Color(50, 50, 50);
@@ -679,7 +726,7 @@ namespace ApacchiisClassesMod2.UI
                 button5_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 5 && acmPlayer.vanguardTalent_6 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 5 && acmPlayer.vanguardTalent_6 == "N")
             {
                 button6_Left.BackgroundColor = new Color(50, 50, 50);
                 button6_Right.BackgroundColor = new Color(50, 50, 50);
@@ -690,7 +737,7 @@ namespace ApacchiisClassesMod2.UI
                 button6_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 6 && acmPlayer.vanguardTalent_7  == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 6 && acmPlayer.vanguardTalent_7  == "N")
             {
                 button7_Left.BackgroundColor = new Color(50, 50, 50);
                 button7_Right.BackgroundColor = new Color(50, 50, 50);
@@ -701,7 +748,7 @@ namespace ApacchiisClassesMod2.UI
                 button7_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 7 && acmPlayer.vanguardTalent_8 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 7 && acmPlayer.vanguardTalent_8 == "N")
             {
                 button8_Left.BackgroundColor = new Color(50, 50, 50);
                 button8_Right.BackgroundColor = new Color(50, 50, 50);
@@ -712,7 +759,7 @@ namespace ApacchiisClassesMod2.UI
                 button8_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 8 && acmPlayer.vanguardTalent_9 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 8 && acmPlayer.vanguardTalent_9 == "N")
             {
                 button9_Left.BackgroundColor = new Color(50, 50, 50);
                 button9_Right.BackgroundColor = new Color(50, 50, 50);
@@ -723,7 +770,7 @@ namespace ApacchiisClassesMod2.UI
                 button9_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentTalentPoints < 9 && acmPlayer.vanguardTalent_10 == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 9 && acmPlayer.vanguardTalent_10 == "N")
             {
                 button10_Left.BackgroundColor = new Color(50, 50, 50);
                 button10_Right.BackgroundColor = new Color(50, 50, 50);
@@ -734,96 +781,138 @@ namespace ApacchiisClassesMod2.UI
                 button10_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardTalent_1 == "L" && acmPlayer.vanguardSpentTalentPoints <= 10)
+            if (acmPlayer.vanguardTalent_1 == "L")
+            {
                 button1_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_1 == "R" && acmPlayer.vanguardSpentTalentPoints <= 10)
+                button1_Right.BackgroundColor = new Color(75, 75, 75);
+            }
+            if (acmPlayer.vanguardTalent_1 == "R")
+            {
                 button1_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_2 == "L" && acmPlayer.vanguardSpentTalentPoints <= 11)
-                button2_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_2 == "R" && acmPlayer.vanguardSpentTalentPoints <= 11)
-                button2_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_3 == "L" && acmPlayer.vanguardSpentTalentPoints <= 12)
-                button3_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_3 == "R" && acmPlayer.vanguardSpentTalentPoints <= 12)
-                button3_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_4 == "L" && acmPlayer.vanguardSpentTalentPoints <= 13)
-                button4_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_4 == "R" && acmPlayer.vanguardSpentTalentPoints <= 13)
-                button4_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_5 == "L" && acmPlayer.vanguardSpentTalentPoints <= 14)
-                button5_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_5 == "R" && acmPlayer.vanguardSpentTalentPoints <= 14)
-                button5_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_6 == "L" && acmPlayer.vanguardSpentTalentPoints <= 15)
-                button6_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_6 == "R" && acmPlayer.vanguardSpentTalentPoints <= 15)
-                button6_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_7 == "L" && acmPlayer.vanguardSpentTalentPoints <= 16)
-                button7_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_7 == "R" && acmPlayer.vanguardSpentTalentPoints <= 16)
-                button7_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_8 == "L" && acmPlayer.vanguardSpentTalentPoints <= 17)
-                button8_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_8 == "R" && acmPlayer.vanguardSpentTalentPoints <= 17)
-                button8_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_9 == "L" && acmPlayer.vanguardSpentTalentPoints <= 18)
-                button9_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_9 == "R" && acmPlayer.vanguardSpentTalentPoints <= 18)
-                button9_Right.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_10 == "L" && acmPlayer.vanguardSpentTalentPoints <= 19)
-                button10_Left.BackgroundColor = Color.DarkOrange;
-            if (acmPlayer.vanguardTalent_10 == "R" && acmPlayer.vanguardSpentTalentPoints <= 19)
-                button10_Right.BackgroundColor = Color.DarkOrange;
+                button1_Left.BackgroundColor = new Color(75, 75, 75);
+            }
 
-            if (acmPlayer.vanguardTalent_1 == "B")
-            {
-                button1_Left.BackgroundColor = Color.DarkOrange;
-                button1_Right.BackgroundColor = Color.DarkOrange;
-            }
-            if (acmPlayer.vanguardTalent_2 == "B")
+            if (acmPlayer.vanguardTalent_2 == "L")
             {
                 button2_Left.BackgroundColor = Color.DarkOrange;
-                button2_Right.BackgroundColor = Color.DarkOrange;
+                button2_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_3 == "B")
+            if (acmPlayer.vanguardTalent_2 == "R")
+            {
+                button2_Right.BackgroundColor = Color.DarkOrange;
+                button2_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_3 == "L")
             {
                 button3_Left.BackgroundColor = Color.DarkOrange;
-                button3_Right.BackgroundColor = Color.DarkOrange;
+                button3_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_4 == "B")
+            if (acmPlayer.vanguardTalent_3 == "R")
+            {
+                button3_Right.BackgroundColor = Color.DarkOrange;
+                button3_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_4 == "L")
             {
                 button4_Left.BackgroundColor = Color.DarkOrange;
-                button4_Right.BackgroundColor = Color.DarkOrange;
+                button4_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_5 == "B")
+            if (acmPlayer.vanguardTalent_4 == "R")
+            {
+                button4_Right.BackgroundColor = Color.DarkOrange;
+                button4_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_5 == "L")
             {
                 button5_Left.BackgroundColor = Color.DarkOrange;
-                button5_Right.BackgroundColor = Color.DarkOrange;
+                button5_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_6 == "B")
+            if (acmPlayer.vanguardTalent_5 == "R")
+            {
+                button5_Right.BackgroundColor = Color.DarkOrange;
+                button5_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_6 == "L")
             {
                 button6_Left.BackgroundColor = Color.DarkOrange;
-                button6_Right.BackgroundColor = Color.DarkOrange;
+                button6_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_7 == "B")
+            if (acmPlayer.vanguardTalent_6 == "R")
+            {
+                button6_Right.BackgroundColor = Color.DarkOrange;
+                button6_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_7 == "L")
             {
                 button7_Left.BackgroundColor = Color.DarkOrange;
-                button7_Right.BackgroundColor = Color.DarkOrange;
+                button7_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_8 == "B")
+            if (acmPlayer.vanguardTalent_7 == "R")
+            {
+                button7_Right.BackgroundColor = Color.DarkOrange;
+                button7_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_8 == "L")
             {
                 button8_Left.BackgroundColor = Color.DarkOrange;
-                button8_Right.BackgroundColor = Color.DarkOrange;
+                button8_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_9 == "B")
+            if (acmPlayer.vanguardTalent_8 == "R")
+            {
+                button8_Right.BackgroundColor = Color.DarkOrange;
+                button8_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_9 == "L")
             {
                 button9_Left.BackgroundColor = Color.DarkOrange;
-                button9_Right.BackgroundColor = Color.DarkOrange;
+                button9_Right.BackgroundColor = new Color(75, 75, 75);
             }
-            if (acmPlayer.vanguardTalent_10 == "B")
+            if (acmPlayer.vanguardTalent_9 == "R")
+            {
+                button9_Right.BackgroundColor = Color.DarkOrange;
+                button9_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_10 == "L")
             {
                 button10_Left.BackgroundColor = Color.DarkOrange;
+                button10_Right.BackgroundColor = new Color(75, 75, 75);
+            }
+            if (acmPlayer.vanguardTalent_10 == "R")
+            {
                 button10_Right.BackgroundColor = Color.DarkOrange;
+                button10_Left.BackgroundColor = new Color(75, 75, 75);
+            }
+
+            if (acmPlayer.vanguardTalent_10 != "N")
+            {
+                background.Append(leftSink);
+                leftSink.Append(leftSinkText);
+                background.Append(rightSink);
+                rightSink.Append(rightSinkText);
+
+                leftSink.Append(leftStaticSinkText);
+                rightSink.Append(rightStaticSinkText);
+
+                if (leftSink.IsMouseHovering)
+                    leftSink.BorderColor = Color.IndianRed;
+                else
+                    leftSink.BorderColor = new Color(25, 25, 25);
+
+                if (rightSink.IsMouseHovering)
+                    rightSink.BorderColor = Color.IndianRed;
+                else
+                    rightSink.BorderColor = new Color(25, 25, 25);
+
+                leftSinkText.SetText($"+{(acmPlayer.talentSinkVanguardLeftValue * 100).ToString("F2")}% Max Health ({(acmPlayer.talentSinkVanguardLeftValue * acmPlayer.talentSinkVanguardLeft * 100).ToString("F2")}%)");
+                rightSinkText.SetText($"+{(acmPlayer.talentSinkVanguardRightValue * 100).ToString("F2")}% Melee Damage ({(acmPlayer.talentSinkVanguardRightValue * acmPlayer.talentSinkVanguardRight * 100).ToString("F2")}%)");
             }
 
             base.Update(gameTime);
@@ -832,411 +921,323 @@ namespace ApacchiisClassesMod2.UI
         private void Button1L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if(acmPlayer.vanguardTalent_1 == "N" && acmPlayer.vanguardTalentPoints > 0)
+            if(acmPlayer.vanguardTalent_1 == "N" && acmPlayer.vanguardSkillPoints > 0)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_1 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_1 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 10)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_1 = "B";
-                }
-            }
-
+            if (acmPlayer.vanguardTalent_1 == "R")
+                acmPlayer.vanguardTalent_1 = "L";
         }
         private void Button1R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_1 == "N" && acmPlayer.vanguardTalentPoints > 0)
+            if (acmPlayer.vanguardTalent_1 == "N" && acmPlayer.vanguardSkillPoints > 0)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_1 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_1 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 10)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_1 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_1 == "L")
+                acmPlayer.vanguardTalent_1 = "R";
         }
 
         private void Button2L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_2 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 1)
+            if (acmPlayer.vanguardTalent_2 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 1)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_2 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_2 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 11)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_2 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_2 == "R")
+                acmPlayer.vanguardTalent_2 = "L";
         }
         private void Button2R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_2 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 1)
+            if (acmPlayer.vanguardTalent_2 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 1)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_2 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_2 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 11)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_2 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_2 == "L")
+                acmPlayer.vanguardTalent_2 = "R";
         }
 
         private void Button3L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_3 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 2)
+            if (acmPlayer.vanguardTalent_3 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 2)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_3 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_3 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 12)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_3 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_3 == "R")
+                acmPlayer.vanguardTalent_3 = "L";
         }
         private void Button3R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_3 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 2)
+            if (acmPlayer.vanguardTalent_3 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 2)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_3 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_3 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 12)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_3 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_3 == "L")
+                acmPlayer.vanguardTalent_3 = "R";
         }
 
         private void Button4L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_4 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 3)
+            if (acmPlayer.vanguardTalent_4 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 3)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_4 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_4 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 13)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_4 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_4 == "R")
+                acmPlayer.vanguardTalent_4 = "L";
         }
         private void Button4R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_4 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 3)
+            if (acmPlayer.vanguardTalent_4 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 3)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_4 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_4 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 13)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_4 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_4 == "L")
+                acmPlayer.vanguardTalent_4 = "R";
         }
 
         private void Button5L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_5 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 4)
+            if (acmPlayer.vanguardTalent_5 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 4)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_5 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_5 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 14)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_5 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_5 == "R")
+                acmPlayer.vanguardTalent_5 = "L";
         }
         private void Button5R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_5 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 4)
+            if (acmPlayer.vanguardTalent_5 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 4)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_5 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_5 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 14)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_5 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_5 == "L")
+                acmPlayer.vanguardTalent_5 = "R";
         }
 
         private void Button6L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_6 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 5)
+            if (acmPlayer.vanguardTalent_6 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 5)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_6 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_6 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 15)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_6 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_6 == "R")
+                acmPlayer.vanguardTalent_6 = "L";
         }
         private void Button6R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_6 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 5)
+            if (acmPlayer.vanguardTalent_6 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 5)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_6 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_6 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 15)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_6 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_6 == "L")
+                acmPlayer.vanguardTalent_6 = "R";
         }
 
         private void Button7L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_7 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 6)
+            if (acmPlayer.vanguardTalent_7 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 6)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_7 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_7 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 16)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_7 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_7 == "R")
+                acmPlayer.vanguardTalent_7 = "L";
         }
         private void Button7R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_7 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 6)
+            if (acmPlayer.vanguardTalent_7 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 6)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_7 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_7 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 16)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_7 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_7 == "L")
+                acmPlayer.vanguardTalent_7 = "R";
         }
 
         private void Button8L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_8 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 7)
+            if (acmPlayer.vanguardTalent_8 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 7)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_8 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_8 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 17)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_8 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_8 == "R")
+                acmPlayer.vanguardTalent_8 = "L";
         }
         private void Button8R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_8 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 7)
+            if (acmPlayer.vanguardTalent_8 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 7)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_8 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_8 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 17)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_8 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_8 == "L")
+                acmPlayer.vanguardTalent_8 = "R";
         }
 
         private void Button9L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_9 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 8)
+            if (acmPlayer.vanguardTalent_9 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 8)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_9 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_9 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 18)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_9 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_9 == "R")
+                acmPlayer.vanguardTalent_9 = "L";
         }
         private void Button9R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_9 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 8)
+            if (acmPlayer.vanguardTalent_9 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 8)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_9 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_9 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 18)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_9 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_9 == "L")
+                acmPlayer.vanguardTalent_9 = "R";
         }
 
         private void Button10L(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_10 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 9)
+            if (acmPlayer.vanguardTalent_10 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 9)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_10 = "L";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
-            {
-                if (acmPlayer.vanguardTalent_10 == "R" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 19)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_10 = "B";
-                }
-            }
+            if (acmPlayer.vanguardTalent_10 == "R")
+                acmPlayer.vanguardTalent_10 = "L";
         }
         private void Button10R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
-            if (acmPlayer.vanguardTalent_10 == "N" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 9)
+            if (acmPlayer.vanguardTalent_10 == "N" && acmPlayer.vanguardSkillPoints > 0 && acmPlayer.vanguardSpentSkillPoints >= 9)
             {
-                acmPlayer.vanguardTalentPoints--;
-                acmPlayer.vanguardSpentTalentPoints++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
                 acmPlayer.vanguardTalent_10 = "R";
             }
 
-            if (ACMConfigServer.Instance.doubleTalents)
+            if (acmPlayer.vanguardTalent_10 == "L")
+                acmPlayer.vanguardTalent_10 = "R";
+        }
+
+        private void LeftSink_LClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            if (acmPlayer.vanguardSkillPoints > 0)
             {
-                if (acmPlayer.vanguardTalent_10 == "L" && acmPlayer.vanguardTalentPoints > 0 && acmPlayer.vanguardSpentTalentPoints >= 19)
-                {
-                    acmPlayer.vanguardTalentPoints--;
-                    acmPlayer.vanguardSpentTalentPoints++;
-                    acmPlayer.vanguardTalent_10 = "B";
-                }
+                acmPlayer.talentSinkVanguardLeft++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
+                SoundEngine.PlaySound(SoundID.MenuOpen);
+            }
+
+        }
+        private void LeftSink_RClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            if (acmPlayer.talentSinkVanguardLeft > 0)
+            {
+                acmPlayer.talentSinkVanguardLeft--;
+                acmPlayer.vanguardSkillPoints++;
+                acmPlayer.vanguardSpentSkillPoints--;
+            }
+
+            SoundEngine.PlaySound(SoundID.MenuClose);
+        }
+
+        private void RightSink_LClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            if (acmPlayer.vanguardSkillPoints > 0)
+            {
+                acmPlayer.talentSinkVanguardRight++;
+                acmPlayer.vanguardSkillPoints--;
+                acmPlayer.vanguardSpentSkillPoints++;
+                SoundEngine.PlaySound(SoundID.MenuOpen);
+            }
+
+        }
+        private void RightSink_RClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            if (acmPlayer.talentSinkVanguardRight > 0)
+            {
+                acmPlayer.talentSinkVanguardRight--;
+                acmPlayer.vanguardSkillPoints++;
+                acmPlayer.vanguardSpentSkillPoints--;
+                SoundEngine.PlaySound(SoundID.MenuClose);
             }
         }
 

@@ -3,42 +3,38 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ApacchiisClassesMod2.Configs;
+using Terraria.Localization;
 
 namespace ApacchiisClassesMod2.Items.Classes
 {
 	public class BloodMage : ModItem
 	{
-        float baseStat1 = .0088f;
+        float baseStat1 = .007f;
         float stat1; // Magic Damage
 
-        float baseStat2 = .012f;
+        float baseStat2 = .011f;
         float stat2; // Max Mana
 
-        float baseStat3 = .006f;
+        float baseStat3 = .0045f;
         float stat3; // Health
 
         float baseBadStat = .005f;
         float badStat; // Defense
 
-        
-
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Class: Blood Mage");
-        }
-
 		public override void SetDefaults()
 		{
-			Item.width = 30;
+            Item.width = 30;
 			Item.height = 30;
 			Item.accessory = true;	
 			Item.value = 0;
 			Item.rare = ItemRarityID.Blue;
 
-            stat1 = baseStat1 * ACMConfigServer.Instance.classStatMult;
-            stat2 = baseStat2 * ACMConfigServer.Instance.classStatMult;
-            stat3 = baseStat3 * ACMConfigServer.Instance.classStatMult;
-            badStat = baseBadStat * ACMConfigServer.Instance.classStatMult;
+
+            stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
+            stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
+            stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult;
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult;
 
             Item.GetGlobalItem<ACMGlobalItem>().isClass = true;
         }
@@ -50,48 +46,48 @@ namespace ApacchiisClassesMod2.Items.Classes
             recipe.Register();
         }
 
-        public override void OnCreate(ItemCreationContext context)
-        {
-            if(ACMConfigServer.Instance.classWeaponsEnabled)
-                Main.player[Main.myPlayer].QuickSpawnItem(ModContent.ItemType<ClassWeapons.BloodSpray>(), 1);
-            base.OnCreate(context);
-        }
+        //public override void OnCreate(ItemCreationContext context)
+        //{
+        //    if(_ACMConfigServer.Instance.classWeaponsEnabled)
+        //        Main.player[Main.myPlayer].QuickSpawnItemDirect(null, ModContent.ItemType<ClassWeapons.BloodSpray>(), 1);
+        //    base.OnCreate(context);
+        //}
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player Player = Main.player[Main.myPlayer];
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
-            
-            TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", "[Hold 'W' to preview abilities]");
+
+            TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
-                "-(P: Blood Well)-\n" +
-                "Every second in battle stack 'Blood', passively increasing your life regen.\n" +
-                "-(A1: Transfusion)-\n" +
-                "Throw a blob of your own blood that will seek out the nearest enemy, damage it, and come back to you with a bit of its blood, restoring your health.\n" +
-                "-(A2: Blood Enchantment)-\n" +
-                "Enchant your weapon with your own blood, constantly losing health per second but increasing damage dealt.\n" +
-                "-(Ult: Regeneration)-\n" +
-                "Regen yours and your allies' health every second over a duration.");
+                $"-(P: {Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_P_Name")})-\n" + //Vein Ripper
+                $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_P_Prev")}\n" +
+                $"-(A1: {Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A1_Name")})-\n" + //Transfusion
+                $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A1_Prev")}\n" +
+                $"-(A2: {Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A2_Name")})-\n" + //Blood Enchantment
+                $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A2_Prev")}\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A2_Prev_2")}\n" +
+                $"-(Ult: {Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_Ult_Name")})-\n" + //Regeneration
+                $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_Ult_Prev")}");
 
-            HoldSToPreview.overrideColor = Color.CadetBlue;
-            AbilityPreview.overrideColor = Color.CadetBlue;
+            HoldSToPreview.OverrideColor = Color.CadetBlue;
+            AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (decimal)(stat1 * 100) + "% Magic Damage p/lvl\n" +
-                                                                         "+" + (decimal)(stat2 * 100) + "% Max Mana p/lvl\n" +
-                                                                         "+" + (decimal)(stat3 * 100) + "% Max Health p/lvl");
-            TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (decimal)(badStat * 100) + "% Defense p/lvl");
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MagicDamage")} p/lvl\n" +
+                                                                         "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")} p/lvl\n" +
+                                                                         "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
+            TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")} p/lvl");
 
             var level = modPlayer.bloodMageLevel;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + level * (decimal)(stat1 * 100) + "% Magic Damage\n" +
-                                                                      "+" + level * (decimal)(stat2 * 100) + "% Max Mana\n" +
-                                                                      "+" + level * (decimal)(stat3 * 100) + "% Max Health");
-            TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + level * (decimal)(badStat * 100) + "% Defense");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MagicDamage")}\n" +
+                                                                      "+" + (level * stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")}\n" +
+                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}");
+            TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}");
 
-            lineLevel.overrideColor = new Color(200, 150, 25);
-            lineBadStat.overrideColor = new Color(200, 50, 25);
-            lineBadStatPreview.overrideColor = new Color(200, 50, 25);
+            lineLevel.OverrideColor = new Color(200, 150, 25);
+            lineBadStat.OverrideColor = new Color(200, 50, 25);
+            lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
             if (modPlayer.bloodMageLevel == 0)
             {
@@ -111,6 +107,10 @@ namespace ApacchiisClassesMod2.Items.Classes
             else
                 tooltips.Add(HoldSToPreview);
 
+            foreach (TooltipLine line in tooltips)
+                if (line.Mod == "Terraria" && line.Name == "Equipable")
+                    line.Text = $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.EquipableFighter")}";
+
             base.ModifyTooltips(tooltips);
         }
 
@@ -120,32 +120,57 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.hasClass = true;
             acmPlayer.hasBloodMage = true;
             acmPlayer.equippedClass = "Blood Mage";
-            acmPlayer.ultChargeMax = 4200;
-            acmPlayer.ability1MaxCooldown = 34;
+            acmPlayer.ultChargeMax = 3780;
+            acmPlayer.ability1MaxCooldown = 38;
             acmPlayer.ability2MaxCooldown = 0;
 
-            stat1 = baseStat1 * ACMConfigServer.Instance.classStatMult; // Magic Damage
-            stat2 = baseStat2 * ACMConfigServer.Instance.classStatMult; // Magic Crit
-            stat3 = baseStat3 * ACMConfigServer.Instance.classStatMult; // Health
-            badStat = baseBadStat * ACMConfigServer.Instance.classStatMult; // Defense
+            stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Magic Damage
+            stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Magic Crit
+            stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Health
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult; // Defense
 
-            if (ACMConfigServer.Instance.configHidden)
+            if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
                 {
-                    Player.GetDamage(DamageClass.Magic) += acmPlayer.bloodMageLevel * stat1;
-                    acmPlayer.manaMult += stat2 * acmPlayer.bloodMageLevel;
-                    acmPlayer.lifeMult += stat3 * acmPlayer.bloodMageLevel;
+                    Player.GetDamage(DamageClass.Magic) += acmPlayer.bloodMageLevel * stat1 * acmPlayer.classStatMultiplier;
+                    acmPlayer.manaMult += stat2 * acmPlayer.bloodMageLevel* acmPlayer.classStatMultiplier;
+                    acmPlayer.lifeMult += stat3 * acmPlayer.bloodMageLevel * acmPlayer.classStatMultiplier;
                     acmPlayer.defenseMult -= acmPlayer.bloodMageLevel * badStat;
                 }
             }
             else
             {
-                Player.GetDamage(DamageClass.Magic) += acmPlayer.bloodMageLevel * stat1;
-                acmPlayer.manaMult += stat2 * acmPlayer.bloodMageLevel;
-                acmPlayer.lifeMult += stat3 * acmPlayer.bloodMageLevel;
+                Player.GetDamage(DamageClass.Magic) += acmPlayer.bloodMageLevel * stat1 * acmPlayer.classStatMultiplier;
+                acmPlayer.manaMult += stat2 * acmPlayer.bloodMageLevel* acmPlayer.classStatMultiplier;
+                acmPlayer.lifeMult += stat3 * acmPlayer.bloodMageLevel * acmPlayer.classStatMultiplier;
                 acmPlayer.defenseMult -= acmPlayer.bloodMageLevel * badStat;
             }
+
+            acmPlayer.classStatMultiplier = 1f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += acmPlayer.bloodMageLevel * .01f;
+
+            // Class Menu Text
+            acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_P_Name");
+            acmPlayer.P_Desc = $"When hitting enemies with a magic weapon you have a chance to rip their veins, dealing additional damage based on a percentage of your held weapon's damage.\nWeapon percentage increases by 1% per level.";
+            acmPlayer.P_Effect_1 = $"Bonus Damage: {(int)((Player.HeldItem.damage * (acmPlayer.bloodMageBasePassiveWeaponDamageMult + acmPlayer.bloodMagePassiveDamageLevel * acmPlayer.bloodMageLevel)) * acmPlayer.abilityPower)}";
+            acmPlayer.P_Effect_2 = $"Weapon Percentage: {(decimal)((acmPlayer.bloodMageBasePassiveWeaponDamageMult + acmPlayer.bloodMagePassiveDamageLevel * acmPlayer.bloodMageLevel) * 100)}%";
+            acmPlayer.P_Effect_3 = $"Chance: {(int)(acmPlayer.bloodMagePassiveChance * 100)}%";
+
+            acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A1_Name");
+            acmPlayer.A1_Desc = $"Throw a blob of your own blood to seek out an enemy, when the blob hits its target it will return to you with a bit of the enemy's blood and heal you for 10% of the enemy's max health.";
+            acmPlayer.A1_Effect_1 = $"Damage: {(decimal)((acmPlayer.bloodMageSiphonBaseDamage + acmPlayer.bloodMageLevel * 6) * acmPlayer.abilityPower)} = {acmPlayer.bloodMageSiphonBaseDamage} + 6 p/Level({ acmPlayer.bloodMageLevel * 6}) * AP";
+            acmPlayer.A1_Effect_2 = $"Max Healing: {(decimal)acmPlayer.bloodMageSiphonHealMax * 100}% of your max health, except via healing power";
+
+            acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A2_Name");
+            acmPlayer.A2_Desc = $"Enchant you weapon with your own blood, making it also cost the same amount of mana it uses as health but increasing all the damage you deal and refunding the health if you hit an enemy.";
+            acmPlayer.A2_Effect_1 = $"Bonus Damage: {(decimal)(acmPlayer.bloodMageDamageGain * 100 + (acmPlayer.bloodMageLevel * .5f))}% = {(decimal)(.1f * 100)}% + 0.5% p/Level({acmPlayer.bloodMageLevel * .5f}%)";
+            acmPlayer.A2_Effect_2 = $"Health Cost/Refund: {(decimal)(acmPlayer.bloodMageEnchantmentBaseManaCost * 100)}%";
+
+            acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_Ult_Name");
+            acmPlayer.Ult_Desc = $"Quickly regenerate the blood of you and all your allies over time, regenerating a percentage of the healed player's max health at a medium rate for a limited number of ticks.";
+            acmPlayer.Ult_Effect_1 = $"Max Health Heal: " + (decimal)acmPlayer.bloodMageBaseUltRegen * 100 + "% + 0.08% p/Level(" + acmPlayer.bloodMageLevel * 0.1f * 100 + "%) = " + (acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .1f) + "%";
+            acmPlayer.Ult_Effect_2 = $"Ticks: " + acmPlayer.bloodMageUltTicks + " ticks";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

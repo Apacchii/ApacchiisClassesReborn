@@ -10,8 +10,8 @@ namespace ApacchiisClassesMod2.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ley's Mushroom Critical Strikes");
-            Description.SetDefault("Increasing critial strike chance");
+            // DisplayName.SetDefault("Ley's Mushroom Critical Strikes");
+            // Description.SetDefault("Increasing critial strike chance");
             Main.buffNoSave[Type] = false;
             Main.debuff[Type] = false;
             base.SetStaticDefaults();

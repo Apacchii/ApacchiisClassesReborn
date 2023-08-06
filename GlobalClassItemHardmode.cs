@@ -46,11 +46,11 @@
 //                  if (line.Name == "Tooltip0")
 //                      if(Main.hardMode)
 //                      {
-//                          line.text = "While holding this weapon you reduce any damage taken from enemies by 20";
+//                          line.Text = "While holding this weapon you reduce any damage taken from enemies by 20";
 //                      }
 //                      else
 //                      {
-//                          line.text = "While holding this weapon you reduce any damage taken from enemies by 6";
+//                          line.Text = "While holding this weapon you reduce any damage taken from enemies by 6";
 //                      }
 //                          
 //

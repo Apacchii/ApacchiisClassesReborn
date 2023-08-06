@@ -10,15 +10,11 @@ namespace ApacchiisClassesMod2.Projectiles.Weapons
 {
     public class BloodSpray : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
-        bool hasHitEnemy = false;
-        int healing = 0;
-
         public override string Texture => "ApacchiisClassesMod2/Projectiles/Invisible";
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Blood Spray");
+            // DisplayName.SetDefault("Blood Spray");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }

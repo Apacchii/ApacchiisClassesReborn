@@ -10,7 +10,6 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
 {
     public class Transfusion : ModProjectile
     {
-        Player player = Main.player[Main.myPlayer];
         bool hasHitEnemy = false;
         int healing = 0;
 
@@ -18,7 +17,7 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Transfusion");
+            // DisplayName.SetDefault("Transfusion");
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
             //ProjectileID.Sets.TrailingMode[projectile.type] = 1;        //The recording mode
         }
@@ -39,6 +38,8 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
 
         public override void AI()
         {
+            Player player = Main.player[Main.myPlayer];
+
             Lighting.AddLight(Projectile.Center, .4f, .05f, .05f);
 
 
@@ -217,13 +218,25 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             {
                 float dist = Projectile.Distance(player.Center);
 
-                if (dist < 10)
+                if (dist < 32)
                 {
-                    if (player.statLife < player.statLifeMax2)
-                    {
-                        player.statLife += healing;
-                        player.HealEffect(healing);
-                    }
+                    player.GetModPlayer<ACMPlayer>().healthToRegen += healing;
+                    player.HealEffect(healing);
+
+                    //if (Main.netMode == NetmodeID.MultiplayerClient && player.GetModPlayer<ACMPlayer>().hasAghanims)
+                    //{
+                    //    for (int i = 0; i < 255; i++)
+                    //    {
+                    //        if (Main.player[i].active)
+                    //        {
+                    //            ModPacket packet = Mod.GetPacket();
+                    //            packet.Write((byte)ACM2.ACMHandlePacketMessage.HealPlayerMedium);
+                    //            packet.Write((byte)i);
+                    //            packet.Write((int)(healing * .25f));
+                    //            packet.Send(-1, -1);
+                    //        }
+                    //    }
+                    //}
 
                     SoundEngine.PlaySound(SoundID.Item3);
 
@@ -234,14 +247,15 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
 
         public override bool? CanHitNPC(NPC target)
         {
-            if (hasHitEnemy && !target.townNPC && target.lifeMax > 5)
+            if (hasHitEnemy || target.townNPC || target.friendly || target.lifeMax <= 5)
                 return false;
             else
-                return true;
+                return base.CanHitNPC(target);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            Player player = Main.player[Main.myPlayer];
             hasHitEnemy = true;
 
             float maxHeal = player.GetModPlayer<ACMPlayer>().bloodMageSiphonHealMax;
@@ -251,7 +265,9 @@ namespace ApacchiisClassesMod2.Projectiles.BloodMage
             if (healing < (int)(player.statLifeMax2 * .05f))
                 healing = (int)(player.statLifeMax2 * .05f);
 
-            base.OnHitNPC(target, damage, knockback, crit);
+            healing = (int)(healing * player.GetModPlayer<ACMPlayer>().healingPower);
+
+            base.OnHitNPC(target, hit, damageDone);
         }
     }
 }

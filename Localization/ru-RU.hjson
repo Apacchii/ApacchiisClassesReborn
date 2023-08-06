@@ -1,0 +1,847 @@
+Mods: {
+	ApacchiisClassesMod2: {
+		#
+		#
+		
+		ItemName: {
+			# Items
+			RandomRelic: Рандомная Реликвия
+			ClassBook: Книга Классов
+			WhiteCloth: Белая Ткань
+			BlueCloth: Синии Ткань
+			GreenCloth: Зеленая  Ткань
+			OrangeCloth: Оранжевая Ткань
+			PinkCloth: Розовая Ткань
+			RedCloth: Красная Ткань
+			# Classes
+			BloodMage: Class: Кровавый Маг
+			Commander: Class: Командир
+			Scout: Class: Скаут
+			Soulmancer: Class: Заклинатель Душ
+			Vanguard: Class: Авангард
+			Gambler: Class: Gambler
+			Plague: Class: Plague
+			# Class Weapons
+			BloodSpray: Струя Крови
+			FadingDagger: Изчезающий Кинжал
+			SeekingSpirit: Ищущий
+			SoulBurner: Испепилитель Душ
+			TrainingRapier: Тренировачная Рапира
+		}
+
+		# Player Stats
+		PlayerStatsText: Статы Игрока
+		MagicDamage: Магический Урон
+		MagicCrit: Шанс Магического Крита
+		MeleeDamage: Урон В Ближнем Бою
+		MeleeCrit: Шанс Ближнего Крита
+		RangedDamage: Дистанционный Урон
+		RangedCrit: Шанс Дистанционного Крита
+		SummonDamage: Урон Призываемого Существа
+		SummonCrit: Summon Crit
+		AllDamage: Любой Урон
+		AllCrit: Любой Крит
+		MaxHealth: Максимальное Здоровье
+		MaxMana: Максимальная Мана
+		Defense: Защита
+		ManaCost: Потребление Маны
+		MaxMinions: Максимальное Миньонов
+		WhipRange: Длина Кнута
+		DamageReduction: Сопротивление Урону
+		MovementSpeed: Скорость Движения
+		MovementAcceleration: Скорость Ускорения
+		AttackSpeed: Скорость Урона
+		AbilityPower: Сила Способности
+		HealingPower: Сила Лечения
+		CooldownReduction: Снижение Перезарядка
+		UltCost: Цена Ульты
+		UltCostReduction: Снижение Цены Ульты
+		DodgeChance: Шанс Уворота
+		TimesDied: Раз Умер
+		EnemiesKilled: Врагов Убил
+		DamageTaken: Полученого Урона
+		HighestCrit: Высочайший Крит
+		# General
+		Level: Уровень
+		HoldToPreviewAbilities: Зажмите 'ВВЕРХ' Чтобы Просмотреть Способности
+		ClassPrefix: Класс
+		Passive: Пасивная Способность
+		Ability1: Способность 1
+		Ability2: Способность 2
+		Ultimate: Ульта
+		RelicPrefix: Реликвия
+		GivesRelic: Даёт тебе рандомную реликвии
+		EquipableRelic: Оснащаемая Реликвия
+		// CraftableRelic: Equippable Craftable Relic
+		EquipableFighter: Equipable Fighter Class
+		EquipableCarry: Equipable Carry Class
+		EquipableSupport: Equipable Support Class
+		EquipableTank: Equipable Tank Class
+		Talents: Талант
+		Specializations: Специализация
+		UnlocksAfter10Text: Открывается после траты 10 очков навыка в дереве навыков
+		Locked: Закрыто
+		RelicsList: Лист реликвий
+		Runes: Руны
+		# -------------------------------------------------------------------------------------------------------------------------------
+		# FOR CLASSES, YOU DONT NEED TO TRANSLATE ABILITY/CLASS NAMES IF YOU DON'T WANT TO OR IF THERE ISN'T A DIRECT/CORRECT TRANSLATION
+		# -------------------------------------------------------------------------------------------------------------------------------
+		
+		# Blood Mage
+		BloodMage_P_Name: Кровавый Колодец
+		BloodMage_P_Prev: Каждую секунду Во время сражения получите ячейку 'Крови', каждая ячейка немного увеличевает вашу регенерацую здоровья.
+		BloodMage_A1_Name: Пересадка Крови
+		BloodMage_A1_Prev: Киньте каплю собственной крови которая будет следовать за ближайшим врагом, нанесёт урон, и вернётся к вам с частью его крови, выстонавливая ваше здоровье.
+		BloodMage_A2_Name: Кровавое Зачеревание
+		BloodMage_A2_Prev: Зачеруйте ваше оружие собственной кровью, постепенно теряя ваше здоровье но увеличивая наносимый урон.
+		// BloodMage_A2_Prev_2: Increase the damage you deal and refunds the health cost if an enemy is hit.
+		BloodMage_Ult_Name: Регенерация
+		BloodMage_Ult_Prev: Регенераируйте ваше здоровье и ваших союзников каждую секунду через время.
+		BloodMage_Aghanims: a
+		# Commander
+		Commander_P_Name: Воля Командира
+		Commander_P_Prev: За каждого слота миньона вы получайте малое количество сопротивление урона.
+		Commander_A1_Name: Военного Знамя
+		Commander_A1_Prev: Поставьте военное знаме перед вашими ногами, все игроки стоящие внутри этой области увеличат урон и снизят получаймый урон.
+		Commander_A2_Name: Боевой Клич
+		Commander_A2_Prev: Кричит Громко, устрашая врагов вокруг вас увеличивая их получаймый урон которые они получают на некий период времени.
+		Commander_Ult_Name: Вдохновение
+		Commander_Ult_Prev: Вдохновите вас и ваших союзников, надиляя всем гарантированые критические удары на некий период времени.  (affects minions).
+		Commander_Aghanims: a
+		# Crusader
+		Crusader_P_Name: Tenacity
+		Crusader_P_Prev: Reduce damage taken by 3%. This effect is increased by an additional 4% while under the effects of a healing buff.
+		Crusader_A1_Name: Protection
+		Crusader_A1_Prev: Apply a healing buff to all players that slowly heals them each second. Players regen health at a rate of 1% of their max health p/sec.
+		Crusader_A2_Name: Hallowed Hammer
+		Crusader_A2_Prev: Throw a hallowed hammer towards your cursor, the hammer will damage all enemies in its path.
+		Crusader_Ult_Name: Guardian Angel
+		Crusader_Ult_Prev: A guardian angel watches over everyone, granting all players a reduction to the damage they take for 10s.
+		Crusader_Aghanims: a
+		# Scout
+		Scout_P_Name: Подвижность
+		Scout_P_Prev: Скаут может делать двойной прыжок и имеет увеличинаю скорость движения.
+		Scout_P_DisableDoubleJump: Отключить Пасивный Двойной прыжок Скаута
+		Scout_P_EnableDoubleJump: Включить Пасивный Двойной прыжок Скаута
+		Scout_A1_Name: Хит-А-Сода
+		Scout_A1_Prev: Возьмите глоток вашего самодельного энергетика, увеличивая наносимый урон на время.
+		Scout_A2_Name: Взрывная Ловушка
+		Scout_A2_Prev: Поставьте взрывную ловушку с малой перезарядкой под вашим курсором, враги которые окажутся слишком близко к ловушке получат урон.
+		Scout_Ult_Name: Ядерный-Лещ (TM)
+		Scout_Ult_Prev_1: Станьте Бесмертным на
+		Scout_Ult_Prev_2: секунд, и получите увеличат повышанную мобильность на некий период времени.
+		Scout_Aghanims: a
+		# Soulmancer
+		Soulmancer_P_Name: Вырывание Души
+		Soulmancer_P_Prev_1: Ударяя врагов магическим оружием имеет шанс вырвать фрагмент их души, причиняя вред ближайшим врагам.
+		Soulmancer_P_Prev_2: Те фрагменты души могут нанести критический урон.
+		Soulmancer_A1_Name: Потребление
+		Soulmancer_A1_Prev: На короткое время когда у тебя меньше 50% ОЗ, каждый раз когда вы атакуйте врага фрагментом души верните
+		Soulmancer_A1_Prev_2: его себе, потребляя его и давая вам малый процент вашего максимального здоровья за каждый фрагмент.
+		Soulmancer_A2_Name: Раскол Души
+		Soulmancer_A2_Prev: Расколите души ближайших врагов нанеся тяжёлый урон и вырывая допольнительные фрагменты за каждую раскаленную душу.
+		Soulmancer_Ult_Name: Самопожертвование
+		Soulmancer_Ult_Prev: Стремительно вырьвите фрагменты вашей души, слегка истощая ваше здоровье за каждый фрагмент. Каждый фрагмент души наносит 1.5x урона у [Вырывание Души].
+		Soulmancer_Aghanims: a
+		# Vanguard
+		Vanguard_P_Name: Зачеруйте Броню
+		Vanguard_P_Prev: Враги получают урон когда ударяя вас.
+		Vanguard_A1_Name: Копьё Света
+		Vanguard_A1_Prev: киньте копьё света, то копьё если оно близко к врагу, нанося всем врагам в окружении копья.
+		Vanguard_A2_Name: Баррьер Света
+		Vanguard_A2_Prev: Произнесите светового баррьера вокруг вас, снижая получаймый урон.
+		Vanguard_Ult_Name: Меч Правосудия
+		Vanguard_Ult_Prev: Гиганский меч падает с неба, нанеся тяжёлый урон и казня врагов.
+		Vanguard_Aghanims: a
+		# Gambler
+		Gambler_P_Name: Luck of the Draw
+		Gambler_P_Prev: Any damage you deal is randomized to deal between 75% and 125% damage.
+		Gambler_P_Feedback_Enabled: Click to disable the passive's visual feedback.
+		Gambler_P_Feedback_Disabled: Click to enable the passive's visual feedback.
+		Gambler_A1_Name: Roll the Dice
+		Gambler_A1_Prev: Roll 3 dice, the dice will target enemies and strike them.
+		Gambler_A2_Name: Lucky Streak
+		Gambler_A2_Prev: Your passive's minimum and maximum damage dealt is temporarily increased.
+		Gambler_Ult_Name: Jackpot
+		Gambler_Ult_Prev: For a duration, increase your attack speed, ability power and reduce your [Roll the Dice]'s ability cooldown.
+		Gambler_Ult_Prev2: Additionally your class' crit loss per level is inverted making it positive instead.
+		Gambler_Aghanims: a
+
+		Plague: {
+			// P_Name: Lethality
+			/* P_Prev:
+				'''
+				Minions have a chance to land critical hits on enemies.
+				Minions deal increased damage vs Plagued enemies and their crit chance is increased vs them too.
+				''' */
+			// A1_Name: Infect
+			/* A1_Prev:
+				'''
+				Release an insect to damage enemies and infect them with Plagued. Insects can multiply themselves on-hit.
+				Enemies affected by Plagued take heavy damage over time based on their max health.
+				''' */
+			// A2_Name: Infection Burst
+			// A2_Prev: Deal damage to any enemy affected by Plagued and re-apply it's damage over time with a lesser duration.
+			// Ult_Name: Deadzone
+			// Ult_Prev: Create a deadzone around yourself that continously strikes enemies, dealing true damage to any enemies.
+		}
+
+		Keybinds: {
+			// "Class Ability: 1.DisplayName": Class  Ability: 1
+			// "Class Ability: 2.DisplayName": Class  Ability: 2
+			// "Class Ability: Ultimate.DisplayName": Class  Ability:  Ultimate
+			// Menu.DisplayName: Menu
+		}
+
+		// Tiles.LostRuneFragment.MapEntry: Lost Rune Fragment
+
+		Buffs: {
+			Inspire: {
+				// DisplayName: Inspire
+				// Description: All attacks are guaranteed to be critical strikes, minions are also affected
+			}
+
+			WarBanner: {
+				// DisplayName: War Banner
+				/* Description:
+					'''
+					Increased damage dealt
+					Reduced damage taken
+					''' */
+			}
+
+			GuardianAngel: {
+				// DisplayName: Guardian Angel
+				// Description: Reducing damage taken by a lot
+			}
+
+			Jackpot: {
+				// DisplayName: Jackpot
+				/* Description:
+					'''
+					Your class' banner crit loss is now inverted, granting you positive crit chance instead
+					Attack speed increased
+					Cooldown reduction increased
+					''' */
+			}
+
+			LuckyStreak: {
+				// DisplayName: Lucky Streak
+				// Description: Increasing your passive's minimum and maximum damage dealt
+			}
+
+			InventorPassive: {
+				// DisplayName: Inventor Passive
+				// Description: Increasing both your and your turret's attack speed
+			}
+
+			LeysAttackSpeed: {
+				// DisplayName: Leys Attack Speed
+				// Description: Increasing attack speed
+			}
+
+			LeysCrit: {
+				// DisplayName: Leys Crit
+				// Description: Increasing critical strike chance
+			}
+
+			LeysDamage: {
+				// DisplayName: Leys Damage
+				// Description: Increasing damage
+			}
+
+			LeysEndurance: {
+				// DisplayName: Leys Endurance
+				// Description: Reducing damage taken
+			}
+
+			PlagueInfection: {
+				// DisplayName: Plague Infection
+				// Description: Taking heavy damage
+			}
+
+			PlagueInsectHit: {
+				// DisplayName: Plague Insect Hit
+				// Description: Insect hit count
+			}
+		}
+
+		Items: {
+			DevCooldownAcc: {
+				// DisplayName: Dev Cooldown Acc
+				// Tooltip: ""
+			}
+
+			BlueCloth: {
+				// DisplayName: Blue Cloth
+				// Tooltip: Used to craft 'Magic Damage' classes
+			}
+
+			ClassBook: {
+				// DisplayName: Class Book
+				// Tooltip: ""
+			}
+
+			BloodMage: {
+				// DisplayName: Blood Mage
+				// Tooltip: ""
+			}
+
+			Commander: {
+				// DisplayName: Commander
+				// Tooltip: ""
+			}
+
+			Crusader: {
+				// DisplayName: Crusader
+				// Tooltip: ""
+			}
+
+			Gambler: {
+				// DisplayName: Gambler
+				// Tooltip: ""
+			}
+
+			Plague: {
+				// DisplayName: Plague
+				// Tooltip: ""
+			}
+
+			Scout: {
+				// DisplayName: Scout
+				// Tooltip: ""
+			}
+
+			Soulmancer: {
+				// DisplayName: Soulmancer
+				// Tooltip: ""
+			}
+
+			Vanguard: {
+				// DisplayName: Vanguard
+				// Tooltip: ""
+			}
+
+			BloodSpray: {
+				// DisplayName: Blood Spray
+				// Tooltip: ""
+			}
+
+			FadingDagger: {
+				// DisplayName: Fading Dagger
+				// Tooltip: ""
+			}
+
+			SeekingSpirit: {
+				// DisplayName: Seeking Spirit
+				// Tooltip: ""
+			}
+
+			SoulBurner: {
+				// DisplayName: Soul Burner
+				// Tooltip: ""
+			}
+
+			TrainingRapier: {
+				// DisplayName: Training Rapier
+				// Tooltip: ""
+			}
+
+			GreenCloth: {
+				// DisplayName: Green Cloth
+				// Tooltip: Used to craft 'Ranged Damage' classes
+			}
+
+			LostRune: {
+				// DisplayName: Lost Rune
+				// Tooltip: Right click to get a rune draw
+			}
+
+			LostRuneFragment: {
+				// DisplayName: Lost Rune Fragment
+				// Tooltip: "'An ancient rune, yet to engrave'"
+			}
+
+			OrangeCloth: {
+				// DisplayName: Orange Cloth
+				// Tooltip: Used to craft 'Summon Damage' classes
+			}
+
+			PinkCloth: {
+				// DisplayName: Pink Cloth
+				// Tooltip: Used to craft '???' classes
+			}
+
+			RedCloth: {
+				// DisplayName: Red Cloth
+				// Tooltip: Used to craft 'Melee Damage' classes
+			}
+
+			AccountantRat: {
+				// DisplayName: Accountant Rat
+				// Tooltip: ""
+			}
+
+			AghanimsScepter: {
+				// DisplayName: Aghanim's Scepter
+				// Tooltip: ""
+			}
+
+			ArcaneBlade: {
+				// DisplayName: Arcane Blade
+				// Tooltip: ""
+			}
+
+			BerserkersBrew: {
+				// DisplayName: Berserkers Brew
+				// Tooltip: ""
+			}
+
+			BleedingMoonStone: {
+				// DisplayName: Bleeding Moon Stone
+				// Tooltip: ""
+			}
+
+			BloodGem: {
+				// DisplayName: Blood Gem
+				// Tooltip: ""
+			}
+
+			BrokenHeart: {
+				// DisplayName: Broken Heart
+				// Tooltip: ""
+			}
+
+			ChaosAccelerant: {
+				// DisplayName: Chaos Accelerant
+				// Tooltip: ""
+			}
+
+			ChocolateBar: {
+				// DisplayName: Chocolate Bar
+				// Tooltip: ""
+			}
+
+			ChocolatePudding: {
+				// DisplayName: Chocolate Pudding
+				// Tooltip: ""
+			}
+
+			Croissant: {
+				// DisplayName: Croissant
+				// Tooltip: ""
+			}
+
+			CursedCandle: {
+				// DisplayName: Cursed Candle
+				// Tooltip: ""
+			}
+
+			DarkSign: {
+				// DisplayName: Dark Sign
+				// Tooltip: ""
+			}
+
+			DerelictCactusRing: {
+				// DisplayName: Derelict Cactus Ring
+				// Tooltip: ""
+			}
+
+			EldritchInoculation: {
+				// DisplayName: Eldritch Inoculation
+				// Tooltip: ""
+			}
+
+			Hourglass: {
+				// DisplayName: Hourglass
+				// Tooltip: ""
+			}
+
+			LeysMushroom: {
+				// DisplayName: Ley's Mushroom
+				// Tooltip: ""
+			}
+
+			LuckyLeaf: {
+				// DisplayName: Lucky Leaf
+				// Tooltip: ""
+			}
+
+			MajorsCare: {
+				// DisplayName: Majors Care
+				// Tooltip: ""
+			}
+
+			ManaBag: {
+				// DisplayName: Mana Bag
+				// Tooltip: ""
+			}
+
+			ManaInhibitor: {
+				// DisplayName: Mana Inhibitor
+				// Tooltip: ""
+			}
+
+			MinionsRightsContract: {
+				// DisplayName: Minions Rights Contract
+				// Tooltip: ""
+			}
+
+			MushroomConcentrate: {
+				// DisplayName: Mushroom Concentrate
+				// Tooltip: ""
+			}
+
+			Nessie: {
+				// DisplayName: Nessie
+				// Tooltip: ""
+			}
+
+			NiterihsBracelet: {
+				// DisplayName: Nitehri's Bracelet
+				// Tooltip: ""
+			}
+
+			NiterihsEarring: {
+				// DisplayName: Nitehri's Earring
+				// Tooltip: ""
+			}
+
+			NiterihsLuckyToken: {
+				// DisplayName: Nitehri's Lucky Token
+				// Tooltip: ""
+			}
+
+			NiterihsNecklace: {
+				// DisplayName: Nitehri's Necklace
+				// Tooltip: ""
+			}
+
+			NiterihsRing: {
+				// DisplayName: Nitehri's Ring
+				// Tooltip: ""
+			}
+
+			NiterihsJewelryBox: {
+				// DisplayName: Nitehri's Jewelry Box
+				// Tooltip: ""
+			}
+
+			OldBelt: {
+				// DisplayName: Old Belt
+				// Tooltip: ""
+			}
+
+			OldBlood: {
+				// DisplayName: Old Blood
+				// Tooltip: ""
+			}
+
+			OldShield: {
+				// DisplayName: Old Shield
+				// Tooltip: ""
+			}
+
+			Peanut: {
+				// DisplayName: Peanut
+				// Tooltip: ""
+			}
+
+			PocketSlime: {
+				// DisplayName: Pocket Slime
+				// Tooltip: ""
+			}
+
+			PorcelainMask: {
+				// DisplayName: Porcelain Mask
+				// Tooltip: ""
+			}
+
+			RandomRelic: {
+				// DisplayName: Random Relic
+				// Tooltip: ""
+			}
+
+			RapidFirecannon: {
+				// DisplayName: Rapid Firecannon
+				// Tooltip: ""
+			}
+
+			ScalingWarbanner: {
+				// DisplayName: Scaling Warbanner
+				// Tooltip: ""
+			}
+
+			SleepingBabySqueaker: {
+				// DisplayName: Sleeping Baby Squeaker
+				// Tooltip: ""
+			}
+
+			Stopwatch: {
+				// DisplayName: Stopwatch
+				// Tooltip: ""
+			}
+
+			StrangeGem: {
+				// DisplayName: Strange Gem
+				// Tooltip: ""
+			}
+
+			StrangeMushroom: {
+				// DisplayName: Strange Mushroom
+				// Tooltip: ""
+			}
+
+			TearsOfLife: {
+				// DisplayName: Tears Of Life
+				// Tooltip: ""
+			}
+
+			TheosCollar: {
+				// DisplayName: Theos Collar
+				// Tooltip: ""
+			}
+
+			TornWhipPart: {
+				// DisplayName: Torn Whip Part
+				// Tooltip: ""
+			}
+
+			UnstableConcoction: {
+				// DisplayName: Unstable Concoction
+				// Tooltip: ""
+			}
+
+			VoidMirror: {
+				// DisplayName: Void Mirror
+				// Tooltip: ""
+			}
+
+			WornGloves: {
+				// DisplayName: Worn Gloves
+				// Tooltip: ""
+			}
+
+			WhiteCloth: {
+				// DisplayName: White Cloth
+				// Tooltip: Used to craft your class damage type of choice
+			}
+
+			ZIP: {
+				// DisplayName: Z.I.P
+				// Tooltip: Resets your currently equipped class back to level 0
+			}
+
+			ScholarBasicOres: {
+				// DisplayName: Scholar Basic Ores
+				// Tooltip: ""
+			}
+
+			ScholarJournal: {
+				// DisplayName: Scholar Journal
+				// Tooltip: ""
+			}
+
+			Scholar: {
+				// DisplayName: Scholar
+				// Tooltip: ""
+			}
+
+			Spike: {
+				// DisplayName: Spike
+				// Tooltip: ""
+			}
+		}
+
+		Projectiles: {
+			// BloodEnchantment.DisplayName: Blood Enchantment
+			// BloodEnchantment2.DisplayName: Blood Enchantment2
+			// BloodEnchantment3.DisplayName: Blood Enchantment3
+			// BloodEnchantment4.DisplayName: Blood Enchantment4
+			// Transfusion.DisplayName: Transfusion
+			// BattleCry.DisplayName: Battle Cry
+			// WarBanner.DisplayName: War Banner
+			// Dice.DisplayName: Dice
+			// Cog.DisplayName: Cog
+			// Sentry.DisplayName: Sentry
+			// SentryShot.DisplayName: Sentry Shot
+			// MajorsCareProj.DisplayName: Majors Care Proj
+			// PlagueInsect.DisplayName: Plague Insect
+			// ScoutTrap.DisplayName: Scout Trap
+			// SoulFragment.DisplayName: Soul Fragment
+			// SoulFragmentAbsorb.DisplayName: Soul Fragment Absorb
+			// SoulShatter.DisplayName: Soul Shatter
+			// VanguardSpear.DisplayName: Vanguard Spear
+			// VanguardUltimate.DisplayName: Vanguard Ultimate
+			// BloodSpray.DisplayName: Blood Spray
+			// FadingDagger.DisplayName: Fading Dagger
+			// SeekingSpirit.DisplayName: Seeking Spirit
+			// SoulBurn.DisplayName: Soul Burn
+			// TrainingRapier.DisplayName: Training Rapier
+		}
+
+		Config: {
+			MaxClassLevel: {
+				// Label: Max Class Level
+				/* Tooltip:
+					'''
+					Changes the maximum level all classes can reach
+					(Default: 100)
+					''' */
+			}
+
+			ExtraRelicSlot: {
+				// Label: Extra Relic Slot
+				/* Tooltip:
+					'''
+					If true, you get to equip two relics at a time instead of only one
+					(Relics slotted on this slot will remain on it until removed, even with this setting disabled)
+					(Make sure to remove said relics before deactivating this option if you want to keep it)
+					(Default: Off)
+					''' */
+			}
+
+			ChatMessageSupportAbility: {
+				// Label: Chat Message When Using Supportive Ability
+				/* Tooltip:
+					'''
+					Dislay a message on the game's chat to everyone everytime someone casts a support-type ability like healing or buffing
+					(Default: On)
+					''' */
+			}
+
+			HiddenAccStats: {
+				// Label: Hidden Accessory Disables Stats
+				/* Tooltip:
+					'''
+					If true, all classes wont grant you stats when the accessory slot's visual is hidden
+					(Default: Off)
+					''' */
+			}
+
+			EnemyDamageMultiplier: {
+				// Label: Enemy Damage Multiplier
+				/* Tooltip:
+					'''
+					Increases how much damage enemies deal to the player
+					(Default: 1.05x)
+					''' */
+			}
+
+			EnemyNonBossHealthMultiplier: {
+				// Label: Enemy (Non-boss) Health Multiplier
+				/* Tooltip:
+					'''
+					Increases how much max health enemies that are NOT bosses have
+					(Default: 1.05x)
+					''' */
+			}
+
+			BossHealthMultiplier: {
+				// Label: Boss Health Multiplier
+				/* Tooltip:
+					'''
+					Increases how much max health Bosses have
+					(Default: 1.05x)
+					''' */
+			}
+
+			ClassStatsMultiplier: {
+				// Label: Class Stats Multiplier
+				/* Tooltip:
+					'''
+					Changes how much stats your class gives you per level
+					(Default: 1)
+					''' */
+			}
+
+			RuneStatsMultiplier: {
+				// Label: Rune Stats Multiplier
+				/* Tooltip:
+					'''
+					Changes how much stats runes gives you
+					(Default: 1)
+					''' */
+			}
+
+			APWeaponDPS: {
+				// Label: Ability Power Gained By Held Weapon's Base DPS
+				/* Tooltip:
+					'''
+					Changes how much ability power the player gets depending on the base dps of their currently held weapon
+					The higher this is, the more ability power you get
+					(Default: 0.05)
+					''' */
+			}
+
+			CalamityScaling: {
+				// Label: Calamity Scaling
+				/* Tooltip:
+					'''
+					If enabled the amount of stats you gain from your class' banner stats will be slighty increased for each boss defeated after entering Hardmode.
+					(Does NOT actually need Calamity installed/enabled to work)
+					(Default: Off)
+					''' */
+			}
+
+			CompactHUD: {
+				// Label: Compact HUD
+				/* Tooltip:
+					'''
+					Removes the ability cooldown bars from the HUD, reducing obstruction
+					(Default: On)
+					''' */
+			}
+
+			BlinkingHUD: {
+				// Label: Blinking HUD
+				/* Tooltip:
+					'''
+					Abilities and Ultimate bars and text will blink if they are ready to use and only when you're in battle
+					(Default: On)
+					''' */
+			}
+
+			SmallerAbilityVFX: {
+				// Label: Smaller Ability VFX
+				/* Tooltip:
+					'''
+					Visual effects from abilities such as Blood Mage's [Blood Enchantment] are scaled down to reduce obstruction
+					(Default: Off)
+					''' */
+			}
+
+			AnnounceLevelUp: {
+				// Label: Announce Level Up Message
+				/* Tooltip:
+					'''
+					Displays a message in chat whenever you level up a class
+					(Default: On)
+					''' */
+			}
+
+			// SmallerAbilityVFS.Tooltip: ""
+		}
+
+		Configs: {
+			_ACMConfigServer: {
+				// DisplayName: ACM Config Server
+
+				Headers: {
+					// General: General
+					// Balance: Balance
+					// Mod.Compatibility: Mod Compatibility
+				}
+			}
+
+			ACMConfigClient: {
+				// DisplayName: ACM Config Client
+
+				Headers: {
+					// HUD: HUD Header
+					// Effects/Feeback: Effects/Feeback Header
+				}
+			}
+		}
+	}
+}

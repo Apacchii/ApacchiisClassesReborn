@@ -10,9 +10,7 @@ namespace ApacchiisClassesMod2.Buffs.Commander
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("[Commander's War Banner]");
-            Description.SetDefault("Increased damage dealt\nReduced damage taken");
-            Main.buffNoSave[Type] = false;
+            Main.buffNoSave[Type] = true;
             Main.debuff[Type] = false;
             base.SetStaticDefaults();
         }
