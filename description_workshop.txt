@@ -1,13 +1,13 @@
 Join the discord for detailed patch notes, to report bugs, ask for help, or just chat:
 https://discord.gg/G4TwQCAdxf
 
-**--- If you enjoy this mod, please consider giving the steam workshop page a like, have fun! ---**
+--- If you enjoy this mod, please consider giving the steam workshop page a like, have fun! ---
 
 Apacchii's Classes: Reborn is the successor to my first ever mod "Apacchii's Classes Mod" (Now known as "Apacchii's Classes: Classic").
 This mod focuses solely on the classes and is completely reimagined and hopefully more balanced.
 
 Freatures:
-- 5 Classes (as of now)
+- 6 Classes (as of now)
 - As many levels as bosses you have in your playthrough. (Can be capped)
 - A dedicated accessory slot for classes.
 - A unique talent tree for each class.
@@ -19,7 +19,7 @@ Freatures:
 
 [Mod Configuration allows you to change how many stats you get from classes, how much damage/health enemies have/deal and much more, please take a look at them if you want to balance things out yourself]
 
-As of now there are 5 classes.
+As of now there are 6 classes.
 Each class has at least 1 passive ability, 2 active abilities, 1 ultimate ability, and a unique Talent Tree specific for that class.
 
 Classes level up automatically each time a boss is defeated and the levels are player and class-sided, which means your classes will all progress individually per character.
@@ -34,3 +34,4 @@ DONATING
 Donations of 5eur or more are entitled to a custom Relic item on this mod.
 Support me: **Join discord https://discord.gg/G4TwQCAdxf for a link, steam workshop doesn't seem to like my links**
 --------------------------------------------------
+[quote=tModLoader]Developed By Apacchii[/quote]

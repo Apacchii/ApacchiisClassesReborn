@@ -15,7 +15,10 @@ namespace ApacchiisClassesMod2.UI.Other
 		public override bool DrawVanitySlot => true;
 		public override bool DrawDyeSlot => false;
 
-		public override bool CanAcceptItem(Item checkItem, AccessorySlotType context)
+		bool hasUpdatedAccessory = false; //Disable and enable the class accessory slot to prevent a bug where 
+                                          //players need to re-equip the class banner in order for it to level up in multiplayer
+
+        public override bool CanAcceptItem(Item checkItem, AccessorySlotType context)
 		{
 			if (context == AccessorySlotType.FunctionalSlot && checkItem.GetGlobalItem<ACMGlobalItem>().isClass)
 				return true;
@@ -36,6 +39,18 @@ namespace ApacchiisClassesMod2.UI.Other
 
 			return false;
 		}
+
+        public override bool IsEnabled()
+        {
+            if (!hasUpdatedAccessory)
+			{
+                Main.NewText(hasUpdatedAccessory);
+                hasUpdatedAccessory = true;
+				return false;
+			}
+			else
+			{ return true; }
+        }
 
         public override void OnMouseHover(AccessorySlotType context)
 		{

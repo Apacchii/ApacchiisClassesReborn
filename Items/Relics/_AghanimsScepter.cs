@@ -155,9 +155,21 @@ namespace ApacchiisClassesMod2.Items.Relics
             base.ModifyTooltips(tooltips);
         }
 
+        public override void AddRecipes()
+        {
+            // AddCustomShimmerResult can be used to change the decrafting results. Rather that return 1 ExampleItem, decrafting this item will return 1 Rotten Egg and 3 Chain.
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<AghanimsScepter>())
+                .AddCustomShimmerResult(ModContent.ItemType<AghanimsShard>())
+                .AddCondition(Condition.Hardmode)
+                .Register();
+
+            base.AddRecipes();
+        }
+
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
         {
-            if (!modded)
+            if (!modded || player.GetModPlayer<ACMPlayer>().hasAghanimsShard)
                 return false;
 
             return base.CanEquipAccessory(player, slot, modded);

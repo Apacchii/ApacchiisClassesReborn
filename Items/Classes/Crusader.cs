@@ -34,7 +34,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult;
-            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult;
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative;
 
             Item.GetGlobalItem<ACMGlobalItem>().isClass = true;
         }
@@ -157,7 +157,7 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             // Class Menu Text
             acmPlayer.P_Name = "Tenacity";
-            acmPlayer.P_Desc = $"Reduce damage taken by {(decimal)(acmPlayer.crusaderEndurance * 100)}%.\nThis effect is increased by an additional {(decimal)(acmPlayer.crusaderEnduranceBuff * 100)}% while under the effects of a healing buff.";
+            acmPlayer.P_Desc = $"Reduce damage taken by {(-(acmPlayer.crusaderEndurance - 1f) * 100).ToString("F0")}%.\nThis effect is increased by an additional {(-(acmPlayer.crusaderEnduranceBuff - 1f) * 100).ToString("F0")}% while under the effects of a healing buff.";
 
             acmPlayer.A1_Name = "Protection";
             acmPlayer.A1_Desc = "Apply a healing buff to all players that slowly heals them each second.\nPlayers regen health at a rate of 1% of their max health per second";

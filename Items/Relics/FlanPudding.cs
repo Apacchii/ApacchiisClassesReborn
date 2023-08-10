@@ -9,7 +9,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class ChocolatePudding : ModItem //Chocolate Pudding
     {
-        public string desc = "Every 2 seconds, being hit by enemies causes you and all other players to very slowly regenerate 3% of your max health to themselves\n" +
+        public string desc = "Every 2 seconds, being hit by enemies causes you and all other players to very slowly regenerate 2% of your max health to themselves\n" +
                              "Increases max health by 3%";
 
         public override void SetStaticDefaults()

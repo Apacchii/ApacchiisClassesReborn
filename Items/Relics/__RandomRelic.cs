@@ -46,7 +46,8 @@ namespace ApacchiisClassesMod2.Items.Relics
             //List of item that CANNOT be aquired via unboxing
             for(int i = 0; i < 100; i++)
             {
-                if (player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<NiterihsJewelryBox>())
+                if (player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<NiterihsJewelryBox>() ||
+                    player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<AghanimsShard>())
                 {
                     choice = Main.rand.Next(relicCount);
                 }

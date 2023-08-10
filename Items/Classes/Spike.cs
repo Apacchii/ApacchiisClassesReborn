@@ -162,7 +162,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.Ult_Name");
             acmPlayer.Ult_Desc = $"Become unable to move and to use weapons while shooting rapid-fire quills towards your cursor.";
             acmPlayer.Ult_Effect_1 = $"";
-            acmPlayer.Ult_Effect_2 = $"s";
+            acmPlayer.Ult_Effect_2 = $"";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

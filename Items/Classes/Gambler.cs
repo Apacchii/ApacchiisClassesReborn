@@ -37,7 +37,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult;
-            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult;
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative;
 
             Item.GetGlobalItem<ACMGlobalItem>().isClass = true;
         }

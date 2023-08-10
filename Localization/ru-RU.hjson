@@ -651,6 +651,11 @@ Mods: {
 				// DisplayName: Spike
 				// Tooltip: ""
 			}
+
+			AghanimsShard: {
+				// DisplayName: Aghanims Shard
+				// Tooltip: Permanently grants the effects of the Aghanim's Scepter relic
+			}
 		}
 
 		Projectiles: {
@@ -751,6 +756,15 @@ Mods: {
 				/* Tooltip:
 					'''
 					Changes how much stats your class gives you per level
+					(Default: 1)
+					''' */
+			}
+
+			NegativeClassStatsMultiplier: {
+				// Label: Negative Class Stats Multiplier
+				/* Tooltip:
+					'''
+					Changes how much negative stats your class gives you per level
 					(Default: 1)
 					''' */
 			}

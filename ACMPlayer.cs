@@ -124,6 +124,7 @@ namespace ApacchiisClassesMod2
         #region Relics
         public bool hasBleedingMoonStone;
         public bool hasAghanims;
+        public bool hasAghanimsShard;
         public bool hasUnstableConcoction;
         bool isUnstableConcoctionReady;
         public bool hasNeterihsToken;
@@ -1385,7 +1386,7 @@ namespace ApacchiisClassesMod2
             {
                 if (flanPuddingTimer <= 0)
                 {
-                    int heal = (int)(Player.statLifeMax2 * .03f);
+                    int heal = (int)(Player.statLifeMax2 * .02f);
                     HealPlayer(1, 1, heal);
                     flanPuddingTimer = 120;
                 }
@@ -1434,7 +1435,7 @@ namespace ApacchiisClassesMod2
             {
                 if (flanPuddingTimer <= 0)
                 {
-                    int heal = (int)(Player.statLifeMax2 * .03f);
+                    int heal = (int)(Player.statLifeMax2 * .02f);
                     HealPlayer(1, 1, heal);
                     flanPuddingTimer = 120;
                 }
@@ -2267,8 +2268,6 @@ namespace ApacchiisClassesMod2
                 spentSkillPointsGlobal = soulmancerSpentSkillPoints;
             #endregion
 
-
-
             base.PreUpdate();
         }
 
@@ -2314,8 +2313,6 @@ namespace ApacchiisClassesMod2
             cooldownReduction -= card_SparkOfGeniusCount * card_SparkOfGeniusValue_1;
             ultCooldownReduction -= card_SparkOfGeniusCount * card_SparkOfGeniusValue_2;
             #endregion
-
-
 
             base.PostUpdateBuffs();
         }
@@ -3019,7 +3016,6 @@ namespace ApacchiisClassesMod2
                 Player.GetAttackSpeed(DamageClass.Generic) += .25f;
             #endregion
 
-
             #region Ability Ready Sounds
             if (ability1Cooldown == 0 && !a1Sound)
             {
@@ -3039,6 +3035,59 @@ namespace ApacchiisClassesMod2
                 SoundEngine.PlaySound(SoundID.MaxMana);
             }
             #endregion
+
+            if (hasAghanimsShard && !hasAghanims)
+            {
+                if (hasBloodMage)
+                {
+                    abilityPower += .15f;
+                    cooldownReduction -= .05f;
+                }
+
+                if (hasCommander)
+                {
+                    ability1MaxCooldown -= 5;
+                    commanderBannerRange += 25;
+                    bannerFollowsPlayer = true;
+                }
+
+                if (hasVanguard)
+                {
+                    vanguardPassiveReflectAmount += .65f;
+                    Player.endurance += .04f;
+                }
+
+                if (hasScout)
+                    scoutUltInvDuration += 60;
+
+                if (hasSoulmancer)
+                {
+                    soulmancerSoulShatterRange -= 175;
+                    abilityPower += .06f;
+                    soulmancerSoulShatterCastTarget = Main.MouseWorld;
+                }
+
+                if (hasCrusader)
+                {
+                    abilityPower += .1f;
+                    cooldownReduction -= .1f;
+                    healingPower += .1f;
+                    ultCooldownReduction -= .1f;
+                }
+
+                if (equippedClass == "Gambler")
+                {
+                    gamblerDiceAghanimsHeal = true;
+                    gamblerDiceDamageBase += 12;
+                    gamblerPassiveBoostMaxDuration += 60;
+                }
+
+                if (equippedClass == "Plague")
+                {
+                    plagueDeadzoneRange += 100;
+                    ultCooldownReduction -= .1f;
+                }
+            }
 
             if (hasDarkSign)
                 lifeMult -= .15f;
@@ -3833,6 +3882,7 @@ namespace ApacchiisClassesMod2
             tag.Add("totalDamageTaken", totalDamageTaken);
 
             tag.Add("gotFreeRelic", gotFreeRelic);
+            tag.Add("hasAghanimsShard", hasAghanimsShard);
 
             #region Cards
             tag.Add("cardsPoints", cardsPoints);
@@ -4063,10 +4113,10 @@ namespace ApacchiisClassesMod2
             highestDPS = tag.GetInt("highestDPS");
             highestCrit = tag.GetInt("highestCrit");
             totalDamageTaken = tag.GetInt("totalDamageTaken");
-
             
-
             gotFreeRelic = tag.GetBool("gotFreeRelic");
+            hasAghanimsShard = tag.GetBool("hasAghanimsShard");
+
 
             #region Cards
             cardsPoints = tag.GetInt("cardsPoints");

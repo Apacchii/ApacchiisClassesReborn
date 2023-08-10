@@ -88,6 +88,16 @@ namespace ApacchiisClassesMod2.Configs
         [SliderColor(255, 255, 255)]
         public float classStatMult { get; set; }
 
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.NegativeClassStatsMultiplier.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.NegativeClassStatsMultiplier.Tooltip")]
+        //[DrawTicks]
+        [DefaultValue(1)]
+        [Increment(.05f)]
+        [Range(0f, 3f)]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        public float classStatMultNegative { get; set; }
+
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.RuneStatsMultiplier.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.RuneStatsMultiplier.Tooltip")]
         //[DrawTicks]
