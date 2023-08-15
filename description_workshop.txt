@@ -6,8 +6,9 @@ https://discord.gg/G4TwQCAdxf
 Apacchii's Classes: Reborn is the successor to my first ever mod "Apacchii's Classes Mod" (Now known as "Apacchii's Classes: Classic").
 This mod focuses solely on the classes and is completely reimagined and hopefully more balanced.
 
-Freatures:
+Features:
 - 6 Classes (as of now)
+- Daily Quests
 - As many levels as bosses you have in your playthrough. (Can be capped)
 - A dedicated accessory slot for classes.
 - A unique talent tree for each class.

@@ -132,7 +132,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Minion Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Ability Power
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Minion Crit
-            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult; // Health
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative; // Health
 
             if (_ACMConfigServer.Instance.configHidden)
             {
@@ -141,7 +141,6 @@ namespace ApacchiisClassesMod2.Items.Classes
                     Player.GetDamage(DamageClass.Summon) += classLevel * stat1 * acmPlayer.classStatMultiplier;
                     acmPlayer.abilityPower += stat2 * classLevel * acmPlayer.classStatMultiplier;
                     acmPlayer.minionCritChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
-                    acmPlayer.lifeMult -= classLevel * badStat;
                 }
             }
             else
@@ -149,7 +148,6 @@ namespace ApacchiisClassesMod2.Items.Classes
                 Player.GetDamage(DamageClass.Summon) += classLevel * stat1 * acmPlayer.classStatMultiplier;
                 acmPlayer.abilityPower += stat2 * classLevel * acmPlayer.classStatMultiplier;
                 acmPlayer.minionCritChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
-                acmPlayer.lifeMult -= classLevel * badStat;
             }
 
             acmPlayer.classStatMultiplier = 1f;

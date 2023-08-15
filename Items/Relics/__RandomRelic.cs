@@ -36,6 +36,14 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override bool CanRightClick() => true;
 
+        public override void AddRecipes()
+        {
+            var recipe = CreateRecipe(1);
+            recipe.AddIngredient(ModContent.ItemType<RelicFragment>(), 3);
+            recipe.Register();
+            base.AddRecipes();
+        }
+
         public override void RightClick(Player player)
         {
             int relicCount = player.GetModPlayer<ACMPlayer>().relicList.Count; //22 | (040222:1730)

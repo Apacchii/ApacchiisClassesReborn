@@ -129,7 +129,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Minion Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; ; // Minion Slots
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Whip Range
-            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult; // Acceleration
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative; // Acceleration
 
             if (_ACMConfigServer.Instance.configHidden)
             {
@@ -165,7 +165,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                 acmPlayer.A1_Desc = $"Place a war banner that will follow you around.\nPlayers inside the banner's radius are granted damage reduction and increased damage. This buff persists for a while after leaving the banner's radius.";
             acmPlayer.A1_Effect_1 = $"Endurance: {(decimal)((1f - acmPlayer.commanderBannerEndurance) * 100)}%";
             acmPlayer.A1_Effect_2 = $"Bonus Damage: {(int)((acmPlayer.commanderBannerDamage - 1f) * 100)}%";
-            acmPlayer.A1_Effect_4 = $"Duration: {acmPlayer.commanderBannerDuration / 60}s + 0.5s p/Level({acmPlayer.commanderLevel * .4f}s) = {(decimal)((acmPlayer.commanderLevel * 24 + acmPlayer.commanderBannerDuration) / 60)}s";
+            acmPlayer.A1_Effect_4 = $"Duration: {acmPlayer.commanderBannerDuration / 60}s + 0.5s p/Level({(acmPlayer.commanderLevel * .4f).ToString("F0")}s) = {((acmPlayer.commanderLevel * 24 + acmPlayer.commanderBannerDuration) / 60).ToString("F0")}s";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_A2_Name");
             acmPlayer.A2_Desc = $"Scream loudly, intimidating enemies around you and knocking them back, increasing the damage they take for a period of time.";

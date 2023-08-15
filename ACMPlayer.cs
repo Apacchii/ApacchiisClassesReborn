@@ -1,3 +1,4 @@
+using ApacchiisClassesMod2.Configs;
 using ApacchiisClassesMod2.Items.Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -1070,7 +1071,7 @@ namespace ApacchiisClassesMod2
 
             crusaderGuardianAngel = false;
             crusaderGuardianAngelDuration = 60 * 10;
-            crusaderGuardianAngelEndurance = .4f;
+            crusaderGuardianAngelEndurance = .6f; //40%
             crusaderGuardianAngelEnduranceLevel = .005f;
             #endregion
 
@@ -1631,14 +1632,14 @@ namespace ApacchiisClassesMod2
             }
 
             //Blood Mage Aghs Heal
-            if (proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanims)
+            if (proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanims || proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanimsShard)
             {
                 int heal = (int)(damageDone * .1f * healingPower);
                 HealPlayer(1, 3, heal);
             }
 
             //Gambler Aghs Dice Heal
-            if (proj.type == ProjectileType<Projectiles.Gambler.Dice>() && hasAghanims)
+            if (proj.type == ProjectileType<Projectiles.Gambler.Dice>() && hasAghanims || proj.type == ProjectileType<Projectiles.Gambler.Dice>() && hasAghanimsShard)
             {
                 float percentHeal = Main.rand.NextFloat(.0025f, .005f);
                 int heal = (int)(Player.statLifeMax2 * percentHeal * healingPower);
@@ -2168,7 +2169,6 @@ namespace ApacchiisClassesMod2
                     for (int x = 0; x < 3; x++)
                         Dust.NewDustDirect(Player.position, Player.width, Player.height, DustType<Dusts.HealingDust>(), 0f, 0f, 0, default, Main.rand.NextFloat(1f, 2f));
                 }
-
             }
             else
             {
@@ -2342,7 +2342,7 @@ namespace ApacchiisClassesMod2
                 if (crusaderTalent_5 == "R")
                     crusaderGuardianAngelDuration += 60;
                 if (crusaderTalent_6 == "R")
-                    crusaderGuardianAngelEndurance += .05f;
+                    crusaderGuardianAngelEndurance -= .05f;
                 if (crusaderTalent_8 == "L")
                     crusaderHammerDamageBase += 45;
                 if (crusaderTalent_9 == "R")
@@ -2848,7 +2848,7 @@ namespace ApacchiisClassesMod2
                 healingPower += talentSinkCrusaderRight * talentSinkCrusaderRightValue;
 
                 crusaderHammerDamage = crusaderHammerDamageBase + crusaderHammerDamageLevel * crusaderLevel;
-                crusaderGuardianAngelEndurance += crusaderGuardianAngelEnduranceLevel * crusaderLevel;
+                crusaderGuardianAngelEndurance -= crusaderGuardianAngelEnduranceLevel * crusaderLevel;
             }
 
             
@@ -2948,7 +2948,7 @@ namespace ApacchiisClassesMod2
                     {
                         //Range Circle
                         Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * j)) * radius;
-                        if (!hasAghanims)
+                        if (!hasAghanims && !hasAghanimsShard)
                         {
                             if (Collision.CanHitLine(Player.Center, 1, 1, position, 1, 1))
                             {
@@ -2986,11 +2986,10 @@ namespace ApacchiisClassesMod2
                             int dmg = (int)(plagueDeadzoneDamage * abilityPower);
                             if (Main.npc[i].realLife > 0) dmg /= 4; //damage reduced by 75% vs worm enemies
 
-                            if (!hasAghanims)
+                            if (!hasAghanims && !hasAghanimsShard)
                             {
                                 if (Collision.CanHitLine(Player.Center, 1, 1, Main.npc[i].Center, 1, 1))
                                 {
-                                    
                                     Player.StrikeNPCDirect(Main.npc[i], new NPC.HitInfo
                                     {
                                         Damage = dmg
@@ -3036,6 +3035,7 @@ namespace ApacchiisClassesMod2
             }
             #endregion
 
+            //Shard stats only
             if (hasAghanimsShard && !hasAghanims)
             {
                 if (hasBloodMage)
@@ -3126,10 +3126,10 @@ namespace ApacchiisClassesMod2
                 defenseMult -= .25f;
 
             if(hasScout)
-                lifeMult -= scoutLevel * .0035f;
+                lifeMult -= scoutLevel * .0035f * _ACMConfigServer.Instance.classStatMultNegative;
 
             if(equippedClass == "Plague")
-                lifeMult -= plagueLevel * .006f;
+                lifeMult -= plagueLevel * .006f * _ACMConfigServer.Instance.classStatMultNegative;
 
             ultChargeMax = (int)(ultChargeMax * ultCooldownReduction);
             if (ultChargeMax < 60)
@@ -3165,12 +3165,13 @@ namespace ApacchiisClassesMod2
             if (cooldownReduction < 0f)
                 cooldownReduction = 0f;
 
-            if (hasScout && scoutColaCurDuration > 0 && hasAghanims)
-                Player.GetCritChance(DamageClass.Ranged) += 15;
+            if (hasScout && scoutColaCurDuration > 0)
+                if (hasAghanims || hasAghanimsShard)
+                    Player.GetCritChance(DamageClass.Ranged) += 15;
 
             if (hasSoulmancer)
             {
-                if (hasAghanims)
+                if (hasAghanims || hasAghanimsShard)
                     soulmancerSoulShatterCastTarget = Main.MouseWorld;
                 else
                     soulmancerSoulShatterCastTarget = Player.Center;
@@ -3408,8 +3409,6 @@ namespace ApacchiisClassesMod2
                     switch (equippedClass)
                     {
                         case "Vanguard":
-                            
-
                             PointToCursor *= 21f;
 
                             if (vanguardSpearHeal && Player.statLife < Player.statLifeMax2)
@@ -3621,7 +3620,7 @@ namespace ApacchiisClassesMod2
                         case "Soulmancer":
                             AddAbilityCooldown(2, ability2MaxCooldown);
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Soul Shatter!", true);
-                            if (hasAghanims)
+                            if (hasAghanims || hasAghanimsShard)
                                 Projectile.NewProjectile(null, Main.MouseWorld, Vector2.Zero, ProjectileType<Projectiles.Soulmancer.SoulShatter>(), 0, 0, Player.whoAmI);
                             else
                                 Projectile.NewProjectile(null, Player.Center, Vector2.Zero, ProjectileType<Projectiles.Soulmancer.SoulShatter>(), 0, 0, Player.whoAmI);

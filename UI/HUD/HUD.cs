@@ -8,6 +8,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
+using System.Drawing.Printing;
 
 namespace ApacchiisClassesMod2.UI.HUD
 {
@@ -24,6 +25,13 @@ namespace ApacchiisClassesMod2.UI.HUD
         UIText text;
         UIText inCombat;
         UIText healthRegen;
+
+        public bool showQuestHUD = true;
+        UIText questName;
+        UIText questDesc;
+        float questVAlign = .01f;
+        float questHAlign = .5f;
+
 
         float q1;
         float q2;
@@ -105,6 +113,20 @@ namespace ApacchiisClassesMod2.UI.HUD
             #region Class-Specific
             #endregion
 
+            questName = new UIText("", .9f);
+            questName.VAlign = questVAlign;
+            questName.HAlign = questHAlign;
+            questName.Width.Set(500, 0f);
+            questName.TextColor = Color.Orange;
+            Append(questName);
+
+            questDesc = new UIText("", .8f);
+            questDesc.Top.Set(25, 0f);
+            questDesc.IsWrapped = true;
+            questDesc.Width.Set(500, 0f);
+            questName.Append(questDesc);
+
+
             base.OnInitialize();
         }
 
@@ -112,6 +134,26 @@ namespace ApacchiisClassesMod2.UI.HUD
         {
             Player Player = Main.player[Main.myPlayer];
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            //Quest HUD
+            showQuestHUD = Configs.ACMConfigClient.Instance.showQuestHUD;
+            if (showQuestHUD)
+            {
+                ACMQuests questPlayer = Player.GetModPlayer<ACMQuests>();
+                questName.VAlign = questVAlign;
+                questName.HAlign = questHAlign;
+                questDesc.Width.Set(500, 0f);
+                questName.Width.Set(500, 0f);
+                questName.SetText($"{questPlayer.questName}");
+                questDesc.SetText($"{questPlayer.questDesc}");
+            }
+            else
+            {
+                questName.SetText($"");
+                questDesc.SetText($"");
+            }
+            
+
 
             blinkTimer++;
 

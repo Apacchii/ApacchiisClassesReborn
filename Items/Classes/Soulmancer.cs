@@ -126,7 +126,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Magic Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Magic Crit
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Health
-            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult; // Defense
+            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative; // Defense
 
             if (_ACMConfigServer.Instance.configHidden)
             {

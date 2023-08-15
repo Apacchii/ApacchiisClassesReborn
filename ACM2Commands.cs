@@ -190,6 +190,14 @@ namespace ApacchiisClassesMod2
                 caller.Reply("HUD has been reset");
                 return;
             }
+
+            //for esting purposes only, will ininitely increase quest difficulty
+            if (args[0] == "newQuest" || args[0] == "nq")
+            {
+                Main.player[player].GetModPlayer<ACMQuests>().SelectNewQuest();
+                caller.Reply("Daily quest re-selected");
+                return;
+            }
         }
     }
 }

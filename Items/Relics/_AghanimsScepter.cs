@@ -16,6 +16,7 @@ namespace ApacchiisClassesMod2.Items.Relics
         {
             // Tooltip.SetDefault(desc);
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<AghanimsShard>();
         }
 
 		public override void SetDefaults()
@@ -157,12 +158,12 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void AddRecipes()
         {
-            // AddCustomShimmerResult can be used to change the decrafting results. Rather that return 1 ExampleItem, decrafting this item will return 1 Rotten Egg and 3 Chain.
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<AghanimsScepter>())
-                .AddCustomShimmerResult(ModContent.ItemType<AghanimsShard>())
-                .AddCondition(Condition.Hardmode)
-                .Register();
+            //// AddCustomShimmerResult can be used to change the decrafting results.
+            //CreateRecipe()
+            //    .AddIngredient(ModContent.ItemType<AghanimsScepter>())
+            //    .AddCustomShimmerResult(ModContent.ItemType<AghanimsShard>())
+            //    .AddCondition(Condition.Hardmode)
+            //    .Register();
 
             base.AddRecipes();
         }

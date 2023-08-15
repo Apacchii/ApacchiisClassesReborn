@@ -44,7 +44,6 @@ namespace ApacchiisClassesMod2.UI.Other
         {
             if (!hasUpdatedAccessory)
 			{
-                Main.NewText(hasUpdatedAccessory);
                 hasUpdatedAccessory = true;
 				return false;
 			}

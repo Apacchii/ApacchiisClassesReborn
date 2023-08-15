@@ -132,7 +132,7 @@
 //            stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Minion Damage
 //            stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Ability Power
 //            stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Minion Crit
-//            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMult; // Health
+//            badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative; // Health
 //
 //            if (_ACMConfigServer.Instance.configHidden)
 //            {

@@ -543,7 +543,7 @@ Mods: {
 			}
 
 			Peanut: {
-				// DisplayName: Peanut
+				// DisplayName: The 137th Peanut
 				// Tooltip: ""
 			}
 
@@ -559,7 +559,7 @@ Mods: {
 
 			RandomRelic: {
 				// DisplayName: Random Relic
-				// Tooltip: ""
+				// Tooltip: Right click to open
 			}
 
 			RapidFirecannon: {
@@ -653,8 +653,13 @@ Mods: {
 			}
 
 			AghanimsShard: {
-				// DisplayName: Aghanims Shard
+				// DisplayName: Aghanim's Shard
 				// Tooltip: Permanently grants the effects of the Aghanim's Scepter relic
+			}
+
+			RelicFragment: {
+				// DisplayName: Relic Fragment
+				// Tooltip: ""
 			}
 		}
 
@@ -834,7 +839,33 @@ Mods: {
 					''' */
 			}
 
-			// SmallerAbilityVFS.Tooltip: ""
+			ShowQuestHUD: {
+				// Label: Show Quest HUD
+				/* Tooltip:
+					'''
+					Toggles the quest HUD on the top of the screen
+					(Default: On)
+					''' */
+			}
+
+			NewQuestChatMessage: {
+				// Label: New Quest Chat Message
+				/* Tooltip:
+					'''
+					Toggles if a chat message will be sent everytime a new daily quest is given to the player
+					(Default: Off)
+					''' */
+			}
+
+			QuestDescTextWidth: {
+				// Label: Quest Description Text Width
+				/* Tooltip:
+					'''
+					Changes the max width the quest objective text will occupy, decrease if the text overlaps with other HUD elements
+					Useful for lower resolutions
+					(Default: 700)
+					''' */
+			}
 		}
 
 		Configs: {

@@ -71,11 +71,12 @@ namespace ApacchiisClassesMod2.Items.ClassWeapons
 
         public override void AddRecipes()
         {
-            var recipe = CreateRecipe(1);
-            recipe.AddIngredient(this);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.ReplaceResult(ModContent.ItemType<Relics.RandomRelic>(), 1);
-            recipe.Register();
+            //Wtf why was this here
+            //var recipe = CreateRecipe(1);
+            //recipe.AddIngredient(this);
+            //recipe.AddTile(TileID.WorkBenches);
+            //recipe.ReplaceResult(ModContent.ItemType<Relics.RandomRelic>(), 1);
+            //recipe.Register();
         }
 
         public override Vector2? HoldoutOrigin()

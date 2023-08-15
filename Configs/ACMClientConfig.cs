@@ -21,16 +21,37 @@ namespace ApacchiisClassesMod2.Configs
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.BlinkingHUD.Tooltip")]
         public bool blinkingHUD { get; set; }
 
+        [DefaultValue(true)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.ShowQuestHUD.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.ShowQuestHUD.Tooltip")]
+        public bool showQuestHUD { get; set; }
+
+        [DefaultValue(false)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.NewQuestChatMessage.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.NewQuestChatMessage.Tooltip")]
+        public bool questChatMessage { get; set; }
+
+        [DefaultValue(700)]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        [Increment(50)]
+        [Range(300, 1000f)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Tooltip")]
+        public bool questDescTextWidth { get; set; }
+
         [Header("Effects/Feeback")]
 
         [DefaultValue(false)]
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.SmallerAbilityVFX.Label")]
-        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.SmallerAbilityVFS.Tooltip")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.SmallerAbilityVFX.Tooltip")]
         public bool smallVFX { get; set; }
 
         [DefaultValue(false)]
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.AnnounceLevelUp.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.AnnounceLevelUp.Tooltip")]
         public bool announceLevelUp { get; set; }
+
+
     }
 }

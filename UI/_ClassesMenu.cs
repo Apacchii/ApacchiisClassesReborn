@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.GameContent;
+using System.Drawing.Printing;
 
 namespace ApacchiisClassesMod2.UI
 {
@@ -38,6 +39,7 @@ namespace ApacchiisClassesMod2.UI
         UIPanel extraFunctionButton;
         UIText extraFunctionText;
 
+
         UIPanel passiveButton;
         UIText passiveStaticText;
         UIPanel ability1Button;
@@ -57,6 +59,9 @@ namespace ApacchiisClassesMod2.UI
         UIText abilityEffect4;
         UIText castType;
 
+        UIPanel questPanel;
+        UIText questText;
+        public int goldGainedFromQuests;
 
         int tipTimer = 0;
         string[] donoName =
@@ -111,12 +116,13 @@ namespace ApacchiisClassesMod2.UI
             "Base health is the health you get from anything but class stats.",
             "Base defense is the defense you get from anything but class stats.",
             "All relics have the same drop chance.",
-            $"This server's settings has a {(decimal)Configs._ACMConfigServer.Instance.classStatMult}x multiplier for class stats!",
-            $"This server's settings has a {(decimal)Configs._ACMConfigServer.Instance.enemyDamageMultiplier}x multiplier for all enemy damage!",
-            $"Healing Power does NOT affect potions [i:{ItemID.LesserHealingPotion}] or healing from other mods!]",
+            $"This server's settings has a {(Configs._ACMConfigServer.Instance.classStatMult).ToString("F2")}x multiplier for class stats!",
+            $"This server's settings has a {(Configs._ACMConfigServer.Instance.enemyDamageMultiplier).ToString("F2")}x multiplier for all enemy damage!",
+            $"Healing Power does NOT affect potions [i:{ItemID.LesserHealingPotion}] or healing from other mods!",
             $"You get Ability Power based on your currently held weapon's base DPS, the higher it is, the more you get!",
             $"Bottom left HUD too big or intrusive for your liking ? Enable 'Compact HUD' on the mod's Client Config!",
-            $"Do you keep forgetting to use your abilities ? Enable 'Blinking HUD' on the mod's Client Config!"
+            $"Do you keep forgetting to use your abilities ? Enable 'Blinking HUD' on the mod's Client Config!",
+            $"Daily quests reset everyday at 4:30am."
         };
         int chosenTip = 0;
         int prevTip = -1;
@@ -154,7 +160,7 @@ namespace ApacchiisClassesMod2.UI
             buttonTalents.HAlign = .5f;
             buttonTalents.VAlign = .5f;
             buttonTalents.Top.Set(335, 0f);
-            buttonTalents.Left.Set(210, 0f);
+            buttonTalents.Left.Set(110, 0f);
             buttonTalents.Width.Set(200, 0f);
             buttonTalents.Height.Set(50, 0f);
             buttonTalents.OnLeftClick += OpenTalents;
@@ -171,7 +177,7 @@ namespace ApacchiisClassesMod2.UI
             relicsButton.HAlign = .5f;
             relicsButton.VAlign = .5f;
             relicsButton.Top.Set(335, 0f);
-            relicsButton.Left.Set(-210, 0f);
+            relicsButton.Left.Set(-310, 0f);
             relicsButton.Width.Set(200, 0f);
             relicsButton.Height.Set(50, 0f);
             relicsButton.OnLeftClick += OpenRelics;
@@ -188,7 +194,7 @@ namespace ApacchiisClassesMod2.UI
             specsButton.HAlign = .5f;
             specsButton.VAlign = .5f;
             specsButton.Top.Set(335, 0f);
-            //specsButton.Left.Set(-105, 0f);
+            specsButton.Left.Set(-100, 0f);
             specsButton.Width.Set(200, 0f);
             specsButton.Height.Set(50, 0f);
             specsButton.OnLeftClick += OpenSpecs;
@@ -338,6 +344,23 @@ namespace ApacchiisClassesMod2.UI
             abilityEffect4.Left.Set(540, 0f);
             background.Append(abilityEffect4);
 
+            questPanel = new UIPanel();
+            questPanel.Width.Set(200, 0f);
+            questPanel.Height.Set(50, 0f);
+            questPanel.VAlign = .5f;
+            questPanel.HAlign = .5f;
+            questPanel.Top.Set(335, 0f);
+            questPanel.Left.Set(320, 0f);
+            questPanel.BackgroundColor = new Color(75, 75, 75);
+            questPanel.BorderColor = new Color(25, 25, 25);
+            questPanel.OnLeftClick += CompleteQuestButton;
+            Append(questPanel);
+
+            questText = new UIText("Daily Quest");
+            questText.VAlign = .5f;
+            questText.HAlign = .5f;
+            questPanel.Append(questText);
+
             base.OnInitialize();
         }
 
@@ -404,7 +427,6 @@ namespace ApacchiisClassesMod2.UI
             {
                 extraFunctionButton.BorderColor = new Color(25, 25, 25);
             }
-
 
             if (buttonTalents.IsMouseHovering || talentsText.IsMouseHovering)
             {
@@ -473,6 +495,7 @@ namespace ApacchiisClassesMod2.UI
 
             if(!passiveButton.IsMouseHovering && ! ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering)
             {
+                abilityName.TextColor = Color.White;
                 abilityName.SetText($"-{Language.GetTextValue("Mods.ApacchiisClassesMod2.PlayerStatsText")}-" +
                                     $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.TimesDied")}: {acmPlayer.timesDied}" +
                                     $"\n{Language.GetTextValue("Mods.ApacchiisClassesMod2.EnemiesKilled")}: {acmPlayer.enemiesKilled}" +
@@ -490,7 +513,7 @@ namespace ApacchiisClassesMod2.UI
                                        $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%");
             }
 
-            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering)
+            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering)
                 tick = false;
 
             if (passiveButton.IsMouseHovering)
@@ -583,6 +606,62 @@ namespace ApacchiisClassesMod2.UI
                 abilityEffect4.SetText(acmPlayer.Ult_Effect_4);
             }
 
+            //Quests
+            if (questPanel.IsMouseHovering || questText.IsMouseHovering)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+                questPanel.BorderColor = Color.Yellow;
+
+                if (!tick)
+                {
+                    SoundEngine.PlaySound(SoundID.MenuTick);
+                    tick = true;
+                }
+
+                ACMQuests questPlayer = Player.GetModPlayer<ACMQuests>();
+
+                if(questPlayer.chosenQuest != "")
+                {
+                    abilityName.TextColor = Color.Orange;
+                    abilityName.SetText($"{questPlayer.questName}");
+                    if (questPlayer.chosenQuest != "")
+                        abilityText.Width.Set(500, 0f);
+                    abilityText.SetText($"{questPlayer.questDesc}");
+
+                    abilityCooldown.SetText($"");
+                    //abilityCooldown.SetText($"Quests completed: {questPlayer.questsCompleted}\n" +
+                    //                        $"Gold gained: {goldGainedFromQuests}");
+
+                    //Remove all other info
+                    castType.SetText("");
+                    abilityEffect1.SetText("");
+                    abilityEffect2.SetText("");
+                    abilityEffect3.SetText("");
+                    abilityEffect4.SetText("Click the 'Daily Quest' button to complete");
+                }
+                else
+                {
+                    abilityName.TextColor = Color.Orange;
+                    abilityName.SetText($"Daily Quest");
+                    if (questPlayer.chosenQuest != "")
+                        abilityText.Width.Set(500, 0f);
+                    abilityText.SetText($"You've already completed your daily quest!");
+
+                    abilityCooldown.SetText($"");
+
+                    //Remove all other info
+                    castType.SetText("");
+                    abilityEffect1.SetText("");
+                    abilityEffect2.SetText("");
+                    abilityEffect3.SetText("");
+                    abilityEffect4.SetText("");
+                }
+            }
+            else
+            {
+                questPanel.BorderColor = new Color(25, 25, 25);
+            }
+
             //if(acmPlayer.equippedClass == "Gambler")
             //{
             //    abilityEffect3.Left.Set(480, 0f);
@@ -666,7 +745,12 @@ namespace ApacchiisClassesMod2.UI
                 GetInstance<ACM2ModSystem>()._MyDeck.SetState(new Specializations.MyDeck());
 
                 GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
+        }
 
+        private void CompleteQuestButton(UIMouseEvent evt, UIElement listeningElement)
+        {
+            ACMQuests questPlayer = Player.GetModPlayer<ACMQuests>();
+            questPlayer.CompleteQuest();
         }
     }
 }

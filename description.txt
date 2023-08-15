@@ -1,5 +1,6 @@
-Freatures:
-- 7 Classes (as of now)
+Features:
+- 6 Classes (as of now)
+- Daily Quests
 - As many levels as bosses you have in your playthrough (can be capped)
 - A dedicated accessory slot for classes
 - A unique talent tree for each class
@@ -11,7 +12,7 @@ Freatures:
 
 (Mod Configuration allows you to change how many stats you get from classes, how much damage/health enemies have/deal and much more, please take a look at them if you want to balance things out yourself)
 
-As of now there are 7 classes.
+As of now there are 6 classes.
 Each class has at least 1 passive ability, 2 active abilities, 1 ultimate ability, and 1 talent tree specific for that class.
 
 Classes level up automatically each time a boss is defeated and the levels are player and class-sided, which means your classes will all progress individually per character.
