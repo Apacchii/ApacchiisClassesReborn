@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using System.Drawing.Printing;
+using ApacchiisClassesMod2.Configs;
 
 namespace ApacchiisClassesMod2.UI.HUD
 {
@@ -142,8 +143,8 @@ namespace ApacchiisClassesMod2.UI.HUD
                 ACMQuests questPlayer = Player.GetModPlayer<ACMQuests>();
                 questName.VAlign = questVAlign;
                 questName.HAlign = questHAlign;
-                questDesc.Width.Set(500, 0f);
-                questName.Width.Set(500, 0f);
+                questDesc.Width.Set(ACMConfigClient.Instance.questDescTextWidth, 0f);
+                questName.Width.Set(ACMConfigClient.Instance.questDescTextWidth, 0f);
                 questName.SetText($"{questPlayer.questName}");
                 questDesc.SetText($"{questPlayer.questDesc}");
             }

@@ -1058,6 +1058,41 @@ namespace ApacchiisClassesMod2
                 GiveRewards();
                 ResetQuests();
             }
+
+            if (chosenQuest == "Plants vs Undead")
+            {
+                //Get the selected critter's item
+                Item plant = new Item();
+                try
+                {
+                    plant.SetDefaults(qPlantsVsUndeadList[_qPlantsVsDeadSelected]);
+                }
+                catch
+                {
+                    plant.netDefaults(qPlantsVsUndeadList[_qPlantsVsDeadSelected]);
+                }
+                int plantsInInv = 0;
+                int plantsObj = (int)(_qPlantsVsDeadToCompleteBase * _questDifficultyMultiplier);
+
+                //Do we have the critter
+                for (int i = 0; i < Main.InventorySlotsTotal; i++)
+                    if (Player.inventory[i].type == plant.type)
+                        plantsInInv += Player.inventory[i].stack;
+
+                //If we have it, complete the quest
+                if (plantsInInv >= plantsObj)
+                {
+                    for (int i = 0; i < Main.InventorySlotsTotal; i++)
+                    {
+                        if (Player.inventory[i].type == plant.type && Player.inventory[i].stack >= plantsObj)
+                        {
+                            Player.inventory[i].stack -= plantsObj;
+                            GiveRewards();
+                            ResetQuests();
+                        }
+                    }
+                }
+            }
         }
 
         public override void SaveData(TagCompound tag)

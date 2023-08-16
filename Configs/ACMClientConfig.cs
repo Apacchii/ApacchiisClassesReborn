@@ -32,13 +32,14 @@ namespace ApacchiisClassesMod2.Configs
         public bool questChatMessage { get; set; }
 
         [DefaultValue(700)]
-        [Slider]
-        [SliderColor(255, 255, 255)]
-        [Increment(50)]
-        [Range(300, 1000f)]
+        
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Tooltip")]
-        public bool questDescTextWidth { get; set; }
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        [Increment(50f)]
+        [Range(300f, 1000f)]
+        public float questDescTextWidth { get; set; }
 
         [Header("Effects/Feeback")]
 
