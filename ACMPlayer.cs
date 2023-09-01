@@ -170,6 +170,8 @@ namespace ApacchiisClassesMod2
         int nessieBaseCooldown;
         public bool hasMajorsCare;
         float majorsCareTimer;
+        public bool hasWindsRoar;
+        float _windsRoarCooldown;
         #endregion
 
         string[] nessieProcText =
@@ -389,7 +391,7 @@ namespace ApacchiisClassesMod2
         public int commanderBannerRange = 200;
         public int commanderBannerDuration = 60 * 10;
         public float commanderBannerEndurance = .85f;
-        public float commanderBannerDamage = 1.1f;
+        public float commanderBannerDamage = .1f;
         public int commanderBannerBuffDuration = 0;
         public int commanderBannerPersist = 60;
         public bool bannerFollowsPlayer;
@@ -824,6 +826,7 @@ namespace ApacchiisClassesMod2
             hasNessie = false;
             nessieBaseCooldown = 60 * 60;
             hasMajorsCare = false;
+            hasWindsRoar = false;
             #endregion
 
             #region Player Stats
@@ -961,7 +964,7 @@ namespace ApacchiisClassesMod2
             commanderUltActive = false;
             commanderUltDuration = 60 * 4;
             commanderBannerEndurance = .85f;
-            commanderBannerDamage = 1.1f;
+            commanderBannerDamage = .1f;
             commanderBannerRange = 200;
             commanderBannerDuration = 60 * 10;
             commanderBannerPersist = 60;
@@ -984,7 +987,7 @@ namespace ApacchiisClassesMod2
             scoutPassiveSpeedBonus = .15f;
             scoutOtherJump = false;
             scoutColaDuration = 60 * 4;
-            scoutColaDamageBonus = 1.25f;
+            scoutColaDamageBonus = .25f;
             scoutColaDamageBonusLevel = .015f;
             scoutTrapBaseDamage = 20;
             scoutTrapDamageLevel = 7;
@@ -1600,6 +1603,14 @@ namespace ApacchiisClassesMod2
                     Player.AddBuff(BuffType<Buffs.LeysAttackSpeed>(), duration);
             }
 
+            //Wind's Road Minon Heal
+            if (hasWindsRoar && _windsRoarCooldown <= 0f && proj.minion)
+            {
+                int heal = (int)(Player.statLifeMax2 * .01f * healingPower);
+                HealPlayer(1, 1, heal);
+                _windsRoarCooldown = 60 * 5f;
+            }
+
             int damageDealtFinal;
             if (!target.friendly && target.type != NPCID.TargetDummy && !target.SpawnedFromStatue)
             {
@@ -1697,8 +1708,7 @@ namespace ApacchiisClassesMod2
                             Main.projectile[p].timeLeft = 60 * 8;
                         }
                     }
-                }
-                    
+                }    
             }
 
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
@@ -1731,7 +1741,7 @@ namespace ApacchiisClassesMod2
                     else
                         CombatText.NewText(new Rectangle((int)Player.Center.X, (int)(Player.Center.Y) + 85, 1, 1), Color.IndianRed, "<", true, true);
                 }
-                modifiers.FinalDamage += mult;
+                modifiers.FinalDamage *= mult;
             }
 
             //Plague passive Plagued damage bonus
@@ -1754,13 +1764,13 @@ namespace ApacchiisClassesMod2
 
             if (isUnstableConcoctionReady)
             {
-                modifiers.FinalDamage += 3;
+                modifiers.FinalDamage *= 3;
                 isUnstableConcoctionReady = false;
             }
 
             if (bloodMageBloodEnchantment && Player.HeldItem.DamageType == DamageClass.Magic)
             {
-                modifiers.FinalDamage += (bloodMageDamageGain + 1f);
+                modifiers.FinalDamage *= (bloodMageDamageGain + 1f);
                 if (!bloodMageEnchantmentOnCooldown)
                 {
                     bloodMageEnchantmentOnCooldown = true;
@@ -1801,13 +1811,27 @@ namespace ApacchiisClassesMod2
             if (hasScout && scoutColaCurDuration > 0)
                 modifiers.FinalDamage += scoutColaDamageBonus;
 
-            modifiers.CritDamage += critDamageMult;
+            modifiers.CritDamage += critDamageMult - 1f;
 
-            // Insect reduced dmg vs bosses
+            // Insect reduced dmg vs worms
             if (equippedClass == "Plague" && proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>() && target.realLife != 0)
                 modifiers.FinalDamage *= .02f;
 
             base.ModifyHitNPCWithProj(proj, target, ref modifiers);
+        }
+
+        public override void PlayerConnect()
+        {
+            GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+            GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+            base.PlayerConnect();
+        }
+
+        public override void PlayerDisconnect()
+        {
+            GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+            GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+            base.PlayerDisconnect();
         }
 
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
@@ -1830,19 +1854,18 @@ namespace ApacchiisClassesMod2
                     else
                         CombatText.NewText(new Rectangle((int)target.position.X, (int)(target.position.Y + (target.height * 3f)), target.width / 2, target.height / 2), Color.IndianRed, "<", false, true);
                 }
-                modifiers.FinalDamage += mult;
+                modifiers.FinalDamage *= mult;
             }
 
             if (isUnstableConcoctionReady)
             {
-                modifiers.FinalDamage += 3;
+                modifiers.FinalDamage *= 3;
                 isUnstableConcoctionReady = false;
             }
 
-
             if (bloodMageBloodEnchantment && Player.HeldItem.DamageType == DamageClass.Magic)
             {
-                modifiers.FinalDamage += (bloodMageDamageGain + 1f);
+                modifiers.FinalDamage *= (bloodMageDamageGain + 1f);
 
                 if (!bloodMageEnchantmentOnCooldown)
                 {
@@ -1880,7 +1903,7 @@ namespace ApacchiisClassesMod2
             if (hasScout && scoutColaCurDuration > 0)
                 modifiers.FinalDamage += scoutColaDamageBonus;
 
-            modifiers.CritDamage += critDamageMult;
+            modifiers.CritDamage += critDamageMult - 1f;
 
             base.ModifyHitNPCWithItem(item, target, ref modifiers);
         }
@@ -1942,7 +1965,8 @@ namespace ApacchiisClassesMod2
                 bloodGemMeleeTimer--;
             nessieCooldown--;
             majorsCareTimer--;
-            
+            _windsRoarCooldown--;
+
             if (hasMajorsCare)
             {
                 if (majorsCareTimer <= 0f)
@@ -2501,8 +2525,8 @@ namespace ApacchiisClassesMod2
                 if (vanguardTalent_10 == "L" || vanguardTalent_10 == "B")
                     lifeMult += .08f;
 
-                lifeMult += talentSinkPlagueLeft * talentSinkPlagueLeftValue;
-                Player.GetDamage(DamageClass.Melee) += talentSinkPlagueRight * talentSinkPlagueRightValue;
+                lifeMult += talentSinkVanguardLeft * talentSinkVanguardLeftValue;
+                Player.GetDamage(DamageClass.Melee) += talentSinkVanguardRight * talentSinkVanguardRightValue;
                 #endregion
 
                 vanguardSpearDamage = vanguardSpearBaseDamage + 10 * vanguardLevel;
@@ -3125,7 +3149,10 @@ namespace ApacchiisClassesMod2
             if (hasPorcelainMask)
                 defenseMult -= .25f;
 
-            if(hasScout)
+            if (hasWindsRoar)
+                lifeMult += .02f;
+
+            if (hasScout)
                 lifeMult -= scoutLevel * .0035f * _ACMConfigServer.Instance.classStatMultNegative;
 
             if(equippedClass == "Plague")

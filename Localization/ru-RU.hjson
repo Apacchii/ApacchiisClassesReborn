@@ -98,8 +98,8 @@ Mods: {
 		BloodMage_Ult_Name: Регенерация
 		BloodMage_Ult_Prev: Регенераируйте ваше здоровье и ваших союзников каждую секунду через время.
 		BloodMage_Aghanims: a
-		# Commander
 		Commander_P_Name: Воля Командира
+		# Commander
 		Commander_P_Prev: За каждого слота миньона вы получайте малое количество сопротивление урона.
 		Commander_A1_Name: Военного Знамя
 		Commander_A1_Prev: Поставьте военное знаме перед вашими ногами, все игроки стоящие внутри этой области увеличат урон и снизят получаймый урон.
@@ -108,8 +108,8 @@ Mods: {
 		Commander_Ult_Name: Вдохновение
 		Commander_Ult_Prev: Вдохновите вас и ваших союзников, надиляя всем гарантированые критические удары на некий период времени.  (affects minions).
 		Commander_Aghanims: a
-		# Crusader
 		Crusader_P_Name: Tenacity
+		# Crusader
 		Crusader_P_Prev: Reduce damage taken by 3%. This effect is increased by an additional 4% while under the effects of a healing buff.
 		Crusader_A1_Name: Protection
 		Crusader_A1_Prev: Apply a healing buff to all players that slowly heals them each second. Players regen health at a rate of 1% of their max health p/sec.
@@ -118,8 +118,8 @@ Mods: {
 		Crusader_Ult_Name: Guardian Angel
 		Crusader_Ult_Prev: A guardian angel watches over everyone, granting all players a reduction to the damage they take for 10s.
 		Crusader_Aghanims: a
-		# Scout
 		Scout_P_Name: Подвижность
+		# Scout
 		Scout_P_Prev: Скаут может делать двойной прыжок и имеет увеличинаю скорость движения.
 		Scout_P_DisableDoubleJump: Отключить Пасивный Двойной прыжок Скаута
 		Scout_P_EnableDoubleJump: Включить Пасивный Двойной прыжок Скаута
@@ -131,8 +131,8 @@ Mods: {
 		Scout_Ult_Prev_1: Станьте Бесмертным на
 		Scout_Ult_Prev_2: секунд, и получите увеличат повышанную мобильность на некий период времени.
 		Scout_Aghanims: a
-		# Soulmancer
 		Soulmancer_P_Name: Вырывание Души
+		# Soulmancer
 		Soulmancer_P_Prev_1: Ударяя врагов магическим оружием имеет шанс вырвать фрагмент их души, причиняя вред ближайшим врагам.
 		Soulmancer_P_Prev_2: Те фрагменты души могут нанести критический урон.
 		Soulmancer_A1_Name: Потребление
@@ -143,8 +143,8 @@ Mods: {
 		Soulmancer_Ult_Name: Самопожертвование
 		Soulmancer_Ult_Prev: Стремительно вырьвите фрагменты вашей души, слегка истощая ваше здоровье за каждый фрагмент. Каждый фрагмент души наносит 1.5x урона у [Вырывание Души].
 		Soulmancer_Aghanims: a
-		# Vanguard
 		Vanguard_P_Name: Зачеруйте Броню
+		# Vanguard
 		Vanguard_P_Prev: Враги получают урон когда ударяя вас.
 		Vanguard_A1_Name: Копьё Света
 		Vanguard_A1_Prev: киньте копьё света, то копьё если оно близко к врагу, нанося всем врагам в окружении копья.
@@ -153,8 +153,8 @@ Mods: {
 		Vanguard_Ult_Name: Меч Правосудия
 		Vanguard_Ult_Prev: Гиганский меч падает с неба, нанеся тяжёлый урон и казня врагов.
 		Vanguard_Aghanims: a
-		# Gambler
 		Gambler_P_Name: Luck of the Draw
+		# Gambler
 		Gambler_P_Prev: Any damage you deal is randomized to deal between 75% and 125% damage.
 		Gambler_P_Feedback_Enabled: Click to disable the passive's visual feedback.
 		Gambler_P_Feedback_Disabled: Click to enable the passive's visual feedback.
@@ -393,7 +393,7 @@ Mods: {
 			}
 
 			BerserkersBrew: {
-				// DisplayName: Berserkers Brew
+				// DisplayName: Berserker's Brew
 				// Tooltip: ""
 			}
 
@@ -468,7 +468,7 @@ Mods: {
 			}
 
 			MajorsCare: {
-				// DisplayName: Majors Care
+				// DisplayName: Major's Care
 				// Tooltip: ""
 			}
 
@@ -483,7 +483,7 @@ Mods: {
 			}
 
 			MinionsRightsContract: {
-				// DisplayName: Minions Rights Contract
+				// DisplayName: Minion's Rights Contract
 				// Tooltip: ""
 			}
 
@@ -598,7 +598,7 @@ Mods: {
 			}
 
 			TheosCollar: {
-				// DisplayName: Theos Collar
+				// DisplayName: Theo's Collar
 				// Tooltip: ""
 			}
 
@@ -618,7 +618,7 @@ Mods: {
 			}
 
 			WornGloves: {
-				// DisplayName: Worn Gloves
+				// DisplayName: Old Glove
 				// Tooltip: ""
 			}
 
@@ -659,6 +659,11 @@ Mods: {
 
 			RelicFragment: {
 				// DisplayName: Relic Fragment
+				// Tooltip: ""
+			}
+
+			WindsRoar: {
+				// DisplayName: Wind's Roar
 				// Tooltip: ""
 			}
 		}
@@ -808,7 +813,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					Removes the ability cooldown bars from the HUD, reducing obstruction
-					(Default: On)
+					(Default: Off)
 					''' */
 			}
 
@@ -835,7 +840,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					Displays a message in chat whenever you level up a class
-					(Default: On)
+					(Default: Off)
 					''' */
 			}
 
@@ -864,6 +869,36 @@ Mods: {
 					Changes the max width the quest objective text will occupy, decrease if the text overlaps with other HUD elements
 					Useful for lower resolutions
 					(Default: 700)
+					''' */
+			}
+
+			TeamHUD: {
+				// Label: Team HUD
+				/* Tooltip:
+					'''
+					Displays on your screen other player's health values, selected classes and respawn timers
+					Especially useful for supportive classes
+					(Default: On)
+					''' */
+			}
+
+			TeamHUDPlacementHorizontal: {
+				// Label: Team HUD Horizontal Placement
+				/* Tooltip:
+					'''
+					Changes where the team HUD is placed on your screen horizontally
+					Value means screen width percentage, 0 is left side, 100 is right side
+					(Default: 0.8)
+					''' */
+			}
+
+			TeamHUDPlacementVertical: {
+				// Label: Team HUD Vertical Placement
+				/* Tooltip:
+					'''
+					Changes where the team HUD is placed on your screen vertically
+					Value means screen height percentage, 0 is the top of your screen, 100 is the bottom
+					(Default: 0.04)
 					''' */
 			}
 		}

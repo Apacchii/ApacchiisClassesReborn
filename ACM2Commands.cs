@@ -180,7 +180,7 @@ namespace ApacchiisClassesMod2
                 caller.Reply($"Added {lvls} cheat levels to the player's currently equipped class");
             }
 
-            if (args[0] == "resetHUD")
+            if (args[0] == "resetHUD" || args[0] == "rhud")
             {
                 if (Main.netMode != NetmodeID.Server)
                 {
@@ -191,7 +191,6 @@ namespace ApacchiisClassesMod2
                 return;
             }
 
-            //for esting purposes only, will ininitely increase quest difficulty
             if (args[0] == "newQuest" || args[0] == "nq")
             {
                 Main.player[player].GetModPlayer<ACMQuests>().SelectNewQuest();

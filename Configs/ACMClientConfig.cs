@@ -11,7 +11,7 @@ namespace ApacchiisClassesMod2.Configs
 
         [Header("HUD")]
 
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.CompactHUD.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.CompactHUD.Tooltip")]
         public bool compactHUD { get; set; }
@@ -32,7 +32,6 @@ namespace ApacchiisClassesMod2.Configs
         public bool questChatMessage { get; set; }
 
         [DefaultValue(700)]
-        
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.QuestDescTextWidth.Tooltip")]
         [Slider]
@@ -40,6 +39,30 @@ namespace ApacchiisClassesMod2.Configs
         [Increment(50f)]
         [Range(300f, 1000f)]
         public float questDescTextWidth { get; set; }
+
+        [DefaultValue(false)]
+        //[ReloadRequired]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.TeamHUD.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.TeamHUD.Tooltip")]
+        public bool teamHUD { get; set; }
+
+        [DefaultValue(.8f)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.TeamHUDPlacementHorizontal.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.TeamHUDPlacementHorizontal.Tooltip")]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        [Increment(.01f)]
+        [Range(0f, 1f)]
+        public float teamHUDPlacementHorizontal { get; set; }
+
+        [DefaultValue(.04f)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.TeamHUDPlacementVertical.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.TeamHUDPlacementVertical.Tooltip")]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        [Increment(.01f)]
+        [Range(0f, 1f)]
+        public float teamHUDPlacementVertical { get; set; }
 
         [Header("Effects/Feeback")]
 

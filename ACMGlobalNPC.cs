@@ -66,8 +66,17 @@ namespace ApacchiisClassesMod2
             {
                 if (npc.boss)
                 {
-                    damage = npc.lifeMax / 1000;
-                    npc.lifeRegen -= (int)(npc.lifeMax * .005f * 2);
+                    //Only deal 10% DoT to worm enemies
+                    if (npc.realLife != 0)
+                    {
+                        damage = npc.lifeMax / 10000;
+                        npc.lifeRegen -= (int)(npc.lifeMax * .005f * 2);
+                    }
+                    else
+                    {
+                        damage = npc.lifeMax / 1000;
+                        npc.lifeRegen -= (int)(npc.lifeMax * .005f * 2);
+                    }
                 }
                 else
                 {
@@ -81,7 +90,7 @@ namespace ApacchiisClassesMod2
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if(!npc.boss && !npc.friendly && npc.lifeMax > 5)
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Relics.RandomRelic>(), 200, 1, 1));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Relics.RandomRelic>(), 225, 1, 1));
 
             base.ModifyNPCLoot(npc, npcLoot);
         }

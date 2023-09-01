@@ -17,6 +17,7 @@ namespace ApacchiisClassesMod2
         public string chosenQuest = "";
         public string questName;
         public string questDesc;
+        bool _canCompleteQuest = false;
 
         string _worldEvil; // "Crimson"/"Corruption"
         public int chosenQuestReward = -573; //Random number. Unused, for now
@@ -80,7 +81,7 @@ namespace ApacchiisClassesMod2
             "Turn In", //Turn in a random item
             "Building Materials", //Turn in two types of blocks and torches
             "Evil Hunter", //Defeat enemies while in an evil biome
-            //"Bounty Hunter", //Defeat a rarer enemy
+            //"Bounty Hunter", //Defeat a rare enemy
         };
 
         public List<string> questList = new List<string>
@@ -137,6 +138,7 @@ namespace ApacchiisClassesMod2
             ItemID.IronskinPotion,
             ItemID.RegenerationPotion,
             ItemID.RecallPotion,
+            ItemID.Harpoon,
         };
 
         public List<int> qJewelryRequestList = new List<int>
@@ -224,7 +226,7 @@ namespace ApacchiisClassesMod2
                 ResetQuests();
                 SelectNewQuest();
                 if(ACMConfigClient.Instance.questChatMessage)
-                    Main.NewText($"A new daily quest is now available: {chosenQuest}");
+                    Main.NewText($"A new daily quest is now available: [{chosenQuest}]");
             }
 
             //Remove the text from the HUD in order to "hide" it
@@ -567,6 +569,7 @@ namespace ApacchiisClassesMod2
             _questRewardMultiplier = 1f;
             if (Main.hardMode)
                 _questDifficultyMultiplier += .25f;
+            _canCompleteQuest = true;
 
             qSlayerCount = 0;
             qUnicornHunterCount = 0;
@@ -638,7 +641,7 @@ namespace ApacchiisClassesMod2
             for (int i = 0; i < Main.maxNPCs; i++)
                 if (Main.npc[i].townNPC && Main.npc[i].active)
                     _townNPCCount++;
-            _goldReward += 1000 * _townNPCCount;
+            _goldReward += 0800 * _townNPCCount;
             _goldReward = (int)(_goldReward * _questRewardMultiplier);
 
             //Calculate coins to give
@@ -716,6 +719,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= obj;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -839,6 +843,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= obj;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -878,6 +883,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= obj;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -912,6 +918,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= 1;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -946,6 +953,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= 1;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -981,6 +989,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= obj;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -1089,6 +1098,7 @@ namespace ApacchiisClassesMod2
                             Player.inventory[i].stack -= plantsObj;
                             GiveRewards();
                             ResetQuests();
+                            break;
                         }
                     }
                 }
@@ -1101,6 +1111,7 @@ namespace ApacchiisClassesMod2
             tag.Add("chosenQuest", chosenQuest);
             tag.Add("_worldEvil", _worldEvil);
             tag.Add("_questDifficultyMultiplier", _questDifficultyMultiplier);
+            tag.Add("_canCompleteQuest", _canCompleteQuest);
 
             //Slayer
             tag.Add("qSlayerCount", qSlayerCount);
@@ -1127,13 +1138,6 @@ namespace ApacchiisClassesMod2
             tag.Add("qCrimsonHunterCount", qCrimsonHunterCount);
             tag.Add("qCrimsonHunterToComplete", qCrimsonHunterToComplete);
 
-            //Building Materials
-            //tag.Add("_qBuildingMaterialsWoodToCompleteBase", _qBuildingMaterialsWoodToCompleteBase);
-            //tag.Add("_qBuildingMaterialsWoodSelected", _qBuildingMaterialsWoodSelected);
-            //tag.Add("_qBuildingMaterialsSecondBlockToCompleteBase", _qBuildingMaterialsSecondBlockToCompleteBase);
-            //tag.Add("_qBuildingMaterialsSecondBlockSelected", _qBuildingMaterialsSecondBlockSelected);
-            //tag.Add("_qBuildingMaterialsTorchesToCompleteBase", _qBuildingMaterialsTorchesToCompleteBase);
-
             //Bounty Hunter
             tag.Add("_qBountyHunterSelected", _qBountyHunterSelected);
 
@@ -1146,6 +1150,7 @@ namespace ApacchiisClassesMod2
             chosenQuest = tag.GetString("chosenQuest");
             _worldEvil = tag.GetString("_worldEvil");
             _questDifficultyMultiplier = tag.GetFloat("_questDifficultyMultiplier");
+            _canCompleteQuest = tag.GetBool("_canCompleteQuest");
 
             //Slayer
             qSlayerCount = tag.GetInt("qSlayerCount");
@@ -1171,13 +1176,6 @@ namespace ApacchiisClassesMod2
             //Evil Hunter
             qCrimsonHunterCount = tag.GetInt("qCrimsonHunterCount");
             qCrimsonHunterToComplete = tag.GetInt("qCrimsonHunterToComplete");
-
-            //Building Materials
-            //_qBuildingMaterialsWoodToCompleteBase = tag.GetInt("_qBuildingMaterialsWoodToCompleteBase");
-            //_qBuildingMaterialsWoodSelected = tag.GetInt("_qBuildingMaterialsWoodSelected");
-            //_qBuildingMaterialsSecondBlockToCompleteBase = tag.GetInt("_qBuildingMaterialsSecondBlockToCompleteBase");
-            //_qBuildingMaterialsSecondBlockSelected = tag.GetInt("_qBuildingMaterialsSecondBlockSelected");
-            //_qBuildingMaterialsTorchesToCompleteBase = tag.GetInt("_qBuildingMaterialsTorchesToCompleteBase");
 
             //Bounty Hunter
             _qBountyHunterSelected = tag.GetInt("_qBountyHunterSelected");

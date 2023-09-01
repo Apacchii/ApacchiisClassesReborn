@@ -22,6 +22,7 @@ namespace ApacchiisClassesMod2.Items
             Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.value = Item.sellPrice(0, 0, 50, 0);
             Item.rare = 1;
+            Item.consumable = true;
 		}
 
         public override void AddRecipes()
@@ -43,24 +44,11 @@ namespace ApacchiisClassesMod2.Items
             {
                 player.GetModPlayer<ACMPlayer>().cardsPoints++;
                 Main.NewText($"+1 Rune draw. You now have {player.GetModPlayer<ACMPlayer>().cardsPoints} draws");
-                Item.stack--;
-                if (Item.stack == 0)
-                    Item.TurnToAir();
+                //Item.stack--;
+                //if (Item.stack == 0)
+                //    Item.TurnToAir();
             }
             base.RightClick(player);
-        }
-
-        public override void UseAnimation(Player player)
-        {
-            
-
-            base.UseAnimation(player);
-        }
-
-        public override bool? UseItem(Player player)
-        {
-            
-            return base.UseItem(player);
         }
     }
 }

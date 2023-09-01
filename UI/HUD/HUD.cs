@@ -10,16 +10,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using System.Drawing.Printing;
 using ApacchiisClassesMod2.Configs;
+using System.Linq;
+using Humanizer;
 
 namespace ApacchiisClassesMod2.UI.HUD
 {
     class HUD : UIState
     {
         UIImage backBar1;
-        UIImage curBar1;
+        Bar curBar1;
         UIText text1;
         UIImage backBar2;
-        UIImage curBar2;
+        Bar curBar2;
         UIText text2;
         UIImage backBar;
         Bar curBar;
@@ -33,10 +35,14 @@ namespace ApacchiisClassesMod2.UI.HUD
         float questVAlign = .01f;
         float questHAlign = .5f;
 
+        //Team HUD
+        int _playersConnected;
+        Bar[] teamPanel;
+        UIText[] teamName;
+        Bar[] teamHealth;
+        Bar[] teamBackHealth;
+        UIText[] teamHealthNumber;
 
-        float q1;
-        float q2;
-        float q3;
         //float lifeRegenLeftOffset = GetInstance<Configs.ACMConfigClient>().HealingHUDOffset;
 
         int blinkTimer = 0;
@@ -75,11 +81,12 @@ namespace ApacchiisClassesMod2.UI.HUD
             backBar1.Height.Set(14, 0f);
             backBar.Append(backBar1);
 
-            curBar1 = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/AbilityBar", ReLogic.Content.AssetRequestMode.DoNotLoad).Value);
+            curBar1 = new Bar();
             curBar1.Height.Set(12, 0f);
             curBar1.Width.Set(0, 0f);
             curBar1.Top.Set(1, 0f);
             curBar1.Left.Set(1, 0f);
+            backBar1.Append(curBar1);
 
             text1 = new UIText("", .75f);
             text1.Top.Set(-15, 0f);
@@ -94,11 +101,12 @@ namespace ApacchiisClassesMod2.UI.HUD
             backBar2.Height.Set(14, 0f);
             backBar.Append(backBar2);
 
-            curBar2 = new UIImage((Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/AbilityBar", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value));
+            curBar2 = new Bar();
             curBar2.Height.Set(12, 0f);
             curBar2.Width.Set(0, 0f);
             curBar2.Top.Set(1, 0f);
             curBar2.Left.Set(1, 0f);
+            backBar2.Append(curBar2);
 
             text2 = new UIText("", .75f);
             text2.Top.Set(-15, 0f);
@@ -114,6 +122,7 @@ namespace ApacchiisClassesMod2.UI.HUD
             #region Class-Specific
             #endregion
 
+            //Quests
             questName = new UIText("", .9f);
             questName.VAlign = questVAlign;
             questName.HAlign = questHAlign;
@@ -128,7 +137,80 @@ namespace ApacchiisClassesMod2.UI.HUD
             questName.Append(questDesc);
 
 
+            //Team HUD
+            //Get connected players, except ourselves, unused but might be useful later
+            for (int i = 0; i < 255; i++)
+            {
+                if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].name != null)
+                    _playersConnected++;
+            }
+
+            teamPanel = new Bar[10];
+            teamHealth = new Bar[10];
+            teamBackHealth = new Bar[10];
+            teamName = new UIText[10];
+            teamHealthNumber = new UIText[10];
+            int spacing;
+
+            for (int i = 0; i < 10; i++)
+            {    
+                //Avoids the panels from skipping 1 slot
+                if (i >= Main.myPlayer)
+                    spacing = 35;
+                else
+                    spacing = 0;
+
+                if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team)
+                {
+                    //Invisible background Panels
+                    teamPanel[i] = new Bar();
+                    teamPanel[i].Top.Set(35 * i - spacing, 0f);
+                    teamPanel[i].Width.Set(150, 0f);
+                    teamPanel[i].Height.Set(35, 0f);
+                    teamPanel[i].VAlign = ACMConfigClient.Instance.teamHUDPlacementVertical;
+                    teamPanel[i].HAlign = ACMConfigClient.Instance.teamHUDPlacementHorizontal;
+                    teamPanel[i].backgroundColor = new Color(0, 0, 0, 0);
+                    Append(teamPanel[i]);
+
+                    //Player Name
+                    teamName[i] = new UIText("", .6f);
+                    teamName[i].Left.Set(5, 0f);
+                    teamName[i].Top.Set(5, 0f);
+                    teamPanel[i].Append(teamName[i]);
+
+                    //Health Bar Background
+                    teamBackHealth[i] = new Bar();
+                    teamBackHealth[i].Width.Set(120, 0f);
+                    teamBackHealth[i].Height.Set(10, 0f);
+                    teamBackHealth[i].Top.Set(21, 0f);
+                    teamBackHealth[i].Left.Set(5, 0f);
+                    teamBackHealth[i].backgroundColor = new Color(25, 25, 25);
+                    teamPanel[i].Append(teamBackHealth[i]);
+
+                    //Health Bar Front
+                    teamHealth[i] = new Bar();
+                    teamHealth[i].Width.Set(120, 0f);
+                    teamHealth[i].Height.Set(10, 0f);
+                    teamHealth[i].Top.Set(21, 0f);
+                    teamHealth[i].Left.Set(5, 0f);
+                    teamHealth[i].backgroundColor = Color.Green;
+                    teamPanel[i].Append(teamHealth[i]);
+
+                    //Player Health Percentage
+                    teamHealthNumber[i] = new UIText("", .6f);
+                    teamHealthNumber[i].Left.Set(130, 0f);
+                    teamHealthNumber[i].Top.Set(21, 0f);
+                    teamPanel[i].Append(teamHealthNumber[i]);
+                }
+            }
+            
             base.OnInitialize();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            
+            base.Draw(spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
@@ -136,8 +218,37 @@ namespace ApacchiisClassesMod2.UI.HUD
             Player Player = Main.player[Main.myPlayer];
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
+            if (ACMConfigClient.Instance.teamHUD)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team)
+                    {
+                        //!! - Type '/acr rhud' in chat for these changes to update! <- text for config
+                        teamPanel[i].VAlign = ACMConfigClient.Instance.teamHUDPlacementVertical;
+                        teamPanel[i].HAlign = ACMConfigClient.Instance.teamHUDPlacementHorizontal;
+
+                        //Name
+                        if (!Main.player[i].dead)
+                            teamName[i].SetText($"{Main.player[i].name} [{Main.player[i].GetModPlayer<ACMPlayer>().equippedClass}]");
+                        else
+                            teamName[i].SetText($"{Main.player[i].name} [Respawning in: {Main.player[i].respawnTimer / 60}s]");
+
+                        //Health
+                        int _healingPlayerIsTaking = Main.player[i].GetModPlayer<ACMPlayer>().healthToRegen + Main.player[i].GetModPlayer<ACMPlayer>().healthToRegenMedium + Main.player[i].GetModPlayer<ACMPlayer>().healthToRegenSlow + Main.player[i].GetModPlayer<ACMPlayer>().healthToRegenSnail + Main.player[i].GetModPlayer<ACMPlayer>().healthToRegenSecond;
+                        float _fill = (float)Main.player[i].statLife / (float)Main.player[i].statLifeMax2;
+                        teamHealth[i].Width.Set(120f * _fill, 0f);
+                        teamHealth[i].backgroundColor = Color.Lerp(Color.Red, Color.Green, _fill);
+                        if (_healingPlayerIsTaking <= 0) //Sometimes bugs, does not update values for other players, ininitely stacks and later randomly resets
+                            teamHealthNumber[i].SetText($"{((float)Main.player[i].statLife / (float)Main.player[i].statLifeMax2 * 100f).ToString("F0")}%");
+                        else
+                            teamHealthNumber[i].SetText($"{((float)Main.player[i].statLife / (float)Main.player[i].statLifeMax2 * 100f).ToString("F0")}% [c/90ee90:+{_healingPlayerIsTaking}]");
+                    }
+                }
+            }
+
             //Quest HUD
-            showQuestHUD = Configs.ACMConfigClient.Instance.showQuestHUD;
+            showQuestHUD = ACMConfigClient.Instance.showQuestHUD;
             if (showQuestHUD)
             {
                 ACMQuests questPlayer = Player.GetModPlayer<ACMQuests>();
@@ -154,8 +265,6 @@ namespace ApacchiisClassesMod2.UI.HUD
                 questDesc.SetText($"");
             }
             
-
-
             blinkTimer++;
 
             //lifeRegenLeftOffset = GetInstance<Configs.ACMConfigClient>().HealingHUDOffset;
@@ -177,31 +286,51 @@ namespace ApacchiisClassesMod2.UI.HUD
             text1.SetText("");
             text1.SetText("");
 
-            if (acmPlayer.ability1Cooldown <= 0)
-                backBar1.Append(curBar1);
-            else
-                curBar1.Remove();
+            //if (acmPlayer.ability1Cooldown <= 0)
+            //    backBar1.Append(curBar1);
+            //else
+            //    curBar1.Remove();
+            //
+            //if (acmPlayer.ability2Cooldown <= 0)
+            //    backBar2.Append(curBar2);
+            //else
+            //    curBar2.Remove();
 
-            if (acmPlayer.ability2Cooldown <= 0)
-                backBar2.Append(curBar2);
-            else
-                curBar2.Remove();
-
-            inCombat.SetText("" + (acmPlayer.inBattleTimer / 60 + 1));
+            inCombat.SetText($"{(acmPlayer.inBattleTimer / 60 + 1)}");
             if (acmPlayer.inBattleTimer > 0)
                 backBar.Append(inCombat);
             else
                 inCombat.Remove();
 
-            //q = acmPlayer.ability1Cooldown / acmPlayer.ability1MaxCooldown;
-            //curBar1.Width.Set(q * -100, 0f);
+            //float q;
+            //q = (float)acmPlayer.ability1Cooldown / (float)acmPlayer.ability1MaxCooldown;
+            //curBar1.Width.Set(q * 100, 0f);
             //
-            //q = acmPlayer.ability2Cooldown / acmPlayer.ability2MaxCooldown;
-            //curBar2.Width.Set(q * -100, 0f);
+            //q = (float)acmPlayer.ability2Cooldown / (float)acmPlayer.ability2MaxCooldown;
+            //curBar2.Width.Set(q * 100, 0f);
 
             text1.SetText("A1: " + (acmPlayer.ability1Cooldown / 60) + " / " + (int)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr));
             text2.SetText("A2: " + (acmPlayer.ability2Cooldown / 60) + " / " + (int)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr));
             text.SetText("Ult: " + acmPlayer.ultCharge + " / " + acmPlayer.ultChargeMax);
+
+            if (acmPlayer.ability1Cooldown > 0)
+            {
+                float q1 = (float)acmPlayer.ability1Cooldown / (float)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr) / 60;
+                curBar1.Width.Set(q1 * 100, 0f);
+            }
+
+            if (acmPlayer.ability2Cooldown > 0)
+            {
+                float q2 = (float)acmPlayer.ability2Cooldown / (float)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr) / 60;
+                curBar2.Width.Set(q2 * 100, 0f);
+            }
+
+            if (acmPlayer.ultCharge > 0)
+            {
+
+                float q3 = (float)acmPlayer.ultCharge / (float)acmPlayer.ultChargeMax;
+                curBar.Width.Set(q3 * 100, 0f);
+            }
 
             if (acmPlayer.hasBloodMage)
             {
@@ -209,34 +338,13 @@ namespace ApacchiisClassesMod2.UI.HUD
                 {
                     text2.SetText("Toggled: On");
                     backBar2.Append(curBar2);
+                    backBar2.Width.Set(100, 0f);
                 }
                 else
                 {
                     text2.SetText("Toggled: Off");
                     curBar2.Remove();
                 }
-            }
-
-            if (acmPlayer.ability1Cooldown > 0)
-            {
-                q1 = acmPlayer.ability1Cooldown / acmPlayer.ability1MaxCooldown;
-                //q1 = Utils.Clamp(q1, 0f, 1f);
-                curBar1.Width.Set(q1 * 100, 0f);
-            }
-
-            if (acmPlayer.ability2Cooldown > 0)
-            {
-                q2 = acmPlayer.ability2MaxCooldown / acmPlayer.ability2Cooldown;
-                //q2 = Utils.Clamp(q2, 0f, 1f);
-                curBar2.Width.Set(q2 * 100, 0f);
-                //Main.NewText("" + q2);
-            }
-
-            if (acmPlayer.ultCharge > 0)
-            {
-                q3 = acmPlayer.ultCharge / acmPlayer.ultChargeMax;
-                //q3 = Utils.Clamp(q3, 0f, 1f);
-                curBar.Width.Set(q3 * 100, 0f);
             }
 
             if (acmPlayer.compactHUD)
@@ -291,13 +399,13 @@ namespace ApacchiisClassesMod2.UI.HUD
                             if (acmPlayer.ability1Cooldown == 0)
                             {
                                 //backBar1.Color = Color.Yellow;
-                                curBar1.Color = Color.Yellow;
+                                curBar1.backgroundColor = Color.Yellow;
                             }
 
                             if (acmPlayer.ability2Cooldown == 0)
                             {
                                 //backBar2.Color = Color.Yellow;
-                                curBar2.Color = Color.Yellow;
+                                curBar2.backgroundColor = Color.Yellow;
                             }
 
                             if (acmPlayer.ultCharge == acmPlayer.ultChargeMax)
@@ -317,12 +425,9 @@ namespace ApacchiisClassesMod2.UI.HUD
 
                     if (!acmPlayer.compactHUD)
                     {
-                        //backBar1.Color = Color.White;
-                        curBar1.Color = Color.White;
-                        //backBar2.Color = Color.White;
-                        curBar2.Color = Color.White;
-                        //backBar.Color = Color.White;
                         curBar.backgroundColor = Color.White;
+                        curBar1.backgroundColor = Color.White;
+                        curBar2.backgroundColor = Color.White;
                     }
                 }
 

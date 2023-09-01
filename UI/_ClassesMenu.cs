@@ -89,6 +89,7 @@ namespace ApacchiisClassesMod2.UI
             $"[i:{ItemID.Heart}] Thank you for your support, @ris! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @Serenity! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @Sheseck! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Wendy! [i:{ItemID.Heart}]",
 
 
 
