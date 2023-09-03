@@ -138,7 +138,7 @@ namespace ApacchiisClassesMod2.UI.HUD
 
 
             //Team HUD
-            //Get connected players, except ourselves, unused but might be useful later
+            //Get connected players, except ourselves, unused but might be useful later (does not work, needs per-frame/event updating)
             for (int i = 0; i < 255; i++)
             {
                 if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].name != null)
@@ -160,7 +160,7 @@ namespace ApacchiisClassesMod2.UI.HUD
                 else
                     spacing = 0;
 
-                if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team)
+                if (Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient)
                 {
                     //Invisible background Panels
                     teamPanel[i] = new Bar();
@@ -170,13 +170,11 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamPanel[i].VAlign = ACMConfigClient.Instance.teamHUDPlacementVertical;
                     teamPanel[i].HAlign = ACMConfigClient.Instance.teamHUDPlacementHorizontal;
                     teamPanel[i].backgroundColor = new Color(0, 0, 0, 0);
-                    Append(teamPanel[i]);
 
                     //Player Name
                     teamName[i] = new UIText("", .6f);
                     teamName[i].Left.Set(5, 0f);
                     teamName[i].Top.Set(5, 0f);
-                    teamPanel[i].Append(teamName[i]);
 
                     //Health Bar Background
                     teamBackHealth[i] = new Bar();
@@ -185,7 +183,6 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamBackHealth[i].Top.Set(21, 0f);
                     teamBackHealth[i].Left.Set(5, 0f);
                     teamBackHealth[i].backgroundColor = new Color(25, 25, 25);
-                    teamPanel[i].Append(teamBackHealth[i]);
 
                     //Health Bar Front
                     teamHealth[i] = new Bar();
@@ -194,13 +191,12 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamHealth[i].Top.Set(21, 0f);
                     teamHealth[i].Left.Set(5, 0f);
                     teamHealth[i].backgroundColor = Color.Green;
-                    teamPanel[i].Append(teamHealth[i]);
+
 
                     //Player Health Percentage
                     teamHealthNumber[i] = new UIText("", .6f);
                     teamHealthNumber[i].Left.Set(130, 0f);
                     teamHealthNumber[i].Top.Set(21, 0f);
-                    teamPanel[i].Append(teamHealthNumber[i]);
                 }
             }
             
@@ -224,6 +220,12 @@ namespace ApacchiisClassesMod2.UI.HUD
                 {
                     if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team)
                     {
+                        Append(teamPanel[i]);
+                        teamPanel[i].Append(teamName[i]);
+                        teamPanel[i].Append(teamBackHealth[i]);
+                        teamPanel[i].Append(teamHealth[i]);
+                        teamPanel[i].Append(teamHealthNumber[i]);
+
                         //!! - Type '/acr rhud' in chat for these changes to update! <- text for config
                         teamPanel[i].VAlign = ACMConfigClient.Instance.teamHUDPlacementVertical;
                         teamPanel[i].HAlign = ACMConfigClient.Instance.teamHUDPlacementHorizontal;
@@ -244,7 +246,16 @@ namespace ApacchiisClassesMod2.UI.HUD
                         else
                             teamHealthNumber[i].SetText($"{((float)Main.player[i].statLife / (float)Main.player[i].statLifeMax2 * 100f).ToString("F0")}% [c/90ee90:+{_healingPlayerIsTaking}]");
                     }
+                    else
+                    {
+                        if (teamPanel[i] != null)
+                        {
+                            teamPanel[i].RemoveAllChildren();
+                            teamPanel[i].Remove();
+                        }
+                    }
                 }
+                
             }
 
             //Quest HUD

@@ -1820,19 +1820,19 @@ namespace ApacchiisClassesMod2
             base.ModifyHitNPCWithProj(proj, target, ref modifiers);
         }
 
-        public override void PlayerConnect()
-        {
-            GetInstance<ACM2ModSystem>()._HUD.SetState(null);
-            GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
-            base.PlayerConnect();
-        }
-
-        public override void PlayerDisconnect()
-        {
-            GetInstance<ACM2ModSystem>()._HUD.SetState(null);
-            GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
-            base.PlayerDisconnect();
-        }
+        //public override void PlayerConnect()
+        //{
+        //    GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+        //    GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+        //    base.PlayerConnect();
+        //}
+        //
+        //public override void PlayerDisconnect()
+        //{
+        //    GetInstance<ACM2ModSystem>()._HUD.SetState(null);
+        //    GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+        //    base.PlayerDisconnect();
+        //}
 
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
         {
