@@ -646,7 +646,7 @@ Mods: {
 		BloodMage_A2_Prev: Зачеруйте ваше оружие собственной кровью, постепенно теряя ваше здоровье но увеличивая наносимый урон.
 		/* BloodMage_A2_Prev_2: Increase the damage you deal and refunds the health cost if an enemy is hit. */
 		BloodMage_Ult_Name: Регенерация
-		BloodMage_Ult_Prev: Регенераируйте ваше здоровье и ваших союзников каждую секунду через время.
+		BloodMage_Ult_Prev: Regen some of your health over a duration.
 		/* BloodMage_Aghanims: a */
 		# Commander
 		Commander_P_Name: Воля Командира

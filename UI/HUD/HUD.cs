@@ -192,7 +192,6 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamHealth[i].Left.Set(5, 0f);
                     teamHealth[i].backgroundColor = Color.Green;
 
-
                     //Player Health Percentage
                     teamHealthNumber[i] = new UIText("", .6f);
                     teamHealthNumber[i].Left.Set(130, 0f);
@@ -218,7 +217,7 @@ namespace ApacchiisClassesMod2.UI.HUD
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team)
+                    if (Main.player[i].active && Main.myPlayer != i && Main.netMode == NetmodeID.MultiplayerClient && Main.player[i].team == Main.player[Main.myPlayer].team && Main.player[Main.myPlayer].team != 0)
                     {
                         Append(teamPanel[i]);
                         teamPanel[i].Append(teamName[i]);

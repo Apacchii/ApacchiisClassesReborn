@@ -9,6 +9,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class AghanimsScepter : ModItem
 	{
+        bool warning = false;
         public string desc = "[Effect varies on class]\n" +
                              "Upgrades some of your class' abilities and/or stats";
 
@@ -27,8 +28,9 @@ namespace ApacchiisClassesMod2.Items.Relics
 			Item.value = Item.sellPrice(0, 5, 0, 0);
             Item.rare = ItemRarityID.Quest;
 
+
             Item.GetGlobalItem<ACMGlobalItem>().isRelic = true;
-            Item.GetGlobalItem<ACMGlobalItem>().desc = desc;
+            Item.GetGlobalItem<ACMGlobalItem>().desc = desc + "\n";
         }
 
         public override void UpdateVanity(Player player)
@@ -50,7 +52,6 @@ namespace ApacchiisClassesMod2.Items.Relics
                 acmPlayer.bannerFollowsPlayer = true;
             }
                 
-
             if (acmPlayer.hasVanguard)
             {
                 acmPlayer.vanguardPassiveReflectAmount += .65f;
@@ -98,55 +99,52 @@ namespace ApacchiisClassesMod2.Items.Relics
 
             TooltipLine effect = new TooltipLine(Mod, "Effect", "No class equipped");
 
-            switch (modPlayer.equippedClass)
-            {
-                case "Blood Mage":
-                    effect.Text = "- Ability power is increased by 15%\n" +
-                                  "- Cooldown reduction increased by 5%\n" +
-                                  "- Transfusion now also heals you and teammates for 10% of the damage it deals";
-                    break;
-                case "Commander":
-                    effect.Text = "- Banner cooldown decreased by 5 seconds\n" +
-                                  "- Banner range increased by 25\n" +
-                                  "- Banner now follows you around";
-                    break;
-                case "Scout":
-                    effect.Text = "- Ultimate invulnerability increased by 1 second\n" +
-                                  "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
-                    break;
-                case "Vanguard":
-                    effect.Text = "- Decreases damage taken by 4%\n" +
-                                  "- Passive reflected damage is increased by 65%";
-                    break;
-                case "Soulmancer":
-                    effect.Text = "- Soul Shatter now casts at your cursor's position\n" +
-                                  "- Soul Shatter range decreased by 175\n" +
-                                  "- Ability power is increased by 6%";
-                    break;
-                case "Crusader":
-                    effect.Text = "- Ability Power increased by 10%\n" +
-                                  "- Cooldown Reduction increased by 10%\n" +
-                                  "- Healing Power increased by 10%\n" +
-                                  "- Ultimate Cost reduced by 10%";
-                    break;
-                case "Gambler":
-                    effect.Text = "- Lucky Streak duration increased by 1 second\n" +
-                                  "- Roll The Dice base damage increased by 12\n" +
-                                  "- Each dice that hits an enemy heals you between 0.25% to 0.5% of your max health";
-                    break;
-
-                case "Plague":
-                    effect.Text = "- Deadzone no longer requires line of sight to strike enemies\n" +
-                                  "- Increases Deadzone range by 100\n" +
-                                  "- Deadzone now applies Plagued to enemies hit for 20% of its original duration\n" +
-                                  "- Ultimate cost reduced by 10%";
-                    break;
-
-                default:
-                    effect.Text = "No class equipped!";
-                    break;
-            }
-
+            //switch (modPlayer.equippedClass)
+            //{
+            //    case "Blood Mage":
+            //        effect.Text = "- Ability power is increased by 15%\n" +
+            //                      "- Cooldown reduction increased by 5%\n" +
+            //                      "- Transfusion now also heals you and teammates for 10% of the damage it deals";
+            //        break;
+            //    case "Commander":
+            //        effect.Text = "- Banner cooldown decreased by 5 seconds\n" +
+            //                      "- Banner range increased by 25\n" +
+            //                      "- Banner now follows you around";
+            //        break;
+            //    case "Scout":
+            //        effect.Text = "- Ultimate invulnerability increased by 1 second\n" +
+            //                      "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
+            //        break;
+            //    case "Vanguard":
+            //        effect.Text = "- Decreases damage taken by 4%\n" +
+            //                      "- Passive reflected damage is increased by 65%";
+            //        break;
+            //    case "Soulmancer":
+            //        effect.Text = "- Soul Shatter now casts at your cursor's position\n" +
+            //                      "- Soul Shatter range decreased by 175\n" +
+            //                      "- Ability power is increased by 6%";
+            //        break;
+            //    case "Crusader":
+            //        effect.Text = "- Ability Power increased by 10%\n" +
+            //                      "- Cooldown Reduction increased by 10%\n" +
+            //                      "- Healing Power increased by 10%\n" +
+            //                      "- Ultimate Cost reduced by 10%";
+            //        break;
+            //    case "Gambler":
+            //        effect.Text = "- Lucky Streak duration increased by 1 second\n" +
+            //                      "- Roll The Dice base damage increased by 12\n" +
+            //                      "- Each dice that hits an enemy heals you between 0.25% to 0.5% of your max health";
+            //        break;
+            //
+            //    case "Plague":
+            //
+            //        break;
+            //
+            //    default:
+            //        effect.Text = "No class equipped!";
+            //        break;
+            //}
+            effect.Text = modPlayer.aghanimsText;
             tooltips.Add(effect);
 
             foreach (TooltipLine line in tooltips)
@@ -171,7 +169,12 @@ namespace ApacchiisClassesMod2.Items.Relics
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
         {
             if (!modded || player.GetModPlayer<ACMPlayer>().hasAghanimsShard)
-                return false;
+                if (player.GetModPlayer<ACMPlayer>().hasAghanimsShard && Main.mouseLeft)
+                {
+                    Main.NewText("Cannot equip. Aghanim's Shard has already been consumed!");
+                    return false;
+                }
+                else return false;
 
             return base.CanEquipAccessory(player, slot, modded);
         }

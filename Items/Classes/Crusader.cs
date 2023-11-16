@@ -171,6 +171,11 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Desc = "A guardian angel watches over everyone, granting all players a reduction to the damage they take for a duration.";
             acmPlayer.Ult_Effect_1 = $"Damage Reduction: {(decimal)((acmPlayer.crusaderGuardianAngelEndurance + acmPlayer.crusaderGuardianAngelEnduranceLevel * acmPlayer.crusaderLevel) * 100)}% = {acmPlayer.crusaderGuardianAngelEndurance * 100}% + {acmPlayer.crusaderGuardianAngelEnduranceLevel * 100}% p/Level({(decimal)(acmPlayer.crusaderGuardianAngelEnduranceLevel * acmPlayer.crusaderLevel * 100)}%)";
             acmPlayer.Ult_Effect_2 = $"Duration: {acmPlayer.crusaderGuardianAngelDuration / 60}s";
+
+            acmPlayer.aghanimsText = "- Ability Power increased by 10%\n" +
+                                     "- Cooldown Reduction increased by 10%\n" +
+                                     "- Healing Power increased by 10%\n" +
+                                     "- Ultimate Cost reduced by 10%";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

@@ -5,15 +5,16 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ApacchiisClassesMod2.Configs;
 using Terraria.Localization;
+using Terraria.Audio;
 
 namespace ApacchiisClassesMod2.Items.Classes
 {
 	public class BloodMage : ModItem
 	{
-        float baseStat1 = .007f;
+        float baseStat1 = .0065f;
         float stat1; // Magic Damage
 
-        float baseStat2 = .011f;
+        float baseStat2 = .012f;
         float stat2; // Max Mana
 
         float baseStat3 = .0045f;
@@ -120,12 +121,12 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.hasClass = true;
             acmPlayer.hasBloodMage = true;
             acmPlayer.equippedClass = "Blood Mage";
-            acmPlayer.ultChargeMax = 3780;
-            acmPlayer.ability1MaxCooldown = 38;
+            acmPlayer.ultChargeMax = 3900;
+            acmPlayer.ability1MaxCooldown = 39;
             acmPlayer.ability2MaxCooldown = 0;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Magic Damage
-            stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Magic Crit
+            stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Max Mana
             stat3 = baseStat3 * _ACMConfigServer.Instance.classStatMult; // Health
             badStat = baseBadStat * _ACMConfigServer.Instance.classStatMultNegative; // Defense
 
@@ -160,7 +161,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A1_Name");
             acmPlayer.A1_Desc = $"Throw a blob of your own blood to seek out an enemy, when the blob hits its target it will return to you with a bit of the enemy's blood and heal you for 10% of the enemy's max health.";
             acmPlayer.A1_Effect_1 = $"Damage: {(decimal)((acmPlayer.bloodMageSiphonBaseDamage + acmPlayer.bloodMageLevel * 6) * acmPlayer.abilityPower)} = {acmPlayer.bloodMageSiphonBaseDamage} + 6 p/Level({ acmPlayer.bloodMageLevel * 6}) * AP";
-            acmPlayer.A1_Effect_2 = $"Max Healing: {(decimal)acmPlayer.bloodMageSiphonHealMax * 100}% of your max health, except via healing power";
+            acmPlayer.A1_Effect_2 = $"Max Healing: {(decimal)(acmPlayer.bloodMageSiphonHealMax * 100)}% of your max health, can overheal with healing power";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_A2_Name");
             acmPlayer.A2_Desc = $"Enchant you weapon with your own blood, making it also cost the same amount of mana it uses as health but increasing all the damage you deal and refunding the health if you hit an enemy.";
@@ -168,9 +169,12 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.A2_Effect_2 = $"Health Cost/Refund: {(decimal)(acmPlayer.bloodMageEnchantmentBaseManaCost * 100)}%";
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_Ult_Name");
-            acmPlayer.Ult_Desc = $"Quickly regenerate the blood of you and all your allies over time, regenerating a percentage of the healed player's max health at a medium rate for a limited number of ticks.";
-            acmPlayer.Ult_Effect_1 = $"Max Health Heal: " + (decimal)acmPlayer.bloodMageBaseUltRegen * 100 + "% + 0.08% p/Level(" + acmPlayer.bloodMageLevel * 0.1f * 100 + "%) = " + (acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .1f) + "%";
-            acmPlayer.Ult_Effect_2 = $"Ticks: " + acmPlayer.bloodMageUltTicks + " ticks";
+            acmPlayer.Ult_Desc = $"Regenerate your blood over time, gaining a percentage of your max health at a medium rate for a period of time.";
+            acmPlayer.Ult_Effect_1 = $"Max Health Heal: {(decimal)(acmPlayer.bloodMageBaseUltRegen * 100)}% + 0.25% p/Level({(decimal)(acmPlayer.bloodMageLevel * .25f * 100)}%) = {(decimal)(acmPlayer.bloodMageBaseUltRegen * 100 + acmPlayer.bloodMageLevel * .25f)}%";
+
+            acmPlayer.aghanimsText = "- Ability power is increased by 15%\n" +
+                                     "- Cooldown reduction increased by 5%\n" +
+                                     "- Transfusion now also heals you and teammates for 10% of the damage it deals";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

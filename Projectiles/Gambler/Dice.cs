@@ -32,7 +32,7 @@ namespace ApacchiisClassesMod2.Projectiles.Gambler
             Projectile.width = 14;
             Projectile.height = 14;
             Projectile.friendly = true;
-            Projectile.timeLeft = 60 * 3;
+            Projectile.timeLeft = 60 * 4;
             Projectile.penetrate = 1;
             Projectile.ignoreWater = false;
             Projectile.DamageType = DamageClass.Ranged;

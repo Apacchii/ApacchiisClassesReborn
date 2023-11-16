@@ -181,6 +181,10 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Effect_2 = $"Cooldown Reduction: {(decimal)(acmPlayer.gamblerUltCooldownReduction * 100)}% = 50% + {(decimal)(acmPlayer.gamblerUltCooldownReductionPerLevel * 100)}% p/Lvl({(decimal)(acmPlayer.gamblerUltCooldownReductionPerLevel * acmPlayer.gamblerLevel * 100)}%)";
             acmPlayer.Ult_Effect_3 = $"Attack Speed: {(decimal)(acmPlayer.gamblerUltAttackSpeed * 100)}%";
             acmPlayer.Ult_Effect_4 = $"Duration: {(decimal)(acmPlayer.gamblerUltDurationBase / 60)}s";
+
+            acmPlayer.aghanimsText = "- Lucky Streak duration increased by 1 second\n" +
+                                     "- Roll The Dice base damage increased by 12\n" +
+                                     "- Each dice that hits an enemy heals you between 0.25% to 0.5% of your max health";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

@@ -96,10 +96,10 @@ Mods: {
 		BloodMage_A2_Prev: Enchant you magic weapons with your own blood, making it also cost the same amount of mana it uses as health.
 		BloodMage_A2_Prev_2: Increase the damage you deal and refunds the health cost if an enemy is hit.
 		BloodMage_Ult_Name: Regeneration
-		BloodMage_Ult_Prev: Regen yours and your allies' health every second over a duration.
+		BloodMage_Ult_Prev: Regen some of your health over a duration.
 		BloodMage_Aghanims: a
-		Commander_P_Name: Commander's Will
 		# Commander
+		Commander_P_Name: Commander's Will
 		Commander_P_Prev: For each minion slot you have gain a small amount of damage reduction.
 		Commander_A1_Name: War Banner
 		Commander_A1_Prev: Place a war banner at your feet, players standing inside its area will deal increased damage and take reduced damage.
@@ -108,8 +108,8 @@ Mods: {
 		Commander_Ult_Name: Inspire
 		Commander_Ult_Prev: Inspire yourself and your teammates, granting everyone guaranteed critical hits for a period of time (affects minions).
 		Commander_Aghanims: a
-		Crusader_P_Name: Tenacity
 		# Crusader
+		Crusader_P_Name: Tenacity
 		Crusader_P_Prev: Reduce damage taken by 3%. This effect is increased by an additional 4% while under the effects of a healing buff.
 		Crusader_A1_Name: Protection
 		Crusader_A1_Prev: Apply a healing buff to all players that slowly heals them each second. Players regen health at a rate of 1% of their max health p/sec.
@@ -118,8 +118,8 @@ Mods: {
 		Crusader_Ult_Name: Guardian Angel
 		Crusader_Ult_Prev: A guardian angel watches over everyone, granting all players a reduction to the damage they take for 10s.
 		Crusader_Aghanims: a
-		Scout_P_Name: Agility
 		# Scout
+		Scout_P_Name: Agility
 		Scout_P_Prev: The scout can double jump and has slightly increased movement speed.
 		Scout_P_DisableDoubleJump: Disable scout's passive double jump
 		Scout_P_EnableDoubleJump: Enable scout's passive double jump
@@ -131,8 +131,8 @@ Mods: {
 		Scout_Ult_Prev_1: Become invincible for
 		Scout_Ult_Prev_2: seconds, and gain increased mobility.
 		Scout_Aghanims: a
-		Soulmancer_P_Name: Soul Rip
 		# Soulmancer
+		Soulmancer_P_Name: Soul Rip
 		Soulmancer_P_Prev_1: Hitting enemies with magic weapons has a chance to rip a fragment of their soul, causing it to harm any nearby enemies.
 		Soulmancer_P_Prev_2: These soul fragments can critically strike.
 		Soulmancer_A1_Name: Consume
@@ -143,8 +143,8 @@ Mods: {
 		Soulmancer_Ult_Name: Self Sacrifice
 		Soulmancer_Ult_Prev: Rapidly rip fragments of your own soul, slightly draining your own health per fragment. Each soul fragment deals 1.5x [Soul Rip]'s damage.
 		Soulmancer_Aghanims: a
-		Vanguard_P_Name: Enchanted Armor
 		# Vanguard
+		Vanguard_P_Name: Enchanted Armor
 		Vanguard_P_Prev: Enemies take damage when hitting you.
 		Vanguard_A1_Name: Spear Of Light
 		Vanguard_A1_Prev: Throw a spear of light, the spear explodes if it comes close to an enemy, dealing damage to all enemies around it.
@@ -153,8 +153,8 @@ Mods: {
 		Vanguard_Ult_Name: Sword Of Judgement
 		Vanguard_Ult_Prev: A huge sword comes falling from the skies, dealing heavy damage and executing enemies.
 		Vanguard_Aghanims: a
-		Gambler_P_Name: Luck of the Draw
 		# Gambler
+		Gambler_P_Name: Luck of the Draw
 		Gambler_P_Prev: Any damage you deal is randomized to deal between 75% and 125% damage.
 		Gambler_P_Feedback_Enabled: Click to disable the passive's visual feedback.
 		Gambler_P_Feedback_Disabled: Click to enable the passive's visual feedback.
@@ -628,7 +628,7 @@ Mods: {
 			}
 
 			ZIP: {
-				DisplayName: Z.I.P
+				DisplayName: ZIP
 				Tooltip: Resets your currently equipped class back to level 0
 			}
 
@@ -664,6 +664,11 @@ Mods: {
 
 			WindsRoar: {
 				DisplayName: Wind's Roar
+				Tooltip: ""
+			}
+
+			Operator: {
+				DisplayName: Operator
 				Tooltip: ""
 			}
 		}

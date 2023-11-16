@@ -38,7 +38,8 @@ namespace ApacchiisClassesMod2.UI
         UIText tipsText;
         UIPanel extraFunctionButton;
         UIText extraFunctionText;
-
+        UIPanel AghanimsPanel;
+        UIText AghanimsTextIcon;
 
         UIPanel passiveButton;
         UIText passiveStaticText;
@@ -156,6 +157,21 @@ namespace ApacchiisClassesMod2.UI
             className.VAlign = .03f;
             className.HAlign = .5f;
             background.Append(className);
+
+            AghanimsPanel = new UIPanel();
+            AghanimsPanel.Width.Set(50, 0f);
+            AghanimsPanel.Height.Set(50, 0f);
+            AghanimsPanel.Top.Set(60, 0f);
+            AghanimsPanel.Left.Set(95, 0f);
+            AghanimsPanel.BackgroundColor = new Color(75, 75, 75);
+            AghanimsPanel.BorderColor = new Color(25, 25, 25);
+            background.Append(AghanimsPanel);
+
+            AghanimsTextIcon = new UIText($"[i:{ItemType<Items.Relics.AghanimsScepter>()}]");
+            AghanimsTextIcon.VAlign = .5f;
+            AghanimsTextIcon.HAlign = .5f;
+            AghanimsTextIcon.Top.Set(-2f, 0f);
+            AghanimsPanel.Append(AghanimsTextIcon);
 
             buttonTalents = new UIPanel();
             buttonTalents.HAlign = .5f;
@@ -494,7 +510,7 @@ namespace ApacchiisClassesMod2.UI
             else
                 ability3Button.BorderColor = new Color(25, 25, 25);
 
-            if(!passiveButton.IsMouseHovering && ! ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering)
+            if(!passiveButton.IsMouseHovering && ! ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !AghanimsPanel.IsMouseHovering)
             {
                 abilityName.TextColor = Color.White;
                 abilityName.SetText($"-{Language.GetTextValue("Mods.ApacchiisClassesMod2.PlayerStatsText")}-" +
@@ -516,6 +532,24 @@ namespace ApacchiisClassesMod2.UI
 
             if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering)
                 tick = false;
+
+            if (AghanimsTextIcon.IsMouseHovering || AghanimsPanel.IsMouseHovering)
+            {
+                if (acmPlayer.hasAghanimsShard)
+                {
+                    castType.SetText("[Aghanim's Shard: Consumed]");
+                    castType.TextColor = Color.CornflowerBlue;
+                }
+                else
+                {
+                    castType.SetText("[Aghanim's Shard: Not Consumed]");
+                    castType.TextColor = Color.White;
+                }
+                abilityName.SetText($"Aghanim's Scepter relic effect:\n{acmPlayer.aghanimsText}");
+            }
+                
+            if (acmPlayer.hasAghanimsShard)
+                AghanimsPanel.BorderColor = Color.CornflowerBlue;
 
             if (passiveButton.IsMouseHovering)
             {
@@ -734,7 +768,7 @@ namespace ApacchiisClassesMod2.UI
             GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
 
             if (GetInstance<ACM2ModSystem>()._RelicsUI.CurrentState == null)
-                GetInstance<ACM2ModSystem>()._RelicsUI.SetState(new Other.RelicsUI());
+                GetInstance<ACM2ModSystem>()._RelicsUI.SetState(new Other.RelicsUIReworked());
 
             SoundEngine.PlaySound(SoundID.MenuOpen);
         }

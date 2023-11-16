@@ -176,6 +176,10 @@ namespace ApacchiisClassesMod2.Items.Classes
                                  "Each soul deals 1.5x [Soul Rip]'s damage.";
             acmPlayer.Ult_Effect_1 = $"Health Cost: {acmPlayer.soulmancerSacrificeHealthCost * 100}% p/Soul";
             acmPlayer.Ult_Effect_2 = $"Souls Released: {acmPlayer.soulmancerSacrificeSoulCount_Base}";
+
+            acmPlayer.aghanimsText = "- Soul Shatter now casts at your cursor's position\n" +
+                                     "- Soul Shatter range decreased by 175\n" +
+                                     "- Ability power is increased by 6%";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

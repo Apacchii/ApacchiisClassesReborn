@@ -18,7 +18,7 @@ namespace ApacchiisClassesMod2.Items.Classes
         float baseStat2 = .0125f;
         float stat2; // Ability Power
 
-        float baseStat3 = .005f;
+        float baseStat3 = .004f;
         float stat3; // Minion Crit
 
         float baseBadStat = .006f;
@@ -189,6 +189,11 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Desc = $"Create a deadzone around yourself that continously strikes enemies, dealing true damage to any enemies that get close to you.";
             acmPlayer.Ult_Effect_1 = $"Damage: {acmPlayer.plagueDeadzoneBaseDamage} + {acmPlayer.plagueDeadzoneDamagePerLevel} p/Lvl({acmPlayer.plagueDeadzoneDamagePerLevel * acmPlayer.plagueLevel}) * AP = {((acmPlayer.plagueDeadzoneBaseDamage + acmPlayer.plagueDeadzoneDamagePerLevel * acmPlayer.plagueLevel) * acmPlayer.abilityPower).ToString("F0")}";
             acmPlayer.Ult_Effect_2 = $"Duration: {acmPlayer.plagueDeadzoneDuration / 60}s";
+
+            acmPlayer.aghanimsText = "- Deadzone no longer requires line of sight to strike enemies\n" +
+                         "- Increases Deadzone range by 100\n" +
+                         "- Deadzone now applies Plagued to enemies hit for 20% of its original duration\n" +
+                         "- Ultimate cost reduced by 10%";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

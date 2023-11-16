@@ -27,7 +27,7 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             Projectile.hostile = false;
             Projectile.width = 500;
             Projectile.height = 398;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 70;
             Projectile.aiStyle = 0;
             //aiType = ProjectileID.WoodenArrowFriendly;
             Projectile.ignoreWater = true;
@@ -39,20 +39,41 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
 
         public override void AI()
         {
+            var v = Dust.NewDustDirect(Projectile.Center, 8, 8, DustID.AmberBolt, 0, -10, 0, Color.White, 2f);
+            var v2 = Dust.NewDustDirect(Projectile.Center, 8, 8, DustID.AmberBolt, 0, -5, 0, Color.White, 4f);
+
+            v.noGravity = true;
+            v2.noGravity = true;
+
             var d1 = Dust.NewDustDirect(Projectile.Center, 2, 2, DustID.AmberBolt, Projectile.velocity.X * -.2f, Projectile.velocity.Y * -.2f, 0, Color.White, 1.25f);
             var d2 = Dust.NewDustDirect(Projectile.Center, 2, 2, DustID.AmberBolt, Projectile.velocity.X * .33f, Projectile.velocity.Y * .33f, 0, Color.White, .75f);
             d1.noGravity = true;
             d2.noGravity = true;
 
-            var d3 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt,new Vector2(-20, 0), 0, Color.White, 1.5f);
-            var d4 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(20, 0), 0, Color.White, 1.5f);
+            var d3 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt,new Vector2(-20, -25), 0, Color.White, 1.5f);
+            var d4 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(20, -25), 0, Color.White, 1.5f);
             d3.noGravity = true;
             d4.noGravity = true;
 
-            var d5 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(-10, 0), 0, Color.White, 1.5f);
-            var d6 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(10, 0), 0, Color.White, 1.5f);
+            var d5 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(-10, -25), 0, Color.White, 1.5f);
+            var d6 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(10, -25), 0, Color.White, 1.5f);
             d5.noGravity = true;
             d6.noGravity = true;
+
+            var d11 = Dust.NewDustDirect(Projectile.Center, 2, 2, DustID.AmberBolt, Projectile.velocity.X * -.1f, Projectile.velocity.Y * -.1f, 0, Color.White, 1.25f);
+            var d22 = Dust.NewDustDirect(Projectile.Center, 2, 2, DustID.AmberBolt, Projectile.velocity.X * .16f, Projectile.velocity.Y * .16f, 0, Color.White, .75f);
+            d11.noGravity = false;
+            d22.noGravity = false;
+            
+            var d33 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(-5, 2), 0, Color.White, 1.5f);
+            var d44 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(5, 2), 0, Color.White, 1.5f);
+            d33.noGravity = false;
+            d44.noGravity = false;
+            
+            var d55 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(-1, 1), 0, Color.White, 1.5f);
+            var d66 = Dust.NewDustPerfect(Projectile.Center, DustID.AmberBolt, new Vector2(1, 1), 0, Color.White, 1.5f);
+            d55.noGravity = false;
+            d66.noGravity = false;
 
             x--;
             if(x == 0)
@@ -61,6 +82,12 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
                 x = 2;
             }
             base.AI();
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.immune[Projectile.owner] = 0;
+            base.OnHitNPC(target, hit, damageDone);
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -73,8 +100,10 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             else if (target.boss && target.life <= (int)(target.life * acmPlayer.vanguardUltimateBossExecute))
                 target.SimpleStrikeNPC(target.life * 10, -target.direction);
 
-            if (target.realLife != 0)
-                modifiers.FinalDamage /= 3;
+
+            //if (target.realLife != 0)
+            if (target.type != NPCID.EaterofWorldsHead && target.type != NPCID.EaterofWorldsBody && target.type != NPCID.EaterofWorldsTail && target.type != NPCID.TheDestroyer && target.type != NPCID.TheDestroyerBody && target.type != NPCID.TheDestroyerBody)
+                modifiers.FinalDamage /= 4;
 
             base.ModifyHitNPC(target, ref modifiers);
         }

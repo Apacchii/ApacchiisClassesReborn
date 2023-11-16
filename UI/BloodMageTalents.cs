@@ -76,7 +76,7 @@ namespace ApacchiisClassesMod2.UI
         float L10Scale = 1f;
         float R10Scale = 1f;
         string L10 = "+12% Cooldown Reduction";
-        string R10 = "+3 Ult Ticks";
+        string R10 = "+2 Ult Ticks";
 
         UIPanel background;
         UIText classText;

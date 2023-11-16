@@ -646,7 +646,7 @@ Mods: {
 		BloodMage_A2_Prev: Enchant you magic weapons with your own blood, making it also cost the same amount of mana it uses as health.
 		BloodMage_A2_Prev_2: Increase the damage you deal and refunds the health cost if an enemy is hit.
 		BloodMage_Ult_Name: Regeneration
-		BloodMage_Ult_Prev: Regen yours and your allies' health every second over a duration.
+		BloodMage_Ult_Prev: Regen some of your health over a duration.
 		BloodMage_Aghanims: a
 		# Commander
 		Commander_P_Name: Commander's Will

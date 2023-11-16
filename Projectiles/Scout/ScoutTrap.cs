@@ -87,7 +87,7 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
             base.ModifyHitNPC(target, ref modifiers);
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
@@ -107,7 +107,7 @@ namespace ApacchiisClassesMod2.Projectiles.Scout
                 Main.dust[dustIndex].velocity *= 3f;
             }
 
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
 
         public override bool? CanHitNPC(NPC target)

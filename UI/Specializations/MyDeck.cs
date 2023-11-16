@@ -185,7 +185,7 @@ namespace ApacchiisClassesMod2.UI.Specializations
             Player Player = Main.player[Main.myPlayer];
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
-            if (DrawCard.IsMouseHovering)
+            if (DrawCard.IsMouseHovering || Background.IsMouseHovering)
                 Main.LocalPlayer.mouseInterface = true;
 
             if (DrawCard.IsMouseHovering)

@@ -10,7 +10,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 	public class Croissant : ModItem
 	{
         public string desc = "'Well Fed', 'Plenty Satisfied' and 'Exquisitely Satisfied' buffs now grant 50% bonus stats\n" +
-                             "Increases defense by 4 defense";
+                             "Increases defense by 4";
 
         public override void SetStaticDefaults()
         {

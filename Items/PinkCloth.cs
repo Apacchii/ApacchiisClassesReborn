@@ -17,16 +17,21 @@ namespace ApacchiisClassesMod2.Items
             Item.maxStack = 1;
 			Item.width = 46;
 			Item.height = 38;
-			Item.value = Item.buyPrice(0, 50, 0, 0);
+			Item.value = Item.buyPrice(0, 0, 50, 0);
             Item.rare = ItemRarityID.Pink;
 		}
 
-        //public override void AddRecipes()
-        //{
-        //    var recipe = CreateRecipe(1);
-        //    recipe.AddIngredient(ModContent.ItemType<WhiteCloth>());
-        //    recipe.Register();
-        //}
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return false;
+        }
+
+        public override void AddRecipes()
+        {
+            //var recipe = CreateRecipe(1);
+            //recipe.AddIngredient(ModContent.ItemType<WhiteCloth>());
+            //recipe.Register();
+        }
     }
 }
 

@@ -16,8 +16,8 @@ namespace ApacchiisClassesMod2.Items
             Item.maxStack = 1;
 			Item.width = 46;
 			Item.height = 38;
-			Item.value = Item.buyPrice(0, 50, 0, 0);
-			Item.rare = ItemRarityID.Blue;
+			Item.value = Item.buyPrice(0, 0, 50, 0);
+            Item.rare = ItemRarityID.Blue;
 		}
 
         public override void AddRecipes()

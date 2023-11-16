@@ -8,26 +8,31 @@ using Terraria.Localization;
 
 namespace ApacchiisClassesMod2.Items.Classes
 {
-	public class Spike : ModItem
-	{
+    public class Operator : ModItem
+    {
         int classLevel;
 
-        float baseStat1 = .005f;
+        float baseStat1 = .0055f;
         float stat1; // All Damage
 
         float baseStat2 = .004f;
         float stat2; // Health
 
-        float baseStat3 = .006f;
-        float stat3; // Defense
+        float baseStat3 = .0035f;
+        float stat3; // Dodge
+
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return false;
+        }
 
         public override void SetDefaults()
-		{
+        {
             Item.width = 30;
-			Item.height = 30;
-			Item.accessory = true;	
-			Item.value = 0;
-			Item.rare = ItemRarityID.Pink;
+            Item.height = 30;
+            Item.accessory = true;
+            Item.value = 0;
+            Item.rare = ItemRarityID.Pink;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
@@ -36,8 +41,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             Item.GetGlobalItem<ACMGlobalItem>().isClass = true;
         }
 
-		public override void AddRecipes()
-		{
+        public override void AddRecipes()
+        {
             //var recipe = CreateRecipe(1);
             //recipe.AddIngredient(ModContent.ItemType<OrangeCloth>());
             //recipe.Register();
@@ -116,18 +121,18 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             player.GetDamage(DamageClass.Generic) += classLevel * stat1 * acmPlayer.classStatMultiplier;
             acmPlayer.lifeMult += stat2 * classLevel * acmPlayer.classStatMultiplier;
-            acmPlayer.defenseMult += stat3 * classLevel * acmPlayer.classStatMultiplier;
+            acmPlayer.dodgeChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
         }
 
-        public override void UpdateAccessory (Player Player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player Player, bool hideVisual)
+        {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasClass = true;
-            acmPlayer.equippedClass = "Plague";
-            acmPlayer.ultChargeMax = 2900;
-            acmPlayer.ability1MaxCooldown = 27;
-            acmPlayer.ability2MaxCooldown = 11;
-            classLevel = acmPlayer.plagueLevel;
+            acmPlayer.equippedClass = "Operator";
+            acmPlayer.ultChargeMax = 2400;
+            acmPlayer.ability1MaxCooldown = 28;
+            acmPlayer.ability2MaxCooldown = 16;
+            classLevel = acmPlayer.plagueLevel; //!!
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
@@ -144,25 +149,27 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += classLevel * .01f;
 
             // Class Menu Text
-            acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.P_Name");
-            acmPlayer.P_Desc = $"Being directly hit by an enemy releases sharp short range quills all around you, damaging enemies impaled by them.\nBeing hit by a projectile has a chance to release 2 low accuracy quill in their direction.";
+            acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.P_Name");
+            acmPlayer.P_Desc = $"";
             acmPlayer.P_Effect_1 = $"";
             acmPlayer.P_Effect_2 = $"";
 
-            acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.A1_Name");
-            acmPlayer.A1_Desc = $"Release longer range quills around you, these quills can go through walls";
+            acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.A1_Name");
+            acmPlayer.A1_Desc = $"";
             acmPlayer.A1_Effect_1 = $"";
             acmPlayer.A1_Effect_2 = $"";
 
-            acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.A2_Name");
-            acmPlayer.A2_Desc = $"Protect yourself in a barrier of quills, granting yourself 5 shields.";
+            acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.A2_Name");
+            acmPlayer.A2_Desc = $"";
             acmPlayer.A2_Effect_1 = $"";
             acmPlayer.A2_Effect_2 = $"";
 
-            acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.Ult_Name");
-            acmPlayer.Ult_Desc = $"Become unable to move and to use weapons while shooting rapid-fire quills towards your cursor.";
+            acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.Ult_Name");
+            acmPlayer.Ult_Desc = $"";
             acmPlayer.Ult_Effect_1 = $"";
             acmPlayer.Ult_Effect_2 = $"";
+
+            acmPlayer.aghanimsText = "- ";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

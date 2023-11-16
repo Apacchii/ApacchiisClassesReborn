@@ -110,9 +110,9 @@ namespace ApacchiisClassesMod2.Configs
 
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.APWeaponDPS.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.APWeaponDPS.Tooltip")]
-        [DefaultValue(.05f)]
+        [DefaultValue(.1f)]
         [Increment(.01f)]
-        [Range(.01f, .5f)]
+        [Range(.01f, .75f)]
         [Slider]
         [SliderColor(255, 255, 255)]
         public float abilityPowerWeaponDPSMult { get; set; }

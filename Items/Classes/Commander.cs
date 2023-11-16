@@ -176,6 +176,10 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_Ult_Name");
             acmPlayer.Ult_Desc = $"Inspire all players, causing them to always land critical hits on enemies.\nMinions can also crit during this duration.";
             acmPlayer.Ult_Effect_1 = $"Duration: {acmPlayer.commanderUltDuration / 60}s + 0.25s p/Level({(decimal)(acmPlayer.commanderLevel * .15f)}s) = {(decimal)((acmPlayer.commanderLevel * 15 + acmPlayer.commanderUltDuration) / 60)}s";
+
+            acmPlayer.aghanimsText = "- Banner cooldown decreased by 5 seconds\n" +
+                                     "- Banner range increased by 25\n" +
+                                     "- Banner now follows you around";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

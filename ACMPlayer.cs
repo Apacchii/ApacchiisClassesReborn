@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Terraria;
 using Terraria.Audio;
@@ -25,6 +26,9 @@ namespace ApacchiisClassesMod2
 	public class ACMPlayer : ModPlayer
 	{
         public List<int> relicList = new List<int>()
+        {
+        };
+        public List<int> relicsFound = new List<int>()
         {
         };
         bool updatedRelicList = false;
@@ -125,6 +129,7 @@ namespace ApacchiisClassesMod2
         #region Relics
         public bool hasBleedingMoonStone;
         public bool hasAghanims;
+        public string aghanimsText;
         public bool hasAghanimsShard;
         public bool hasUnstableConcoction;
         bool isUnstableConcoctionReady;
@@ -367,7 +372,7 @@ namespace ApacchiisClassesMod2
         public float bloodMageBaseDamageGain = .1f;
         public float bloodMageDamageGain;
 
-        public float bloodMageBaseUltRegen = .02f;
+        public float bloodMageBaseUltRegen = .0125f;
         public float bloodMageUltRegen;
         public int bloodMageUltTicks = 8;
         int bloodMageCurUltTicks = 0;
@@ -720,6 +725,27 @@ namespace ApacchiisClassesMod2
         public float talentSinkPlagueRightValue = .0025f; //Minion Crit
         #endregion
 
+        #region Operator
+        public int operatorLevel;
+        public int operatorSkillPoints;
+        public int operatorSpentSkillPoints;
+
+        public float operatorEnergyBlastCharge;
+
+        public float operatorDashVelocity = 20f;
+
+        public string operatorTalent_1 = "N"; // N (None), L (Left), R (Right)
+        public string operatorTalent_2 = "N";
+        public string operatorTalent_3 = "N";
+        public string operatorTalent_4 = "N";
+        public string operatorTalent_5 = "N";
+        public string operatorTalent_6 = "N";
+        public string operatorTalent_7 = "N";
+        public string operatorTalent_8 = "N";
+        public string operatorTalent_9 = "N";
+        public string operatorTalent_10 = "N";
+        #endregion
+
         #region Spike
         public int spikeLevel;
         public int spikeSkillPoints;
@@ -797,6 +823,7 @@ namespace ApacchiisClassesMod2
             #region Relics
             hasBleedingMoonStone = false;
             hasAghanims = false;
+            aghanimsText = "";
             hasUnstableConcoction = false;
             hasNeterihsToken = false;
             hasSqueaker = false;
@@ -878,37 +905,37 @@ namespace ApacchiisClassesMod2
 
             #region Cards
             // Basic
-            card_CarryValue = .0021f * Configs._ACMConfigServer.Instance.runesStatMult; //dmg
-            card_HealthyValue = .0023f * Configs._ACMConfigServer.Instance.runesStatMult; //hp
-            card_PowerfulValue = .016f * Configs._ACMConfigServer.Instance.runesStatMult; //ap
-            card_MendingValue = .008f * Configs._ACMConfigServer.Instance.runesStatMult; //heal
-            card_TimelessValue = .007f * Configs._ACMConfigServer.Instance.runesStatMult; //cdr
-            card_MightyValue = .0064f * Configs._ACMConfigServer.Instance.runesStatMult; //ucdr
-            card_SneakyValue = .0034f * Configs._ACMConfigServer.Instance.runesStatMult; //dodge
-            card_NimbleHandsValue = .0035f * Configs._ACMConfigServer.Instance.runesStatMult; //as
-            card_ImpenetrableValue = .0032f * Configs._ACMConfigServer.Instance.runesStatMult; //def
-            card_MagicalValue = .0048f * Configs._ACMConfigServer.Instance.runesStatMult; //banner stats
-            card_DeadeyeValue = .004f * Configs._ACMConfigServer.Instance.runesStatMult; //cdmg
+            card_CarryValue = .0021f * _ACMConfigServer.Instance.runesStatMult; //dmg
+            card_HealthyValue = .0023f * _ACMConfigServer.Instance.runesStatMult; //hp
+            card_PowerfulValue = .02f * _ACMConfigServer.Instance.runesStatMult; //ap
+            card_MendingValue = .0084f * _ACMConfigServer.Instance.runesStatMult; //heal
+            card_TimelessValue = .006f * _ACMConfigServer.Instance.runesStatMult; //cdr
+            card_MightyValue = .006f * _ACMConfigServer.Instance.runesStatMult; //ucdr
+            card_SneakyValue = .0034f * _ACMConfigServer.Instance.runesStatMult; //dodge
+            card_NimbleHandsValue = .0035f * _ACMConfigServer.Instance.runesStatMult; //as
+            card_ImpenetrableValue = .0032f * _ACMConfigServer.Instance.runesStatMult; //def
+            card_MagicalValue = .0048f * _ACMConfigServer.Instance.runesStatMult; //banner stats
+            card_DeadeyeValue = .0042f * _ACMConfigServer.Instance.runesStatMult; //cdmg
 
             // Complex
-            card_FortifiedValue_1 = .0016f * Configs._ACMConfigServer.Instance.runesStatMult; //hp
-            card_FortifiedValue_2 = .0015f * Configs._ACMConfigServer.Instance.runesStatMult; //def
-            card_MasterfulValue_1 = .01f * Configs._ACMConfigServer.Instance.runesStatMult; //ap
-            card_MasterfulValue_2 = .006f * Configs._ACMConfigServer.Instance.runesStatMult; //heal
-            card_SparkOfGeniusValue_1 = .0052f * Configs._ACMConfigServer.Instance.runesStatMult; //cdr
-            card_SparkOfGeniusValue_2 = .0045f * Configs._ACMConfigServer.Instance.runesStatMult; //ucdr
-            card_ProwlerValue_1 = .0014f * Configs._ACMConfigServer.Instance.runesStatMult; //dmg
-            card_ProwlerValue_2 = .003f * Configs._ACMConfigServer.Instance.runesStatMult; //cdmg
-            card_VeteranValue_1 = .0015f * Configs._ACMConfigServer.Instance.runesStatMult; //hp
-            card_VeteranValue_2 = .0035f * Configs._ACMConfigServer.Instance.runesStatMult; //banner stats
-            card_HealerValue_1 = .0052f * Configs._ACMConfigServer.Instance.runesStatMult; //heal
-            card_HealerValue_2 = .0036f * Configs._ACMConfigServer.Instance.runesStatMult; //cdr
-            card_MischievousValue_1 = .0025f * Configs._ACMConfigServer.Instance.runesStatMult; //cdmg
-            card_MischievousValue_2 = .0025f * Configs._ACMConfigServer.Instance.runesStatMult; //dodge
-            card_SeerValue_1 = .0082f * Configs._ACMConfigServer.Instance.runesStatMult; //ap
-            card_SeerValue_2 = .0038f * Configs._ACMConfigServer.Instance.runesStatMult; //ucdr
-            card_FerociousValue_1 = .0012f * Configs._ACMConfigServer.Instance.runesStatMult; //dmg
-            card_FerociousValue_2 = .0028f * Configs._ACMConfigServer.Instance.runesStatMult; //as
+            card_FortifiedValue_1 = .0016f * _ACMConfigServer.Instance.runesStatMult; //hp
+            card_FortifiedValue_2 = .0015f * _ACMConfigServer.Instance.runesStatMult; //def
+            card_MasterfulValue_1 = .012f * _ACMConfigServer.Instance.runesStatMult; //ap
+            card_MasterfulValue_2 = .0065f * _ACMConfigServer.Instance.runesStatMult; //heal
+            card_SparkOfGeniusValue_1 = .0048f * _ACMConfigServer.Instance.runesStatMult; //cdr
+            card_SparkOfGeniusValue_2 = .0045f * _ACMConfigServer.Instance.runesStatMult; //ucdr
+            card_ProwlerValue_1 = .0014f * _ACMConfigServer.Instance.runesStatMult; //dmg
+            card_ProwlerValue_2 = .003f * _ACMConfigServer.Instance.runesStatMult; //cdmg
+            card_VeteranValue_1 = .0015f * _ACMConfigServer.Instance.runesStatMult; //hp
+            card_VeteranValue_2 = .0035f * _ACMConfigServer.Instance.runesStatMult; //banner stats
+            card_HealerValue_1 = .0055f * _ACMConfigServer.Instance.runesStatMult; //heal
+            card_HealerValue_2 = .0035f * _ACMConfigServer.Instance.runesStatMult; //cdr
+            card_MischievousValue_1 = .003f * _ACMConfigServer.Instance.runesStatMult; //cdmg
+            card_MischievousValue_2 = .0025f * _ACMConfigServer.Instance.runesStatMult; //dodge
+            card_SeerValue_1 = .009f * _ACMConfigServer.Instance.runesStatMult; //ap
+            card_SeerValue_2 = .0035f * _ACMConfigServer.Instance.runesStatMult; //ucdr
+            card_FerociousValue_1 = .0012f * _ACMConfigServer.Instance.runesStatMult; //dmg
+            card_FerociousValue_2 = .0028f * _ACMConfigServer.Instance.runesStatMult; //as
             #endregion
 
             hasClass = false;
@@ -926,7 +953,7 @@ namespace ApacchiisClassesMod2
             vanguardSpearHeal = false;
             vanguardPassiveReflectAmount = .75f;
             vanguardSpearBaseDamage = 22;
-            vanguardSwordBaseDamage = 24;
+            vanguardSwordBaseDamage = 30;
             vanguardShieldBaseDuration = 480; //8s
             vanguardShieldBaseDamageReduction = .16f;
             vanguardShieldDurationPerLevel = 15;
@@ -949,11 +976,11 @@ namespace ApacchiisClassesMod2
             bloodMagePassiveChance = .15f;
             bloodMageBasePassiveWeaponDamageMult = .2f;
             bloodMageBaseDamageGain = .01f;
-            bloodMageBaseUltRegen = .02f;
+            bloodMageBaseUltRegen = .016f;
             bloodMageSiphonBaseDamage = 20;
             bloodMageSiphonHealMax = .15f;
             bloodMageDamageGain = .1f;
-            bloodMageUltTicks = 8;
+            bloodMageUltTicks = 10;
             bloodMageUltRegen = bloodMageBaseUltRegen;
             bloodMagePassiveHealing = false;
             bloodMagePassiveDamageLevel = .01f;
@@ -1261,7 +1288,7 @@ namespace ApacchiisClassesMod2
 
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-            modifiers.SourceDamage *= GetInstance<Configs._ACMConfigServer>().enemyDamageMultiplier;
+            modifiers.SourceDamage *= GetInstance<_ACMConfigServer>().enemyDamageMultiplier;
 
             //Dodge
             if (Main.rand.NextFloat() < dodgeChance)
@@ -1354,7 +1381,7 @@ namespace ApacchiisClassesMod2
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            hurtInfo.Damage = (int)(hurtInfo.Damage * GetInstance<Configs._ACMConfigServer>().enemyDamageMultiplier);
+            hurtInfo.Damage = (int)(hurtInfo.Damage * GetInstance<_ACMConfigServer>().enemyDamageMultiplier);
 
             InBattle();
             //if (ultCharge < ultChargeMax && !hasCactusRing)
@@ -1412,7 +1439,7 @@ namespace ApacchiisClassesMod2
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-            hurtInfo.Damage = (int)(hurtInfo.Damage * GetInstance<Configs._ACMConfigServer>().enemyDamageMultiplier);
+            hurtInfo.Damage = (int)(hurtInfo.Damage * GetInstance<_ACMConfigServer>().enemyDamageMultiplier);
 
             InBattle();
             //if (ultCharge < ultChargeMax && !hasCactusRing)
@@ -1646,7 +1673,7 @@ namespace ApacchiisClassesMod2
             if (proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanims || proj.type == ProjectileType<Projectiles.BloodMage.Transfusion>() && hasAghanimsShard)
             {
                 int heal = (int)(damageDone * .1f * healingPower);
-                HealPlayer(1, 3, heal);
+                HealPlayer(1, 2, heal);
             }
 
             //Gambler Aghs Dice Heal
@@ -1814,7 +1841,7 @@ namespace ApacchiisClassesMod2
             modifiers.CritDamage += critDamageMult - 1f;
 
             // Insect reduced dmg vs worms
-            if (equippedClass == "Plague" && proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>() && target.realLife != 0)
+            if (proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>() && target.type != NPCID.EaterofWorldsHead && target.type != NPCID.EaterofWorldsBody && target.type != NPCID.EaterofWorldsTail && target.type != NPCID.TheDestroyer && target.type != NPCID.TheDestroyerBody && target.type != NPCID.TheDestroyerBody)
                 modifiers.FinalDamage *= .02f;
 
             base.ModifyHitNPCWithProj(proj, target, ref modifiers);
@@ -1925,7 +1952,7 @@ namespace ApacchiisClassesMod2
             {
                 float shotsPerSecond = 60 / Player.HeldItem.useTime;
                 float dps = shotsPerSecond * Player.HeldItem.damage;
-                abilityPower += dps * Configs._ACMConfigServer.Instance.abilityPowerWeaponDPSMult / 100;
+                abilityPower += dps * _ACMConfigServer.Instance.abilityPowerWeaponDPSMult / 100;
             }
 
             if (Player.HeldItem.type == ItemType<Items.ClassWeapons.SoulBurner>())
@@ -2488,8 +2515,8 @@ namespace ApacchiisClassesMod2
 
             #region Vanguard
             vanguardLevel = vanguardDefeatedBosses.Count;
-            if (vanguardLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                vanguardLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (vanguardLevel > _ACMConfigServer.Instance.maxClassLevel)
+                vanguardLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasVanguard)
             {
@@ -2529,9 +2556,9 @@ namespace ApacchiisClassesMod2
                 Player.GetDamage(DamageClass.Melee) += talentSinkVanguardRight * talentSinkVanguardRightValue;
                 #endregion
 
-                vanguardSpearDamage = vanguardSpearBaseDamage + 10 * vanguardLevel;
+                vanguardSpearDamage = vanguardSpearBaseDamage + 13 * vanguardLevel;
                 vanguardShieldDuration = vanguardShieldBaseDuration + vanguardShieldDurationPerLevel * vanguardLevel;
-                vanguardSwordDamage = vanguardSwordBaseDamage + 9 * vanguardLevel;
+                vanguardSwordDamage = vanguardSwordBaseDamage + 12 * vanguardLevel;
                 vanguardShieldDamageReduction += vanguardShieldBaseDamageReduction;
 
                 //Player.endurance += vanguardShieldDamageReduction;
@@ -2540,8 +2567,8 @@ namespace ApacchiisClassesMod2
 
             #region Blood Mage
             bloodMageLevel = bloodMageDefeatedBosses.Count;
-            if (bloodMageLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                bloodMageLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (bloodMageLevel > _ACMConfigServer.Instance.maxClassLevel)
+                bloodMageLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasBloodMage)
             {
@@ -2588,13 +2615,13 @@ namespace ApacchiisClassesMod2
                 if (bloodMageTalent_10 == "L" || bloodMageTalent_10 == "B")
                     cooldownReduction -= .12f;
                 else if (bloodMageTalent_10 == "R" || bloodMageTalent_10 == "B")
-                    bloodMageUltTicks += 3;
+                    bloodMageUltTicks += 2;
 
                 abilityPower += talentSinkBloodMageLeft * talentSinkBloodMageLeftValue;
                 healingPower += talentSinkBloodMageRight * talentSinkBloodMageRightValue;
                 #endregion
 
-                bloodMageUltRegen = bloodMageBaseUltRegen + .0008f * bloodMageLevel;
+                bloodMageUltRegen = bloodMageBaseUltRegen + .0025f * bloodMageLevel;
                 bloodMageSiphonDamage = bloodMageSiphonBaseDamage + 6 * bloodMageLevel;
                 bloodMageDamageGain += bloodMageBaseDamageGain * bloodMageLevel;
                 bloodMageBasePassiveWeaponDamageMult += bloodMagePassiveDamageLevel * bloodMageLevel;
@@ -2603,8 +2630,8 @@ namespace ApacchiisClassesMod2
 
             #region Commander
             commanderLevel = commanderDefeatedBosses.Count;
-            if (commanderLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                commanderLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (commanderLevel > _ACMConfigServer.Instance.maxClassLevel)
+                commanderLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasCommander)
             {
@@ -2673,8 +2700,8 @@ namespace ApacchiisClassesMod2
 
             #region Scout
             scoutLevel = scoutDefeatedBosses.Count;
-            if (scoutLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                scoutLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (scoutLevel > _ACMConfigServer.Instance.maxClassLevel)
+                scoutLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasScout)
             {
@@ -2759,8 +2786,8 @@ namespace ApacchiisClassesMod2
 
             #region Soulmancer
             soulmancerLevel = soulmancerDefeatedBosses.Count;
-            if (soulmancerLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                soulmancerLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (soulmancerLevel > _ACMConfigServer.Instance.maxClassLevel)
+                soulmancerLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasSoulmancer)
             {
@@ -2839,8 +2866,8 @@ namespace ApacchiisClassesMod2
 
             #region Crusader
             crusaderLevel = crusaderDefeatedBosses.Count;
-            if (crusaderLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                crusaderLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (crusaderLevel > _ACMConfigServer.Instance.maxClassLevel)
+                crusaderLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasCrusader)
             {
@@ -2880,8 +2907,8 @@ namespace ApacchiisClassesMod2
 
             #region Gambler
             gamblerLevel = gamblerDefeatedBosses.Count;
-            if (gamblerLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                gamblerLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (gamblerLevel > _ACMConfigServer.Instance.maxClassLevel)
+                gamblerLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (equippedClass == "Gambler")
             {
@@ -2925,8 +2952,8 @@ namespace ApacchiisClassesMod2
 
             #region Plague
             plagueLevel = plagueDefeatedBosses.Count;
-            if (plagueLevel > Configs._ACMConfigServer.Instance.maxClassLevel)
-                plagueLevel = Configs._ACMConfigServer.Instance.maxClassLevel;
+            if (plagueLevel > _ACMConfigServer.Instance.maxClassLevel)
+                plagueLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if(equippedClass == "Plague")
             {
@@ -3179,10 +3206,11 @@ namespace ApacchiisClassesMod2
                         Player.statMana += manaToRegen;
                 }
 
+                //Unused
                 if (bloodMageCurUltTicks > 0)
                 {
                     int heal = (int)(Player.statLifeMax2 * bloodMageUltRegen * healingPower);
-                    HealPlayer(1, 3, heal);
+                    HealPlayer(0, 2, heal);
                     bloodMageCurUltTicks--;
                     //Main.NewText($"{bloodMageCurUltTicks}/{bloodMageUltTicks}");
                 }
@@ -3343,6 +3371,7 @@ namespace ApacchiisClassesMod2
                         if (relicItem.isRelic && !relicList.Contains(i) || relicItem.isCraftableRelic && !relicList.Contains(i))
                             relicList.Add(i);
                 }
+
                 updatedRelicList = true;
             }
 
@@ -3357,7 +3386,7 @@ namespace ApacchiisClassesMod2
                 if (Player.controlInv && GetInstance<ACM2ModSystem>()._ClassesMenu.CurrentState != null)
                 {
                     GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
-                    if (Main.playerInventory == false)
+                    if (Main.playerInventory == true)
                         Main.playerInventory = false;
                 }
                 if (Player.controlInv && GetInstance<ACM2ModSystem>()._RelicsUI.CurrentState != null)
@@ -3417,7 +3446,6 @@ namespace ApacchiisClassesMod2
                     if (hasUnstableConcoction)
                         if (!isUnstableConcoctionReady) isUnstableConcoctionReady = true;
 
-
                     #region Relic Effects
                     if (ability1MaxCooldown > 1)
                     {
@@ -3457,10 +3485,10 @@ namespace ApacchiisClassesMod2
                         case "Blood Mage":
                             PointToCursor.Normalize();
                             PointToCursor *= 18f;
-
+                            
                             SoundEngine.PlaySound(SoundID.Item21);
                             Projectile.NewProjectile(null, new Vector2(Player.position.X + Player.width / 2, Player.position.Y), new Vector2(PointToCursor.X, PointToCursor.Y), ProjectileType<Projectiles.BloodMage.Transfusion>(), (int)(bloodMageSiphonDamage * abilityPower), 0, Player.whoAmI);
-
+                            
                             AddAbilityCooldown(1, ability1MaxCooldown);
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Transfusion!", true);
                             break;
@@ -3469,7 +3497,7 @@ namespace ApacchiisClassesMod2
                             AddAbilityCooldown(1, ability1MaxCooldown);
                             Projectile.NewProjectile(null, Player.Center, Vector2.Zero, ProjectileType<Projectiles.Commander.WarBanner>(), 0, 0, Player.whoAmI);
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "War Banner!", true);
-                            if (Configs._ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
+                            if (_ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
                                 SendMultiplayerSyncedChatMessage($"{Player.name} has used 'War Banner'!");
                             break;
 
@@ -3495,7 +3523,7 @@ namespace ApacchiisClassesMod2
                         case "Crusader":
                             AddAbilityCooldown(1, ability1MaxCooldown);
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Protection!", true);
-                            if (Configs._ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
+                            if (_ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
                                 SendMultiplayerSyncedChatMessage($"{Player.name} has used 'Protection'!");
                             int heal = (int)(Player.statLifeMax2 * crusaderHealing * healingPower);
                             HealPlayer(1, 5, heal);
@@ -3530,8 +3558,6 @@ namespace ApacchiisClassesMod2
                             PointToCursor *= 14f;
 
                             AddAbilityCooldown(1, ability1MaxCooldown);
-
-                            Main.NewText((int)(gamblerDiceDamage * abilityPower));
 
                             if(gamblerDiceCount >= 3)
                             {
@@ -3710,7 +3736,7 @@ namespace ApacchiisClassesMod2
                                 }
                             }
 
-                            // Circle Dust
+                            // Circle Dustq
                             Vector2 origin = Player.Center;
                             origin.X -= Player.width / 2;
                             float radius = plagueInfectionRange;
@@ -3729,6 +3755,12 @@ namespace ApacchiisClassesMod2
                                 dust.velocity = -dvel;
                             }
                             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Player.position);
+                            break;
+
+                        case "Operator":
+
+                            Player.velocity = PointToCursor * 15f;
+                            SoundEngine.PlaySound(SoundID.Item36, Player.position);
                             break;
                     }
                     a2Sound = false;
@@ -3752,6 +3784,7 @@ namespace ApacchiisClassesMod2
                     //}
                 }
 
+                //Holding Ability 2 keybind
                 if (ACM2.ClassAbility2.Current && ability2Cooldown <= 0)
                 {
                     switch (equippedClass)
@@ -3802,8 +3835,16 @@ namespace ApacchiisClassesMod2
                         switch (equippedClass)
                         {
                             case "Vanguard":
-                                Projectile.NewProjectile(null, new Vector2(Main.MouseWorld.X, Main.MouseWorld.Y - 1000), new Vector2(0f, 50f), ProjectileType<Projectiles.Vanguard.VanguardUltimate>(), (int)(vanguardSwordDamage * abilityPower), 0, Player.whoAmI);
+                                Projectile.NewProjectile(null, new Vector2(Main.MouseWorld.X, Player.position.Y - 1000), new Vector2(0f, 80f), ProjectileType<Projectiles.Vanguard.VanguardUltimate>(), (int)(vanguardSwordDamage * abilityPower), 0, Player.whoAmI);
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Sword Of Judgement!", true);
+                                //SoundEngine.PlaySound(SoundID.Thunder, Player.Center);
+
+                                SoundStyle sfx = new SoundStyle($"{nameof(ApacchiisClassesMod2)}/Sounds/SoundEffects/Vanguard/Ultimate3");
+                                SoundEngine.PlaySound(sfx with
+                                {
+                                    Volume = 1f,
+                                }, Player.Center);
+
                                 //NetworkText text;
                                 //text = NetworkText.FromKey(player.name + " was healed for " + healAmount + " health", acmPlayer.player.name);
                                 //NetMessage.(text, new Color(25, 225, 25));
@@ -3811,20 +3852,16 @@ namespace ApacchiisClassesMod2
 
                             case "Blood Mage":
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Regeneration!", true);
-                                
                                 SoundEngine.PlaySound(SoundID.Item4, Player.position);
 
-                                if (Configs._ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
-                                    SendMultiplayerSyncedChatMessage($"{Player.name} has used 'Regeneration'!");
-
-                                HealPlayer(1, 2, (int)(Player.statLifeMax2 * bloodMageUltRegen * bloodMageUltTicks * healingPower));
+                                HealPlayer(0, 2, (int)(Player.statLifeMax2 * bloodMageUltRegen * bloodMageUltTicks * healingPower));
 
                                 //bloodMageCurUltTicks = bloodMageUltTicks;
                                 break;
 
                             case "Commander":
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Inspire!", true);
-                                if (Configs._ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
+                                if (_ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
                                     SendMultiplayerSyncedChatMessage($"{Player.name} has used 'Inspire'!");
 
                                 //PlaySyncedSound(SoundID.Thunder.SoundPath, Player.position);
@@ -3850,7 +3887,7 @@ namespace ApacchiisClassesMod2
 
                             case "Crusader":
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Guardian Angel!", true);
-                                if (Configs._ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
+                                if (_ACMConfigServer.Instance.castingChatMessages && Main.netMode != NetmodeID.SinglePlayer)
                                     SendMultiplayerSyncedChatMessage($"{Player.name} has used 'Guardian Angel'!");
 
                                 if (Main.netMode == NetmodeID.SinglePlayer)
@@ -3889,7 +3926,9 @@ namespace ApacchiisClassesMod2
                                 inventorOverclockCurDuration = inventorOverclockDuration;
                                 SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Player.Center);
                                 break;
+
                         }
+
                         ultSound = false;
                     }
                 }
@@ -3909,6 +3948,7 @@ namespace ApacchiisClassesMod2
 
             tag.Add("gotFreeRelic", gotFreeRelic);
             tag.Add("hasAghanimsShard", hasAghanimsShard);
+            tag.Add("relicsFound", relicsFound);
 
             #region Cards
             tag.Add("cardsPoints", cardsPoints);
@@ -4142,7 +4182,7 @@ namespace ApacchiisClassesMod2
             
             gotFreeRelic = tag.GetBool("gotFreeRelic");
             hasAghanimsShard = tag.GetBool("hasAghanimsShard");
-
+            relicsFound.AddRange(tag.GetList<int>("relicsFound"));
 
             #region Cards
             cardsPoints = tag.GetInt("cardsPoints");

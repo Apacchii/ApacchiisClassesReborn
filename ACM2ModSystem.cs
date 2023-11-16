@@ -29,7 +29,7 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
-        internal RelicsUI RelicsUI;
+        internal RelicsUIReworked RelicsUI;
         internal UserInterface _RelicsUI;
 
         internal VanguardTalents VanguardTalents;
@@ -94,7 +94,7 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
-                RelicsUI = new RelicsUI();
+                RelicsUI = new RelicsUIReworked();
                 _RelicsUI = new UserInterface();
 
                 VanguardTalents = new VanguardTalents();
@@ -171,7 +171,7 @@ namespace ApacchiisClassesMod2
         
             if (mouseTextIndex != -1)
             {
-                #region ClassMenu
+                #region ClassMenu && RelicUI
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "ApacchiisClassesMod2: ClassesMenu",
                     delegate

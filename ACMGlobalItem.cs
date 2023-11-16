@@ -17,6 +17,7 @@ namespace ApacchiisClassesMod2
         public bool isRelic = false;
         public bool isCraftableRelic = false;
         public bool isMaterialRelic = false;
+        public bool hasFoundRelic = false;
 
         public string desc;
 
@@ -55,6 +56,23 @@ namespace ApacchiisClassesMod2
         {
             
             return base.Clone(item, itemClone);
+        }
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            
+            base.UpdateInventory(item, player);
+        }
+
+        public override bool OnPickup(Item item, Player player)
+        {
+            if (isRelic)
+            {
+                hasFoundRelic = true;
+                if (!player.GetModPlayer<ACMPlayer>().relicsFound.Contains(item.type))
+                    player.GetModPlayer<ACMPlayer>().relicsFound.Add(item.type);
+            }
+            return base.OnPickup(item, player);
         }
 
         public override bool? PrefixChance(Item item, int pre, UnifiedRandom rand)

@@ -148,16 +148,16 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (acmPlayer.scoutTalent_2 == "R" || acmPlayer.scoutTalent_2 == "B")
             {
                 if (acmPlayer.scoutCanDoubleJump)
-                    Player.hasJumpOption_Blizzard = true;
+                    Player.GetJumpState(ExtraJump.BlizzardInABottle).Enable();
                 else
-                    Player.hasJumpOption_Blizzard = false;
+                    Player.GetJumpState(ExtraJump.BlizzardInABottle).Disable();
             }
             else
             {
                 if (acmPlayer.scoutCanDoubleJump)
-                    Player.hasJumpOption_Cloud = true;
+                    Player.GetJumpState(ExtraJump.CloudInABottle).Enable();
                 else
-                    Player.hasJumpOption_Cloud = false;
+                    Player.GetJumpState(ExtraJump.CloudInABottle).Disable();
             }
             
             Player.moveSpeed += acmPlayer.scoutPassiveSpeedBonus;
@@ -189,6 +189,9 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Effect_1 = $"Mobility Duration: {acmPlayer.scoutUltDuration / 60}s";
             acmPlayer.Ult_Effect_2 = $"Speed Bonus: {(decimal)((acmPlayer.scoutUltSpeed + acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel) * 100)}% = {(int)(acmPlayer.scoutUltSpeed * 100)}% + {(int)(acmPlayer.scoutUltSpeedLevel * 100)}% p/Level({(decimal)(acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel * 100)}%)";
             acmPlayer.Ult_Effect_4 = $"Jump Height: {(int)(acmPlayer.scoutUltJump * 100)}%";
+
+            acmPlayer.aghanimsText = "- Ultimate invulnerability increased by 1 second\n" +
+                                     "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

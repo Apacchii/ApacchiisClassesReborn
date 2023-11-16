@@ -121,7 +121,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.hasClass = true;
             acmPlayer.hasVanguard = true;
             acmPlayer.equippedClass = "Vanguard";
-            acmPlayer.ability1MaxCooldown = 22;
+            acmPlayer.ability1MaxCooldown = 20;
             acmPlayer.ability2MaxCooldown = 48;
             acmPlayer.ultChargeMax = 2640;
 
@@ -158,11 +158,11 @@ namespace ApacchiisClassesMod2.Items.Classes
             // Class Menu Text
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_P_Name");
             acmPlayer.P_Desc = $"Your armor is enchanted with light properties.\nEnemies that directly attack you take a percentage of your defense as damage.";
-            acmPlayer.P_Effect_1 = $"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f}% = {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level({acmPlayer.vanguardLevel * 2.5f}%)";
+            acmPlayer.P_Effect_1 = $"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level({acmPlayer.vanguardLevel * 2.5f}%) = {acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f}%";
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A1_Name");
             acmPlayer.A1_Desc = "Throw a spear of light that will explode if an enemy is nearby, dealing damage to all enemies around.";
-            acmPlayer.A1_Effect_1 = $"Explosion Damage: {(int)(acmPlayer.vanguardSpearBaseDamage + acmPlayer.vanguardLevel * 10 * acmPlayer.abilityPower)} = {acmPlayer.vanguardSpearBaseDamage} + 10 p/Level({acmPlayer.vanguardLevel * 10})";
+            acmPlayer.A1_Effect_1 = $"Explosion Damage: {acmPlayer.vanguardSpearBaseDamage} + 10 p/Level({acmPlayer.vanguardLevel * 11}) * AP = {(int)(acmPlayer.vanguardSpearBaseDamage + acmPlayer.vanguardLevel * 10 * acmPlayer.abilityPower)}";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A2_Name");
             acmPlayer.A2_Desc = "Surround yourself in a barrier of light. Any damage taken when the barrier is active will be reduced by a percentage.";
@@ -171,7 +171,10 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_Ult_Name");
             acmPlayer.Ult_Desc = $"Call in a giant sword from the heavens. The sword hits enemies all around it, dealing massive damage and executing enemies below 50% health.\n(Bosses are executed below {acmPlayer.vanguardUltimateBossExecute * 100}% health)";
-            acmPlayer.Ult_Effect_1 = $"Damage: {acmPlayer.vanguardSwordBaseDamage} + 9 p/Level({acmPlayer.vanguardLevel * 9}) = {(int)(acmPlayer.vanguardSwordBaseDamage + (acmPlayer.vanguardLevel * 9))}";
+            acmPlayer.Ult_Effect_1 = $"Damage: {acmPlayer.vanguardSwordBaseDamage} + 9 p/Level({acmPlayer.vanguardLevel * 9}) * AP = {(int)(acmPlayer.vanguardSwordBaseDamage + (acmPlayer.vanguardLevel * 9) * acmPlayer.abilityPower)}";
+
+            acmPlayer.aghanimsText = "- Decreases damage taken by 4%\n" +
+                                     "- Passive reflected damage is increased by 65%";
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

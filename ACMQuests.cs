@@ -25,14 +25,14 @@ namespace ApacchiisClassesMod2
         float _questDifficultyMultiplier = 1f;
         float _questRewardMultiplier = 1f;
 
-        int _qLumberjackToCompleteBase = 70;
+        int _qLumberjackToCompleteBase = 60;
         int _qMasonrySuppliesToCompleteBase = 150;
         int _qMinerSuppliesToCompleteBase = 6;
-        int _qHallowedSuppliesToCompleteBase = 4;
+        int _qHallowedSuppliesToCompleteBase = 3;
 
         public int qSlayerCount;
         public int qSlayerCountToComplete;
-        int _qSlayerCountToCompleteBase = 150;
+        int _qSlayerCountToCompleteBase = 120;
 
         public int qUnicornHunterCount;
         public int qUnicornHunterToComplete;
@@ -53,11 +53,11 @@ namespace ApacchiisClassesMod2
         int _qJewelryRequestToCompleteBase = 2;
         int _qPlantsVsDeadSelected;
         int _qPlantsVsDeadToCompleteBase = 2;
-        int _qBuildingMaterialsWoodToCompleteBase = 60;
+        int _qBuildingMaterialsWoodToCompleteBase = 40;
         int _qBuildingMaterialsWoodSelected;
-        int _qBuildingMaterialsSecondBlockToCompleteBase = 80;
+        int _qBuildingMaterialsSecondBlockToCompleteBase = 60;
         int _qBuildingMaterialsSecondBlockSelected;
-        int _qBuildingMaterialsTorchesToCompleteBase = 30;
+        int _qBuildingMaterialsTorchesToCompleteBase = 20;
 
         public int qBountyHunterCount;
         int _qBountyHunterSelected;
@@ -80,7 +80,7 @@ namespace ApacchiisClassesMod2
             "Hallowed Supplies", //Turn in hallowed bars
             "Turn In", //Turn in a random item
             "Building Materials", //Turn in two types of blocks and torches
-            "Evil Hunter", //Defeat enemies while in an evil biome
+            //"Evil Hunter", //Defeat enemies while in an evil biome
             //"Bounty Hunter", //Defeat a rare enemy
         };
 

@@ -14,7 +14,7 @@ namespace ApacchiisClassesMod2.Items.ClassWeapons
             // Tooltip.SetDefault("While holding this weapon you reduce any damage taken from enemies by 6");
         }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
             Item.width = 48;
             Item.height = 48;
