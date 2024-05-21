@@ -11,7 +11,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 	{
         bool warning = false;
         public string desc = "[Effect varies on class]\n" +
-                             "Upgrades some of your class' abilities and/or stats";
+                             "Upgrades some of your class' abilities and/or stats\n[c/aa17f:'Ahh... Scepter...']";
 
         public override void SetStaticDefaults()
         {

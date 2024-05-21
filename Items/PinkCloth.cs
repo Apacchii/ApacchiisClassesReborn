@@ -28,9 +28,9 @@ namespace ApacchiisClassesMod2.Items
 
         public override void AddRecipes()
         {
-            //var recipe = CreateRecipe(1);
-            //recipe.AddIngredient(ModContent.ItemType<WhiteCloth>());
-            //recipe.Register();
+            var recipe = CreateRecipe(1);
+            recipe.AddIngredient(ModContent.ItemType<WhiteCloth>());
+            recipe.Register();
         }
     }
 }

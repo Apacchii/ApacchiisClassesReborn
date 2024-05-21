@@ -264,6 +264,21 @@ Mods: {
 				DisplayName: Plague Insect Hit
 				Description: Insect hit count
 			}
+
+			SacrificeDot1: {
+				DisplayName: Sacrifice Dot1
+				Description: Mods.ApacchiisClassesMod2.Buffs.SacrificeDot1.Description
+			}
+
+			SacrificeDot2: {
+				DisplayName: Sacrifice Dot2
+				Description: Mods.ApacchiisClassesMod2.Buffs.SacrificeDot2.Description
+			}
+
+			ImperialMandate: {
+				DisplayName: Imperial Mandate
+				Description: Mods.ApacchiisClassesMod2.Buffs.ImperialMandate.Description
+			}
 		}
 
 		Items: {
@@ -359,7 +374,7 @@ Mods: {
 
 			LostRuneFragment: {
 				DisplayName: Lost Rune Fragment
-				Tooltip: "'An ancient rune, yet to engrave'"
+				Tooltip: "'An ancient rune fragment...'"
 			}
 
 			OrangeCloth: {
@@ -543,7 +558,7 @@ Mods: {
 			}
 
 			Peanut: {
-				DisplayName: The 137th Peanut
+				DisplayName: The 173rd Peanut
 				Tooltip: ""
 			}
 
@@ -667,8 +682,43 @@ Mods: {
 				Tooltip: ""
 			}
 
-			Operator: {
-				DisplayName: Operator
+			Titania: {
+				DisplayName: Titania
+				Tooltip: ""
+			}
+
+			StaffOfTheApprentice: {
+				DisplayName: Staff Of The Apprentice
+				Tooltip: ""
+			}
+
+			StaffOfTheMaster: {
+				DisplayName: Staff Of The Master
+				Tooltip: ""
+			}
+
+			BlackBaloon: {
+				DisplayName: Regret
+				Tooltip: ""
+			}
+
+			ArcaneBarrier: {
+				DisplayName: Arcane Barrier
+				Tooltip: ""
+			}
+
+			Sacrifice: {
+				DisplayName: Sacrifice
+				Tooltip: ""
+			}
+
+			ImperialMandate: {
+				DisplayName: Imperial Mandate
+				Tooltip: ""
+			}
+
+			RevengeSpirit: {
+				DisplayName: Revenge Spirit
 				Tooltip: ""
 			}
 		}
@@ -698,6 +748,8 @@ Mods: {
 			SeekingSpirit.DisplayName: Seeking Spirit
 			SoulBurn.DisplayName: Soul Burn
 			TrainingRapier.DisplayName: Training Rapier
+			TitaniaPixie.DisplayName: Titania Pixie
+			RevengeSpirit.DisplayName: Revenge Spirit
 		}
 
 		Config: {
@@ -906,6 +958,33 @@ Mods: {
 					(Default: 0.04)
 					'''
 			}
+
+			FragmentDrop: {
+				Label: Enemies Drop Rune Fragments
+				Tooltip:
+					'''
+					Changes whether enemies have a chance to drop rune fragments or not
+					(Default: On)
+					'''
+			}
+
+			ScreenShake: {
+				Label: Screen Shake
+				Tooltip:
+					'''
+					Enables or disables screen shaking effects
+					(Default: On)
+					'''
+			}
+
+			ScreenShakeIntensity: {
+				Label: Screen Shake Intensity
+				Tooltip:
+					'''
+					Changes how intense screen shaking effects are.
+					(Default: 1)
+					'''
+			}
 		}
 
 		Configs: {
@@ -928,5 +1007,60 @@ Mods: {
 				}
 			}
 		}
+
+		Changelog.Text:
+			'''
+			--------------------------------------------[1.5.6.1]--------------------------------------------
+			--------------------------------------------[Overview]--------------------------------------------
+			- New relics.
+			- Screen shake effects and an option to disable or reduce their intensity.
+			- Added Changelog button to Class Menu to be able to see updates in-game.
+			- Some resprites.
+			- Some bug fixes.
+
+			--------------------------------------------[General]--------------------------------------------
+			- Screen shake effects and config options for it.
+			- Fixed Cooldown Reduction cap not working, now caps at a max of 75%.
+			- Fixed Ultimate Cooldown Reduction cap not working, now caps at a max of 75%.
+
+			--------------------------------------------[Classes]--------------------------------------------
+
+			--------------------------------------------[Relics]--------------------------------------------
+			[New] Arcane Barrier (Donator)
+			- If the wearer has 250 or more max mana:
+			- On taking lethal damage, if your current mana is higher than the damage you take, the damage will instead be redirected to your mana avoiding your death.
+			- When death is avoided your health will be set to 10% of its max and your mana to 0 without being able to gain mana from potions for 3 seconds.
+			- (75s Cooldown)
+
+			[New] Imperial Mandate (Donator)
+			- Hitting enemies with whips causes them to become tagged.
+			- In singleplayer, your minion hits consume the tag to deal 8% bonus damage.
+			- In multiplayer, other players that do not have Imperial Mandate equipped are the ones who proc the tag.
+			- In multiplayer, players consume the tag to deal 6% bonus damage.
+
+			Mana Inhibitor
+			- Resprited.
+
+			[New] Revenge Spirit (Donator)
+			- Upon death, spawn a spirit that will seek and damage an enemy nearby.
+			- The spirit strikes for 20% of the target's max health.
+			- If the target dies, the spirit's damage will be increased by an additional 20% of the target's max health and will seek another target.
+			- (Does not target bosses)
+
+			[New] Sacrifice (Donator)
+			- Halves your max minions and grants you bonuses based on minion slots sacrificed:
+			- (Minion slots are rounded down. Only removes a max of 4 slots)
+			- 1 Slot: Whip damage increased by 10%.
+			- 2 Slots: Whips now deal 10 damage per second for 3 seconds.
+			- 3 Slots: Whip damage increased by an additional 10%.
+			- 4 Slots: Whips now deal an additional 10 damage per second for 3 seconds.
+
+			--------------------------------------------[Items]--------------------------------------------
+			Lost Rune
+			- Resprited.
+
+			Lost Rune Fragment
+			- Resprited.
+			'''
 	}
 }

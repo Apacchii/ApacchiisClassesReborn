@@ -23,8 +23,9 @@ Features:
 As of now there are 6 classes.
 Each class has at least 1 passive ability, 2 active abilities, 1 ultimate ability, and a unique Talent Tree specific for that class.
 
-Classes level up automatically each time a boss is defeated and the levels are player and class-sided, which means your classes will all progress individually per character.
+Classes level up automatically each time a boss is defeated and the levels are shared across all classes.
 The class' max level is as high as the amount of bosses you have in the game, including modded.
+
 
 Dont forget to bind your mod keybinds!
 

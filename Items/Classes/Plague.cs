@@ -10,7 +10,7 @@ namespace ApacchiisClassesMod2.Items.Classes
 {
 	public class Plague : ModItem
 	{
-        int classLevel;
+        int classLevel; //Obsolete
 
         float baseStat1 = .005f;
         float stat1; // Minion Damage
@@ -61,7 +61,6 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player Player = Main.player[Main.myPlayer];
 
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
-            classLevel = modPlayer.plagueLevel;
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -82,7 +81,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% Minion Crit Chance p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
 
-            var level = classLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
             TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.SummonDamage")}\n" +
@@ -94,7 +93,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             lineBadStat.OverrideColor = new Color(200, 50, 25);
             lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
-            if (classLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -127,7 +126,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.ultChargeMax = 2900;
             acmPlayer.ability1MaxCooldown = 27;
             acmPlayer.ability2MaxCooldown = 11;
-            classLevel = acmPlayer.plagueLevel;
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Minion Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Ability Power
@@ -137,30 +136,21 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
-                {
-                    Player.GetDamage(DamageClass.Summon) += classLevel * stat1 * acmPlayer.classStatMultiplier;
-                    acmPlayer.abilityPower += stat2 * classLevel * acmPlayer.classStatMultiplier;
-                    acmPlayer.minionCritChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
-                }
+                    ClassStats();
             }
-            else
-            {
-                Player.GetDamage(DamageClass.Summon) += classLevel * stat1 * acmPlayer.classStatMultiplier;
-                acmPlayer.abilityPower += stat2 * classLevel * acmPlayer.classStatMultiplier;
-                acmPlayer.minionCritChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
-            }
+            else { ClassStats(); }
 
             acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += classLevel * .01f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
-            // Class Menu Text
+            // Class Menu Text [x = y + z p/lvl]
             //P
             float plaguedDamage = acmPlayer.plaguePassivePlaguedDamageBase;
             if (acmPlayer.plagueTalent_1 == "R") plaguedDamage += .02f;
             if (acmPlayer.plagueTalent_7 == "R") plaguedDamage += .02f;
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.P_Name");
             acmPlayer.P_Desc = $"Your minions are relentless, having a chance to land critical hits on enemies they hit.\nYour minions deal increased damage vs Plagued enemies and their crit chance is multiplicatively increased by 25% vs Plagued enemies too.";
-            acmPlayer.P_Effect_1 = $"Plagued Damage Bonus: {(plaguedDamage * 100).ToString("F2")}% + 0.25% p/Lvl({(acmPlayer.plaguePassivePlaguedPerLevel * 100 * acmPlayer.plagueLevel).ToString("F2")}%) = {((plaguedDamage + acmPlayer.plaguePassivePlaguedPerLevel * classLevel) * 100).ToString("F2")}%";
+            acmPlayer.P_Effect_1 = $"Plagued Damage Bonus: {(plaguedDamage * 100).ToString("F2")}% + 0.25% p/Lvl({(acmPlayer.plaguePassivePlaguedPerLevel * 100 * currentClassLevel).ToString("F2")}%) = {((plaguedDamage + acmPlayer.plaguePassivePlaguedPerLevel * currentClassLevel) * 100).ToString("F2")}%";
             acmPlayer.P_Effect_2 = $"Bonus Base Minion Crit Chance: {((acmPlayer.plaguePassiveCritBase) * 100f).ToString("F2")}%";
 
             //A1
@@ -170,7 +160,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (acmPlayer.plagueTalent_2 == "L") infectContactDamage += 10;
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.A1_Name");
             acmPlayer.A1_Desc = $"Release an insect to damage enemies and infect enemies with Plagued. This insect and all others have a small chance to multiply themselves everytime they hit an enemy.\nEnemies affected by Plagued take damage heavy over time based on their max health.\n[Bosses take reduced damage over time]";
-            acmPlayer.A1_Effect_1 = $"Contact Damage: {infectContactDamage} + {acmPlayer.plagueInsectDamagePerLevel} p/Lvl({acmPlayer.plagueInsectDamagePerLevel * classLevel}) * AP = {(infectContactDamage + acmPlayer.plagueInsectDamagePerLevel * classLevel * acmPlayer.abilityPower).ToString("F0")}";
+            acmPlayer.A1_Effect_1 = $"Contact Damage: {(infectContactDamage + acmPlayer.plagueInsectDamagePerLevel * currentClassLevel * acmPlayer.abilityPower).ToString("F0")} = {infectContactDamage} + {acmPlayer.plagueInsectDamagePerLevel} p/Lvl({acmPlayer.plagueInsectDamagePerLevel * currentClassLevel}) * AP";
             acmPlayer.A1_Effect_2 = $"Plagued Duration: {plaguedDuration}s";
 
             //A2
@@ -181,19 +171,31 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (acmPlayer.plagueTalent_4 == "R") burstDamage += 30;
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.A2_Name");
             acmPlayer.A2_Desc = $"Deal damage to any enemy affected by Plagued within range and re-apply it's damage over time.\nIf an enemy is not affected by Plagued, apply it to them with 33% of its original duration.";
-            acmPlayer.A2_Effect_1 = $"Damage: {burstDamage} + {acmPlayer.plagueInfectionBurstPerLevel} p/Lvl({acmPlayer.plagueInfectionBurstPerLevel * classLevel}) * AP = {((burstDamage + acmPlayer.plagueInfectionBurstPerLevel * classLevel) * acmPlayer.abilityPower).ToString("F0")}";
+            acmPlayer.A2_Effect_1 = $"Damage: {((burstDamage + acmPlayer.plagueInfectionBurstPerLevel * currentClassLevel) * acmPlayer.abilityPower).ToString("F0")} = {burstDamage} + {acmPlayer.plagueInfectionBurstPerLevel} p/Lvl({acmPlayer.plagueInfectionBurstPerLevel * currentClassLevel}) * AP";
             acmPlayer.A2_Effect_2 = $"Range: {burstRange}";
 
             //Ult
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Plague.Ult_Name");
             acmPlayer.Ult_Desc = $"Create a deadzone around yourself that continously strikes enemies, dealing true damage to any enemies that get close to you.";
-            acmPlayer.Ult_Effect_1 = $"Damage: {acmPlayer.plagueDeadzoneBaseDamage} + {acmPlayer.plagueDeadzoneDamagePerLevel} p/Lvl({acmPlayer.plagueDeadzoneDamagePerLevel * acmPlayer.plagueLevel}) * AP = {((acmPlayer.plagueDeadzoneBaseDamage + acmPlayer.plagueDeadzoneDamagePerLevel * acmPlayer.plagueLevel) * acmPlayer.abilityPower).ToString("F0")}";
+            acmPlayer.Ult_Effect_1 = $"Damage:  {((acmPlayer.plagueDeadzoneBaseDamage + acmPlayer.plagueDeadzoneDamagePerLevel * currentClassLevel) * acmPlayer.abilityPower).ToString("F0")} = {acmPlayer.plagueDeadzoneBaseDamage} + {acmPlayer.plagueDeadzoneDamagePerLevel} p/Lvl({acmPlayer.plagueDeadzoneDamagePerLevel * currentClassLevel}) * AP";
             acmPlayer.Ult_Effect_2 = $"Duration: {acmPlayer.plagueDeadzoneDuration / 60}s";
 
             acmPlayer.aghanimsText = "- Deadzone no longer requires line of sight to strike enemies\n" +
                          "- Increases Deadzone range by 100\n" +
                          "- Deadzone now applies Plagued to enemies hit for 20% of its original duration\n" +
                          "- Ultimate cost reduced by 10%";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
+
+            player.GetDamage(DamageClass.Summon) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            acmPlayer.abilityPower += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+            acmPlayer.minionCritChance += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+            //-Health is changed in ACMPlayer.cs
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

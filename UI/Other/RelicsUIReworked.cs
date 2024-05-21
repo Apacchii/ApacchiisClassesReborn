@@ -200,7 +200,8 @@ namespace ApacchiisClassesMod2.UI.Other
             //If we're hovering a specific relic's slot
             for (int i = 0; i < relicCount; i++)
             {
-                if(relicSlot[i] != null)
+                if (relicSlot[i] != null)
+                {
                     if (relicSlot[i].IsMouseHovering)
                     {
                         //Display the relic's name
@@ -215,8 +216,28 @@ namespace ApacchiisClassesMod2.UI.Other
                             Main.hoverItemName += "[c/a16ce6:[Material Relic][c/a16ce6:]]\n";
 
                         //Display the relic's description
+
                         Main.hoverItemName += $"{ItemLoader.GetItem(acmPlayer.relicList[i]).Item.GetGlobalItem<ACMGlobalItem>().desc}";
+
+                        if (ItemLoader.GetItem(acmPlayer.relicList[i]).Item.type == ItemType<Sacrifice>())
+                        {
+                            Main.hoverItemName = $"Halves your max minions and grants you bonuses based on minion slots sacrificed:" +
+                                                  $"\n(Minion slots are rounded down. Only removes a max of 4 slots)\n" +
+                                                  $"- 1 Slot: Whip damage increased by 10%.\n" +
+                                                  $"- 2 Slots: Whips now deal 10 damage per second for 3 seconds.\n" +
+                                                  $"- 3 Slots: Whip damage increased by an additional 10%.\n" +
+                                                  $"- 4 Slots: Whips now deal an additional 10 damage per second for 3 seconds.\n" +
+                                                  $"[c/e796e8:> Donator Item <]\n[c/e796e8:[Thank you for your support, SROSirFDrake!][c/e796e8:]]";
+                        }
+
+                        if (ItemLoader.GetItem(acmPlayer.relicList[i]).Item.type == ItemType<AghanimsScepter>())
+                        {
+                            Main.hoverItemName = "[Effect varies on class]\n" +
+                                                 $"{acmPlayer.aghanimsText}\n" +
+                                                 "[c/aa17f:'Ahh... Scepter...']";
+                        }
                     }
+                }  
             }
 
             if (helpPanel.IsMouseHovering || helpText.IsMouseHovering)

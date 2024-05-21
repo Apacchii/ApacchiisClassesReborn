@@ -76,7 +76,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                                                                          "-" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.ManaCost")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MagicDamage")} p/lvl");
 
-            var level = modPlayer.soulmancerLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
             TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AbilityPower")}\n" +
@@ -88,7 +88,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             lineBadStat.OverrideColor = new Color(200, 50, 25);
             lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
-            if (modPlayer.soulmancerLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -122,6 +122,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.ultChargeMax = 1920;
             acmPlayer.ability1MaxCooldown = 29;
             acmPlayer.ability2MaxCooldown = 12;
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Magic Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; // Magic Crit
@@ -131,28 +132,17 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
-                {
-                    acmPlayer.abilityPower += acmPlayer.soulmancerLevel * stat1 * acmPlayer.classStatMultiplier;
-                    Player.GetCritChance(DamageClass.Magic) += (int)(stat2 * acmPlayer.soulmancerLevel * acmPlayer.classStatMultiplier);
-                    Player.manaCost -= stat3 * acmPlayer.soulmancerLevel * acmPlayer.classStatMultiplier;
-                    Player.GetDamage(DamageClass.Magic) -= acmPlayer.soulmancerLevel * badStat;
-                }
+                    ClassStats();
             }
-            else
-            {
-                acmPlayer.abilityPower += acmPlayer.soulmancerLevel * stat1 * acmPlayer.classStatMultiplier;
-                Player.GetCritChance(DamageClass.Magic) += (int)(stat2 * acmPlayer.soulmancerLevel * acmPlayer.classStatMultiplier);
-                Player.manaCost -= stat3 * acmPlayer.soulmancerLevel * acmPlayer.classStatMultiplier;
-                Player.GetDamage(DamageClass.Magic) -= acmPlayer.soulmancerLevel * badStat;
-            }
+            else { ClassStats(); }
 
             acmPlayer.classStatMultiplier = 1f;
             if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += acmPlayer.soulmancerLevel * .01f;
 
-            // Class Menu Text
+            // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Soulmancer_P_Name");
             acmPlayer.P_Desc = $"Hitting enemies with magic weapons has a chance to rip a fragment of their soul causing it to harm any nearby enemies.\nSoul Rip chance increases by 1% per level.";
-            acmPlayer.P_Effect_1 = $"Damage: {(int)(acmPlayer.soulmancerSoulRipDamage * acmPlayer.abilityPower)} = {acmPlayer.soulmancerSoulRipDamage_Base} + {acmPlayer.soulmancerSoulRipDamage_PerLevel} p/Level({acmPlayer.soulmancerSoulRipDamage_PerLevel * acmPlayer.soulmancerLevel}) * AP";
+            acmPlayer.P_Effect_1 = $"Damage: {(int)(acmPlayer.soulmancerSoulRipDamage * acmPlayer.abilityPower)} = {acmPlayer.soulmancerSoulRipDamage_Base} + {acmPlayer.soulmancerSoulRipDamage_PerLevel} p/Level({acmPlayer.soulmancerSoulRipDamage_PerLevel * currentClassLevel}) * AP";
             acmPlayer.P_Effect_2 = $"Rip Chance: {(int)(acmPlayer.soulmancerSoulRipChance * 100)}%";
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Soulmancer_A1_Name");
@@ -165,11 +155,11 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (acmPlayer.hasAghanims)
                 acmPlayer.A2_Desc = "Shatter the soul of nearby enemies dealing heavy damage and ripping an additional fragment per soul\n" +
                                     "shattered.\n" +
-                                    "[Aghanim's Scepter] Now casts at your cursor's position with reduced range";
+                                    "[Aghanim's Scepter] Now casts at your cursor's position with reduced area of effect";
             else
                 acmPlayer.A2_Desc = "Shatter the soul of nearby enemies dealing heavy damage and ripping an additional fragment per soul\n" +
                                     "shattered.";
-            acmPlayer.A2_Effect_1 = $"Damage: {(int)(acmPlayer.soulmancerSoulShatterDamage * acmPlayer.abilityPower)} = {acmPlayer.soulmancerSoulShatterDamage_Base} + {acmPlayer.soulmancerShatterDamage_PerLevel} p/Level({acmPlayer.soulmancerLevel * acmPlayer.soulmancerShatterDamage_PerLevel}) * AP";
+            acmPlayer.A2_Effect_1 = $"Damage: {(int)(acmPlayer.soulmancerSoulShatterDamage * acmPlayer.abilityPower)} = {acmPlayer.soulmancerSoulShatterDamage_Base} + {acmPlayer.soulmancerShatterDamage_PerLevel} p/Level({currentClassLevel * acmPlayer.soulmancerShatterDamage_PerLevel}) * AP";
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Soulmancer_Ult_Name");
             acmPlayer.Ult_Desc = "Rapidly rip fragments of your own soul, slightly draining your own health per fragment.\n" +
@@ -178,8 +168,20 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.Ult_Effect_2 = $"Souls Released: {acmPlayer.soulmancerSacrificeSoulCount_Base}";
 
             acmPlayer.aghanimsText = "- Soul Shatter now casts at your cursor's position\n" +
-                                     "- Soul Shatter range decreased by 175\n" +
+                                     "- Soul Shatter area of effect decreased by 175\n" +
                                      "- Ability power is increased by 6%";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
+
+            acmPlayer.abilityPower += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            player.GetCritChance(DamageClass.Magic) += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
+            player.manaCost -= stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+            player.GetDamage(DamageClass.Magic) -= currentClassLevel * badStat;
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

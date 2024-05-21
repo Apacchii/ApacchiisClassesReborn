@@ -57,9 +57,10 @@ namespace ApacchiisClassesMod2.Items
             if (player.whoAmI == Main.myPlayer)
             {
                 var modPlayer = player.GetModPlayer<ACMPlayer>();
+                modPlayer.globalClassLevel.Clear();
+
                 if (modPlayer.hasVanguard)
                 {
-                    modPlayer.vanguardDefeatedBosses.Clear();
                     modPlayer.vanguardSkillPoints = 0;
                     modPlayer.vanguardSpentSkillPoints = 0;
                    
@@ -77,7 +78,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.hasBloodMage)
                 {
-                    modPlayer.bloodMageDefeatedBosses.Clear();
                     modPlayer.bloodMageSkillPoints = 0;
                     modPlayer.bloodMageSpentSkillPoints = 0;
 
@@ -95,7 +95,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.hasCommander)
                 {
-                    modPlayer.commanderDefeatedBosses.Clear();
                     modPlayer.commanderSkillPoints = 0;
                     modPlayer.commanderSpentSkillPoints = 0;
 
@@ -113,7 +112,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.hasScout)
                 {
-                    modPlayer.scoutDefeatedBosses.Clear();
                     modPlayer.scoutSkillPoints = 0;
                     modPlayer.scoutSpentSkillPoints = 0;
 
@@ -131,7 +129,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.hasSoulmancer)
                 {
-                    modPlayer.soulmancerDefeatedBosses.Clear();
                     modPlayer.soulmancerSkillPoints = 0;
                     modPlayer.soulmancerSpentSkillPoints = 0;
 
@@ -149,7 +146,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.hasCrusader)
                 {
-                    modPlayer.crusaderDefeatedBosses.Clear();
                     modPlayer.crusaderSkillPoints = 0;
                     modPlayer.crusaderSpentSkillPoints = 0;
 
@@ -167,7 +163,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.equippedClass == "Gambler")
                 {
-                    modPlayer.gamblerDefeatedBosses.Clear();
                     modPlayer.gamblerSkillPoints = 0;
                     modPlayer.gamblerSpentSkillPoints = 0;
 
@@ -185,7 +180,6 @@ namespace ApacchiisClassesMod2.Items
 
                 if (modPlayer.equippedClass == "Plague")
                 {
-                    modPlayer.plagueDefeatedBosses.Clear();
                     modPlayer.plagueSkillPoints = 0;
                     modPlayer.plagueSpentSkillPoints = 0;
 

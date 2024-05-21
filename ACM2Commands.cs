@@ -186,6 +186,9 @@ namespace ApacchiisClassesMod2
                 {
                     ModContent.GetInstance<ACM2ModSystem>()._HUD.SetState(null);
                     ModContent.GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+
+                    ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(null);
+                    ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
                 }
                 caller.Reply("HUD has been reset");
                 return;

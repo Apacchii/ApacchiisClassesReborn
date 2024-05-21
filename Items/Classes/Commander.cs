@@ -79,7 +79,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.WhipRange")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")} p/lvl");
 
-            var level = modPlayer.commanderLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
             TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.SummonDamage")}\n" +
@@ -91,7 +91,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             lineBadStat.OverrideColor = new Color(200, 50, 25);
             lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
-            if (modPlayer.commanderLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -125,6 +125,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.ultChargeMax = 3000;
             acmPlayer.ability1MaxCooldown = 50;
             acmPlayer.ability2MaxCooldown = 28;
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult; // Minion Damage
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult; ; // Minion Slots
@@ -134,25 +135,14 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
-                {
-                    Player.GetDamage(DamageClass.Summon) += acmPlayer.commanderLevel * stat1 * acmPlayer.classStatMultiplier;
-                    Player.maxMinions += (int)(stat2 * acmPlayer.commanderLevel * acmPlayer.classStatMultiplier);
-                    Player.whipRangeMultiplier += stat3 * acmPlayer.commanderLevel * acmPlayer.classStatMultiplier;
-                    Player.runAcceleration -= badStat;
-                }
+                    ClassStats();
             }
-            else
-            {
-                Player.GetDamage(DamageClass.Magic) += acmPlayer.commanderLevel * stat1 * acmPlayer.classStatMultiplier;
-                Player.maxMinions += (int)(stat2 * acmPlayer.commanderLevel * acmPlayer.classStatMultiplier);
-                Player.whipRangeMultiplier += stat3 * acmPlayer.commanderLevel * acmPlayer.classStatMultiplier;
-                Player.runAcceleration -= badStat;
-            }
+            else { ClassStats(); }
 
             acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += acmPlayer.commanderLevel * .01f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
-            // Class Menu Text
+            // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_P_Name");
             acmPlayer.P_Desc = $"Gain bonus damage reduction for each minion slot you have.";
             acmPlayer.P_Effect_1 = $"Endurance: {(decimal)(acmPlayer.commanderPassiveEndurance * acmPlayer.Player.maxMinions * 100)}%";
@@ -164,22 +154,34 @@ namespace ApacchiisClassesMod2.Items.Classes
             else
                 acmPlayer.A1_Desc = $"Place a war banner that will follow you around.\nPlayers inside the banner's radius are granted damage reduction and increased damage. This buff persists for a while after leaving the banner's radius.";
             acmPlayer.A1_Effect_1 = $"Endurance: {(decimal)((1f - acmPlayer.commanderBannerEndurance) * 100)}%";
-            acmPlayer.A1_Effect_2 = $"Bonus Damage: {(int)((acmPlayer.commanderBannerDamage - 1f) * 100)}%";
-            acmPlayer.A1_Effect_4 = $"Duration: {acmPlayer.commanderBannerDuration / 60}s + 0.5s p/Level({(acmPlayer.commanderLevel * .4f).ToString("F0")}s) = {((acmPlayer.commanderLevel * 24 + acmPlayer.commanderBannerDuration) / 60).ToString("F0")}s";
+            acmPlayer.A1_Effect_2 = $"Bonus Damage: {(int)(acmPlayer.commanderBannerDamage * 100)}%";
+            acmPlayer.A1_Effect_4 = $"Duration:  {((currentClassLevel * 24 + acmPlayer.commanderBannerDuration) / 60).ToString("F0")}s = {acmPlayer.commanderBannerDuration / 60}s + 0.5s p/Level({(currentClassLevel * .4f).ToString("F0")}s)";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_A2_Name");
             acmPlayer.A2_Desc = $"Scream loudly, intimidating enemies around you and knocking them back, increasing the damage they take for a period of time.";
-            acmPlayer.A2_Effect_1 = $"Bonus Damage: {(decimal)(acmPlayer.commanderCryBonusDamage * 100)}% + 1% p/Level({acmPlayer.commanderLevel}%) = {(int)((acmPlayer.commanderCryBonusDamage + acmPlayer.commanderLevel * .01f) * 100)}%";
-            acmPlayer.A2_Effect_2 = $"Damage: {(int)((acmPlayer.commanderCryBaseDamage + acmPlayer.commanderCryDamageLevel * acmPlayer.commanderLevel) * acmPlayer.abilityPower)} = {acmPlayer.commanderCryBaseDamage} + {acmPlayer.commanderCryDamageLevel} p/Level({acmPlayer.commanderCryDamageLevel * acmPlayer.commanderLevel}) * AP";
+            acmPlayer.A2_Effect_1 = $"Bonus Damage: {(int)((acmPlayer.commanderCryBonusDamage + currentClassLevel * .01f) * 100)}% = {(decimal)(acmPlayer.commanderCryBonusDamage * 100)}% + 1% p/Level({currentClassLevel}%)";
+            acmPlayer.A2_Effect_2 = $"Damage: {(int)((acmPlayer.commanderCryBaseDamage + acmPlayer.commanderCryDamageLevel * currentClassLevel) * acmPlayer.abilityPower)} = {acmPlayer.commanderCryBaseDamage} + {acmPlayer.commanderCryDamageLevel} p/Level({acmPlayer.commanderCryDamageLevel * currentClassLevel}) * AP";
             acmPlayer.A2_Effect_3 = $"Debuff Duration: {(decimal)(acmPlayer.commanderCryDuration / 60)}s";
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_Ult_Name");
             acmPlayer.Ult_Desc = $"Inspire all players, causing them to always land critical hits on enemies.\nMinions can also crit during this duration.";
-            acmPlayer.Ult_Effect_1 = $"Duration: {acmPlayer.commanderUltDuration / 60}s + 0.25s p/Level({(decimal)(acmPlayer.commanderLevel * .15f)}s) = {(decimal)((acmPlayer.commanderLevel * 15 + acmPlayer.commanderUltDuration) / 60)}s";
+            acmPlayer.Ult_Effect_1 = $"Duration: {(decimal)((currentClassLevel * 15 + acmPlayer.commanderUltDuration) / 60)}s = {acmPlayer.commanderUltDuration / 60}s + 0.25s p/Level({(decimal)(currentClassLevel * .15f)}s)";
 
             acmPlayer.aghanimsText = "- Banner cooldown decreased by 5 seconds\n" +
                                      "- Banner range increased by 25\n" +
                                      "- Banner now follows you around";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
+
+            player.GetDamage(DamageClass.Magic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            player.maxMinions += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
+            player.whipRangeMultiplier += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+            player.runAcceleration -= currentClassLevel * badStat;
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

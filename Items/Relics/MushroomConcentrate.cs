@@ -55,7 +55,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
         {
-            if (!modded)
+            if (!modded || player.GetModPlayer<ACMPlayer>().hasStrangeMushroom)
                 return false;
 
             return base.CanEquipAccessory(player, slot, modded);

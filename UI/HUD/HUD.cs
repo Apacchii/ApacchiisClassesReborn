@@ -12,6 +12,7 @@ using System.Drawing.Printing;
 using ApacchiisClassesMod2.Configs;
 using System.Linq;
 using Humanizer;
+using System.Data.Odbc;
 
 namespace ApacchiisClassesMod2.UI.HUD
 {
@@ -44,6 +45,9 @@ namespace ApacchiisClassesMod2.UI.HUD
         UIText[] teamHealthNumber;
 
         //float lifeRegenLeftOffset = GetInstance<Configs.ACMConfigClient>().HealingHUDOffset;
+
+        UIPanel titaniaHUDPivot;
+        Bar titaniaResource;
 
         int blinkTimer = 0;
 
@@ -198,7 +202,25 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamHealthNumber[i].Top.Set(21, 0f);
                 }
             }
-            
+
+            titaniaHUDPivot = new UIPanel();
+            titaniaHUDPivot.VAlign = .5f;
+            titaniaHUDPivot.HAlign = .5f;
+            titaniaHUDPivot.Height.Set(100, 0f);
+            titaniaHUDPivot.Width.Set(100, 0f);
+            titaniaHUDPivot.BackgroundColor = new Color(0, 0, 0, 0);
+            titaniaHUDPivot.BorderColor = new Color(0, 0, 0, 0);
+            //Append(titaniaHUDPivot);
+
+            titaniaResource = new Bar();
+            titaniaResource.HAlign = .5f;
+            titaniaResource.VAlign = .5f;
+            titaniaResource.Top.Set(32, 0f);
+            titaniaResource.Width.Set(60, 0f);
+            titaniaResource.Height.Set(8, 0f);
+            titaniaResource.backgroundColor = Color.Orange;
+            //titaniaHUDPivot.Append(titaniaResource);
+
             base.OnInitialize();
         }
 
@@ -257,6 +279,22 @@ namespace ApacchiisClassesMod2.UI.HUD
                 
             }
 
+            //Titania Resource Bar
+            if (acmPlayer.titaniaPhaseResource < 120f)
+            {
+                Append(titaniaHUDPivot);
+                titaniaHUDPivot.Append(titaniaResource);
+            }
+            else if (acmPlayer.titaniaPhaseResource >= 120f && acmPlayer.globalTickTimer % 120 == 0)
+                titaniaHUDPivot.Remove();
+
+            float opResourceQ = (float)acmPlayer.titaniaPhaseResource / 120f;
+            titaniaResource.Width.Set(60f * opResourceQ, 0f);
+            if(acmPlayer.titaniaCanPhase)
+                titaniaResource.backgroundColor = Color.Lerp(Color.Red, Color.Orange, opResourceQ);
+            else
+                titaniaResource.backgroundColor = Color.Red;
+
             //Quest HUD
             showQuestHUD = ACMConfigClient.Instance.showQuestHUD;
             if (showQuestHUD)
@@ -306,7 +344,7 @@ namespace ApacchiisClassesMod2.UI.HUD
             //else
             //    curBar2.Remove();
 
-            inCombat.SetText($"{(acmPlayer.inBattleTimer / 60 + 1)}");
+            inCombat.SetText($"{acmPlayer.inBattleTimer / 60 + 1}");
             if (acmPlayer.inBattleTimer > 0)
                 backBar.Append(inCombat);
             else
@@ -319,7 +357,13 @@ namespace ApacchiisClassesMod2.UI.HUD
             //q = (float)acmPlayer.ability2Cooldown / (float)acmPlayer.ability2MaxCooldown;
             //curBar2.Width.Set(q * 100, 0f);
 
-            text1.SetText("A1: " + (acmPlayer.ability1Cooldown / 60) + " / " + (int)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr));
+            if(acmPlayer.ability1MaxCharges > 1)
+                text1.SetText($"Charges: {acmPlayer.ability1Charges} / {acmPlayer.ability1MaxCharges}");
+            else
+            {
+                text1.SetText($"A1: {acmPlayer.ability1Cooldown / 60} / {(int)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr)}");
+            }
+                
             text2.SetText("A2: " + (acmPlayer.ability2Cooldown / 60) + " / " + (int)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr));
             text.SetText("Ult: " + acmPlayer.ultCharge + " / " + acmPlayer.ultChargeMax);
 
@@ -382,9 +426,9 @@ namespace ApacchiisClassesMod2.UI.HUD
                 text.SetText("Ult: " + acmPlayer.ultCharge + " / " + acmPlayer.ultChargeMax);
             }
 
-            if (acmPlayer.ability1Cooldown <= 0)
+            if (acmPlayer.ability1Cooldown <= 0 && acmPlayer.ability1MaxCharges <= 1)
                 text1.SetText("A1: Ready");
-            if (acmPlayer.ability2Cooldown <= 0)
+            if (acmPlayer.ability2Cooldown <= 0 && acmPlayer.ability2MaxCharges <= 1)
                 text2.SetText("A2: Ready");
             if (acmPlayer.ultCharge == acmPlayer.ultChargeMax)
                 text.SetText("Ult: Ready");

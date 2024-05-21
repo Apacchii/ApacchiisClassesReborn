@@ -76,6 +76,18 @@ namespace ApacchiisClassesMod2.Configs
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.AnnounceLevelUp.Tooltip")]
         public bool announceLevelUp { get; set; }
 
+        [DefaultValue(true)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.ScreenShake.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.ScreenShake.Tooltip")]
+        public bool screenShake { get; set; }
 
+        [DefaultValue(1f)]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        [Increment(.1f)]
+        [Range(.1f, 1f)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.ScreenShakeIntensity.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.ScreenShakeIntensity.Tooltip")]
+        public float screenShakeIntensity { get; set; }
     }
 }

@@ -18,8 +18,6 @@ namespace ApacchiisClassesMod2.Items.Relics
 
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault($"[Relic] Niterih's Bracelet");
-            // Tooltip.SetDefault(desc);
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 

@@ -11,6 +11,9 @@ using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.GameContent;
 using System.Drawing.Printing;
+using Microsoft.CodeAnalysis.CSharp;
+using System.Linq;
+using ApacchiisClassesMod2.UI.Other;
 
 namespace ApacchiisClassesMod2.UI
 {
@@ -40,6 +43,9 @@ namespace ApacchiisClassesMod2.UI
         UIText extraFunctionText;
         UIPanel AghanimsPanel;
         UIText AghanimsTextIcon;
+
+        UIPanel changelogButton;
+        UIText changelogText;
 
         UIPanel passiveButton;
         UIText passiveStaticText;
@@ -91,8 +97,9 @@ namespace ApacchiisClassesMod2.UI
             $"[i:{ItemID.Heart}] Thank you for your support, @Serenity! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @Sheseck! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @Wendy! [i:{ItemID.Heart}]",
-
-
+            $"[i:{ItemID.Heart}] Thank you for your support, @Billy da Bomb! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Hili! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @SROSirFDrake! [i:{ItemID.Heart}]",
 
             "You can change the max level a class can reach in the mod's config (10-100).",
             $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Class Book' [i:{ItemType<Items.ClassBook>()}].",
@@ -106,7 +113,7 @@ namespace ApacchiisClassesMod2.UI
             "Statue-spawned enemies do not count towards your highest dps, highest crit, enemies killed and damage dealt stats.",
             "If your HUD ever gets stuck and doesn't update anymore, you can type '/acr resetHUD' in chat and it'll fix itself.",
             "Join the discord on the mod's description/workshop page for help, reporting bugs, or just chatting.",
-            "This mod is still in development, more classes will come in the future!",
+            "This mod is still in development, more classes and relics will come in the future!",
             "Skill Points are awarded every time you level up, spend them by clicking on one of the buttons below!",
             "The HUD on the bottom left of the screen will tell you the current cooldown of all your abilities.",
             "Some vanilla items grant you increased ability power, reduced ability cooldowns and reduced ultimate costs.",
@@ -124,7 +131,8 @@ namespace ApacchiisClassesMod2.UI
             $"You get Ability Power based on your currently held weapon's base DPS, the higher it is, the more you get!",
             $"Bottom left HUD too big or intrusive for your liking ? Enable 'Compact HUD' on the mod's Client Config!",
             $"Do you keep forgetting to use your abilities ? Enable 'Blinking HUD' on the mod's Client Config!",
-            $"Daily quests reset everyday at 4:30am."
+            $"Daily quests reset everyday at 4:30am.",
+            $"Clicking the Changelog button bellow will let you see what has recently been changed in the mod!"
         };
         int chosenTip = 0;
         int prevTip = -1;
@@ -224,6 +232,22 @@ namespace ApacchiisClassesMod2.UI
             specsText.HAlign = .5f;
             specsButton.Append(specsText);
 
+            changelogButton = new UIPanel();
+            changelogButton.HAlign = .5f;
+            changelogButton.VAlign = .5f;
+            changelogButton.Top.Set(395, 0f);
+            changelogButton.Width.Set(200, 0f);
+            changelogButton.Height.Set(50, 0f);
+            changelogButton.OnLeftClick += OpenChangelog;
+            changelogButton.BackgroundColor = new Color(75, 75, 75);
+            changelogButton.BorderColor = new Color(25, 25, 25);
+            Append(changelogButton);
+
+            changelogText = new UIText("Changelog");
+            changelogText.VAlign = .5f;
+            changelogText.HAlign = .5f;
+            changelogButton.Append(changelogText);
+
             extraFunctionButton = new UIPanel();
             extraFunctionButton.HAlign = .5f;
             extraFunctionButton.VAlign = .5f;
@@ -231,6 +255,7 @@ namespace ApacchiisClassesMod2.UI
             extraFunctionButton.Width.Set(710, 0f);
             extraFunctionButton.Height.Set(50, 0f);
             extraFunctionButton.OnLeftClick += ExtraFunction;
+            extraFunctionButton.OnRightClick += ExtraFunctionRightClick;
             extraFunctionButton.BackgroundColor = new Color(75, 75, 75);
             extraFunctionButton.BorderColor = new Color(25, 25, 25);
 
@@ -378,6 +403,8 @@ namespace ApacchiisClassesMod2.UI
             questText.HAlign = .5f;
             questPanel.Append(questText);
 
+            
+
             base.OnInitialize();
         }
 
@@ -421,7 +448,7 @@ namespace ApacchiisClassesMod2.UI
                 if (acmPlayer.scoutCanDoubleJump)
                     extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_DisableDoubleJump")}");
                 else
-                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_EnableeDoubleJump")}");
+                    extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_EnableDoubleJump")}");
             }
             
             if(acmPlayer.equippedClass == "Gambler")
@@ -435,7 +462,20 @@ namespace ApacchiisClassesMod2.UI
                     extraFunctionText.SetText($"{Language.GetTextValue("Mods.ApacchiisClassesMod2.Gambler_P_Feedback_Disabled")}");
             }
 
-            if(extraFunctionButton.IsMouseHovering)
+            if(acmPlayer.equippedClass == "Titania")
+            {
+                Append(extraFunctionButton);
+                extraFunctionButton.Append(extraFunctionText);
+
+                //string damageTypeName = DamageClassLoader.GetDamageClass(acmPlayer.titaniaAllowedClassesList[acmPlayer.titaniaSelectedDamageClass]).FullName.ToString();
+                if(acmPlayer.titaniaPassiveDustLineEffect)
+                    extraFunctionText.SetText($"Passive Dust Line Effect: On");
+                else
+                    extraFunctionText.SetText($"Passive Dust Line Effect: Off");
+
+            }
+
+            if (extraFunctionButton.IsMouseHovering)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 extraFunctionButton.BorderColor = Color.Yellow;
@@ -530,7 +570,7 @@ namespace ApacchiisClassesMod2.UI
                                        $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%");
             }
 
-            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering)
+            if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering && !changelogButton.IsMouseHovering && !changelogText.IsMouseHovering)
                 tick = false;
 
             if (AghanimsTextIcon.IsMouseHovering || AghanimsPanel.IsMouseHovering)
@@ -641,6 +681,22 @@ namespace ApacchiisClassesMod2.UI
                 abilityEffect4.SetText(acmPlayer.Ult_Effect_4);
             }
 
+            if (changelogButton.IsMouseHovering || changelogText.IsMouseHovering)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+                changelogButton.BorderColor = Color.Yellow;
+
+                if (!tick)
+                {
+                    SoundEngine.PlaySound(SoundID.MenuTick);
+                    tick = true;
+                }
+            }
+            else
+            {
+                changelogButton.BorderColor = new Color(25, 25, 25);
+            }
+
             //Quests
             if (questPanel.IsMouseHovering || questText.IsMouseHovering)
             {
@@ -734,6 +790,27 @@ namespace ApacchiisClassesMod2.UI
                     acmPlayer.gamblerPassiveFeedback = false;
                 else
                     acmPlayer.gamblerPassiveFeedback = true;
+
+            if (acmPlayer.equippedClass == "Titania")
+            {
+                if (!acmPlayer.titaniaPassiveDustLineEffect)
+                    acmPlayer.titaniaPassiveDustLineEffect = true;
+                else
+                    acmPlayer.titaniaPassiveDustLineEffect = false;
+            }
+        }
+
+        private void ExtraFunctionRightClick(UIMouseEvent evt, UIElement listeningElement)
+        {
+            //var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+            //SoundEngine.PlaySound(SoundID.MenuTick);
+            //
+            //if (acmPlayer.equippedClass == "Titania")
+            //{
+            //    acmPlayer.titaniaSelectedDamageClass--;
+            //    if (acmPlayer.titaniaSelectedDamageClass == 0)
+            //        acmPlayer.titaniaSelectedDamageClass = acmPlayer.titaniaAllowedClassesList.Count - 1;
+            //}
         }
 
         private void OpenTalents(UIMouseEvent evt, UIElement listeningElement)
@@ -780,6 +857,16 @@ namespace ApacchiisClassesMod2.UI
                 GetInstance<ACM2ModSystem>()._MyDeck.SetState(new Specializations.MyDeck());
 
                 GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
+        }
+
+        private void OpenChangelog(UIMouseEvent evt, UIElement listeningElement)
+        {
+            //Cards
+            if (GetInstance<ACM2ModSystem>()._Changelog.CurrentState == null)
+                GetInstance<ACM2ModSystem>()._Changelog.SetState(new Changelog());
+
+            GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
+            Main.playerInventory = false;
         }
 
         private void CompleteQuestButton(UIMouseEvent evt, UIElement listeningElement)

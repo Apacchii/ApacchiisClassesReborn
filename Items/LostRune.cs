@@ -19,10 +19,8 @@ namespace ApacchiisClassesMod2.Items
             Item.maxStack = 999;
 			Item.width = 30;
 			Item.height = 30;
-            Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.value = Item.sellPrice(0, 0, 50, 0);
             Item.rare = 1;
-            Item.consumable = true;
 		}
 
         public override void AddRecipes()

@@ -45,186 +45,222 @@ namespace ApacchiisClassesMod2
             if (item.type == ItemID.RangerEmblem || item.type == ItemID.SorcererEmblem || item.type == ItemID.SummonerEmblem || item.type == ItemID.WarriorEmblem)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n3% increased ability power";
+                        line.Text += "\nIncreases ability power by 3%";
 
             if (item.type == ItemID.EyeoftheGolem)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n8% increased ability power";
+                        line.Text += "\nIncreases ability power by 8%";
+
             if (item.type == ItemID.AvengerEmblem)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n10% increased ability power";
+                        line.Text += "\nIncreases ability power by 10%";
 
             if (item.type == ItemID.DestroyerEmblem)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n10% increased ability power\n4% increased cooldown reduction";
+                        line.Text += "\nIncreases ability power by 10%\nIncreases cooldown reduction by 4%";
 
             if (item.type == ItemID.CobaltShield)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n3% decreased ultimate cost";
+                        line.Text += "\nDecreases ultimate cost by 3%";
 
             if (item.type == ItemID.ObsidianShield)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n2% increased cooldown reduction\n4% decreased ultimate cost";
+                        line.Text += "\nIncreases cooldown reduction by 2%\nDecreases ultimate cost by 4%";
 
             if (item.type == ItemID.CrossNecklace)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n3% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 3%";
 
             if (item.type == ItemID.StarVeil)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n5% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 5%";
 
             if (item.type == ItemID.RifleScope)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n6% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 4%";
 
             if (item.type == ItemID.SniperScope)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n8% increased ability power\n7% increased cooldown reduction";
+                        line.Text += "\nIncreases ability power by 8%\nIncreases cooldown reduction by 5%";
 
             if (item.type == ItemID.ReconScope)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n10% increased ability power\n8% increased cooldown reduction";
+                        line.Text += "\nIncreases ability power by 10%\nIncreases cooldown reduction by 6%";
 
             if (item.type == ItemID.AnkletoftheWind)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% decreased ultimate cost";
+                        line.Text += "\nDecreases ultimate cost by 1%";
 
             if (item.type == ItemID.Aglet)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased ability power";
+                        line.Text += "\nIncreases ability power by 1%";
 
             if (item.type == ItemID.HermesBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 1%";
             if (item.type == ItemID.RocketBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 1%";
             if (item.type == ItemID.SpectreBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n2% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 2%";
             if (item.type == ItemID.LightningBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n4% increased cooldown reduction\n3% increased ability power\n3% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 3%\nIncreases cooldown reduction by 4%\nDecreases ultimate cost by 3%";
             if (item.type == ItemID.FrostsparkBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n4% increased cooldown reduction\n4% increased ability power\n3% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 4%\nIncreases cooldown reduction by 4%\nDecreases ultimate cost by 3%";
             if (item.type == ItemID.TerrasparkBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip4")
-                        line.Text += "\n5% increased cooldown reduction\n5% increased ability power\n5% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 5%\nIncreases cooldown reduction by 5%\nDecreases ultimate cost by 5%";
 
             if (item.type == ItemID.FairyBoots)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip2")
-                        line.Text += "\n2% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 2%";
 
             if(item.wingSlot > -1)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% decreased ultimate cost";
+                        line.Text += "\nDecreases ultimate cost by 2%";
 
             if (item.type == ItemID.MedicatedBandage)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% increased ability power";
+                        line.Text += "\nIncreases ability power by 2%";
 
             if (item.type == ItemID.ArmorBracing)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% increased ability power";
+                        line.Text += "\nIncreases ability power by 2%";
 
             if (item.type == ItemID.ThePlan)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% increased ability power";
+                        line.Text += "\nIncreases ability power by 2%";
 
             if (item.type == ItemID.CountercurseMantra)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% increased ability power";
+                        line.Text += "\nIncreases ability power by 2%";
 
             if (item.type == ItemID.Blindfold)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n2% increased ability power";
+                        line.Text += "\nIncreases ability power by 2%";
 
             if (item.type == ItemID.AnkhCharm)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n10% increased ability power";
+                        line.Text += "\nIncreases ability power by 10%";
 
             if (item.type == ItemID.AnkhShield)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n12% increased ability power\n3% increased cooldown reduction\n5% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 12%\nIncreases cooldown reduction by 3%\nDecreases ultimate cost by 4%";
 
             if (item.type == ItemID.NaturesGift)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 1%";
 
             if (item.type == ItemID.ManaFlower)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n2% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 2%";
 
             if (item.type == ItemID.ArcaneFlower)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip2")
-                        line.Text += "\n3% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 3%";
 
             if (item.type == ItemID.BandofRegeneration)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% decreased ultimate cost";
+                        line.Text += "\nDecreases ultimate cost by 1%";
 
             if (item.type == ItemID.BandofStarpower)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased ability power";
+                        line.Text += "\nIncreases ability power by 1%";
 
             if (item.type == ItemID.ManaRegenerationBand)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n1% increased ability power\n1% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 1%\nDecreases ultimate cost by 1%";
 
             if (item.type == ItemID.PhilosophersStone)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased cooldown reduction";
+                        line.Text += "\nIncreases cooldown reduction by 1%";
 
             if (item.type == ItemID.CharmofMyths)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip0")
-                        line.Text += "\n1% increased cooldown reduction\n1% decreased ultimate cost";
+                        line.Text += "\nIncreases cooldown reduction by 1%\nDecreases ultimate cost by 1%";
 
             if (item.type == ItemID.MagicCuffs)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip1")
-                        line.Text += "\n2% increased ability power\n2% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 2%\nDecreases ultimate cost by 2%";
 
             if (item.type == ItemID.CelestialCuffs)
                 foreach (TooltipLine line in tooltips)
                     if (line.Mod == "Terraria" && line.Name == "Tooltip2")
-                        line.Text += "\n3% increased ability power\n3% decreased ultimate cost";
+                        line.Text += "\nIncreases ability power by 3%\nDecreases ultimate cost by 3%";
+
+            if (item.type == ItemID.BlackBelt)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip0")
+                        line.Text += "\nUltimate cost reduced by 1%";
+
+            if (item.type == ItemID.ShoeSpikes)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip1")
+                        line.Text += "\nIncreases ability power by 1%";
+
+            if (item.type == ItemID.ClimbingClaws)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip1")
+                        line.Text += "\nIncreases ability power by 1%";
+
+            if (item.type == ItemID.TigerClimbingGear)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip0")
+                        line.Text += "\nIncreases ability power by 3%";
+
+            if (item.type == ItemID.MasterNinjaGear)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip1")
+                        line.Text += "\nIncreases ability power by 5%\nDecreases ultimate cost by 1%";
+
+            if (item.type == ItemID.FrogWebbing)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip1")
+                        line.Text += "\nIncreases ability power by 2%";
+
+            if (item.type == ItemID.FrogGear)
+                foreach (TooltipLine line in tooltips)
+                    if (line.Mod == "Terraria" && line.Name == "Tooltip3")
+                        line.Text += "\nIncreases ability power by 8%";
             #endregion
 
             base.ModifyTooltips(item, tooltips);
@@ -233,6 +269,31 @@ namespace ApacchiisClassesMod2
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
+
+            if (item.type == ItemID.BlackBelt)
+                acmPlayer.ultCooldownReduction -= .01f;
+
+            if (item.type == ItemID.ShoeSpikes)
+                acmPlayer.abilityPower += .01f;
+
+            if (item.type == ItemID.ClimbingClaws)
+                acmPlayer.abilityPower += .01f;
+
+            if (item.type == ItemID.TigerClimbingGear)
+                acmPlayer.abilityPower += .03f;
+
+            if (item.type == ItemID.MasterNinjaGear)
+            {
+                acmPlayer.abilityPower += .03f;
+                acmPlayer.ultCooldownReduction -= .01f;
+            }
+
+            if (item.type == ItemID.FrogWebbing)
+                acmPlayer.abilityPower += .02f;
+
+            if (item.type == ItemID.FrogGear)
+                acmPlayer.abilityPower += .08f;
+
             if (item.type == ItemID.RangerEmblem || item.type == ItemID.SorcererEmblem || item.type == ItemID.SummonerEmblem || item.type == ItemID.WarriorEmblem)
                 acmPlayer.abilityPower += .03f;
 
@@ -294,7 +355,7 @@ namespace ApacchiisClassesMod2
             {
                 acmPlayer.abilityPower += .12f;
                 acmPlayer.cooldownReduction -= .03f;
-                acmPlayer.ultCooldownReduction -= .05f;
+                acmPlayer.ultCooldownReduction -= .04f;
             }
 
             if (item.type == ItemID.EyeoftheGolem)
@@ -323,18 +384,18 @@ namespace ApacchiisClassesMod2
             if (item.type == ItemID.StarVeil)
                 acmPlayer.cooldownReduction -= .04f;
 
-            if (item.type == ItemID.SniperScope)
-                acmPlayer.cooldownReduction -= .06f;
+            if (item.type == ItemID.RifleScope)
+                acmPlayer.cooldownReduction -= .04f;
 
             if (item.type == ItemID.SniperScope)
             {
-                acmPlayer.cooldownReduction -= .07f;
+                acmPlayer.cooldownReduction -= .05f;
                 acmPlayer.abilityPower += .08f;
             }
 
             if (item.type == ItemID.ReconScope)
             {
-                acmPlayer.cooldownReduction -= .08f;
+                acmPlayer.cooldownReduction -= .06f;
                 acmPlayer.abilityPower += .1f;
             }
 

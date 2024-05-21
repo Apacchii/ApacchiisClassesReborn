@@ -140,6 +140,7 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
                             }
                         }
 
+                        acmPlayer.ScreenShake(Projectile.Center, 5f, 30);
                         Projectile.Kill();
                     }
                 }

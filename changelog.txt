@@ -1,3 +1,1 @@
-[1.5.2.1]
-
-- Fixed servers crashings soon after a player disconnected.
+Patch notes can be seen in-game in the Class Menu or on the mod's Discord server.

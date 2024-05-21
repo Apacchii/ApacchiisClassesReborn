@@ -1,10 +1,15 @@
+using ApacchiisClassesMod2.Buffs;
+using ApacchiisClassesMod2.Buffs.Plague;
 using ApacchiisClassesMod2.Configs;
 using ApacchiisClassesMod2.Items.Classes;
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using rail;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Terraria;
@@ -12,12 +17,14 @@ using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using static ApacchiisClassesMod2.ACM2;
+using static Terraria.ModLoader.ExtraJump;
 using static Terraria.ModLoader.ModContent;
 using static Terraria.ModLoader.PlayerDrawLayer;
 
@@ -25,6 +32,9 @@ namespace ApacchiisClassesMod2
 {
 	public class ACMPlayer : ModPlayer
 	{
+        public List<string> globalClassLevel = new List<string>()
+        {
+        };
         public List<int> relicList = new List<int>()
         {
         };
@@ -32,6 +42,8 @@ namespace ApacchiisClassesMod2
         {
         };
         bool updatedRelicList = false;
+
+        public int globalTickTimer;
 
         public bool compactHUD;
         public bool blinkingHUD;
@@ -169,6 +181,7 @@ namespace ApacchiisClassesMod2
         float leysMushroomHeal = .03f;
         public bool hasStrangeMushroom;
         public bool hasMushroomConcentrate;
+        public bool hasBlackBaloon;
         public bool hasBerserkersBrew;
         public bool hasNessie;
         int nessieCooldown = -1;
@@ -177,6 +190,17 @@ namespace ApacchiisClassesMod2
         float majorsCareTimer;
         public bool hasWindsRoar;
         float _windsRoarCooldown;
+        public bool hasArcaneBarrier;
+        bool _arcaneBladeAvoidDeath;
+        int _arcaneBarrierCooldown;
+        int _arcaneBarrierNoManaRegenDuration;
+        public bool hasSacrifice;
+        int sacrificeDotLevel;
+        public int minionSlotsSacrificed;
+        public bool hasImperialMandate;
+        public bool hasRevengeSpirit;
+        bool canReleaseRevengeSpirit = true;
+        float revengeSpiritDamageMultiplier = 1f;
         #endregion
 
         string[] nessieProcText =
@@ -210,7 +234,7 @@ namespace ApacchiisClassesMod2
         public bool hasClass = false;
         public int spentSkillPointsGlobal;
         public bool hasRelic = false;
-        public int globalLevel = 0;
+        public int globalLevel = 0; //Obsolete
         public int inBattleTimer = 0;
         int outOfBattleTimer = 480;
         int outOfBattle2 = 3;
@@ -243,9 +267,15 @@ namespace ApacchiisClassesMod2
 
         public int ability1Cooldown;
         public int ability1MaxCooldown;
+        public int ability1Charges;
+        public int ability1MaxCharges;
         public int ability2Cooldown;
         public int ability2MaxCooldown;
+        public int ability2Charges;
+        public int ability2MaxCharges;
         public int ability3Cooldown;
+        public int ability3Charges;
+        public int ability3MaxCharges;
 
         public float cooldownReduction = 1f;
         public float ability1cdr = 1f;
@@ -268,11 +298,12 @@ namespace ApacchiisClassesMod2
         public int highestCrit;
         bool canAddDeaths = true;
         public int totalDamageTaken;
+        public int talentPoints;
         #endregion
 
         #region Vanguard
         public bool hasVanguard = false;
-        public int vanguardLevel = 0;
+        public int vanguardLevel = 0; //Obsolete
         public int vanguardSkillPoints = 0;
         public int vanguardSpentSkillPoints = 0;
 
@@ -725,25 +756,56 @@ namespace ApacchiisClassesMod2
         public float talentSinkPlagueRightValue = .0025f; //Minion Crit
         #endregion
 
-        #region Operator
-        public int operatorLevel;
-        public int operatorSkillPoints;
-        public int operatorSpentSkillPoints;
+        #region Titania
+        public int titaniaLevel;
+        public int titaniaSkillPoints;
+        public int titaniaSpentSkillPoints;
 
-        public float operatorEnergyBlastCharge;
+        public float titaniaEnergyBlastCharge;
+        public int titaniaSelectedDamageClass = 0;
 
-        public float operatorDashVelocity = 20f;
+        public int titaniaPassiveTimerBase = 180;
+        private int titaniaPassiveTimer = 0;
+        public float titaniaPassiveDamageMult;
+        public bool titaniaPassiveDustLineEffect = true;
 
-        public string operatorTalent_1 = "N"; // N (None), L (Left), R (Right)
-        public string operatorTalent_2 = "N";
-        public string operatorTalent_3 = "N";
-        public string operatorTalent_4 = "N";
-        public string operatorTalent_5 = "N";
-        public string operatorTalent_6 = "N";
-        public string operatorTalent_7 = "N";
-        public string operatorTalent_8 = "N";
-        public string operatorTalent_9 = "N";
-        public string operatorTalent_10 = "N";
+        public int titaniaBasePixies = 4;
+        public int titaniaPixieDamage = 5;
+        public int titaniaPixieDuration = 60 * 12;
+
+        public bool titaniaIsPhasing = false;
+        public int titaniaPhaseResource = 120;
+        public bool titaniaCanPhase = true;
+        public int titaniaPhaseRechargeCooldown = 0;
+        private float titaniaPhaseVelX = 0f;
+        private float titaniaPhaseVelY = -.4f;
+
+        public List<int> titaniaAllowedClassesList = new List<int>
+        {
+            2, //Melee
+            4, //Ranged
+            5, //Magic
+            6, //Summon
+            9, //Throwing
+        };
+
+        public int[] titaniaAllowedClasses =
+        {
+            
+        };
+
+        public float titaniaDashVelocity = 20f;
+
+        public string titaniaTalent_1 = "N"; // N (None), L (Left), R (Right)
+        public string titaniaTalent_2 = "N";
+        public string titaniaTalent_3 = "N";
+        public string titaniaTalent_4 = "N";
+        public string titaniaTalent_5 = "N";
+        public string titaniaTalent_6 = "N";
+        public string titaniaTalent_7 = "N";
+        public string titaniaTalent_8 = "N";
+        public string titaniaTalent_9 = "N";
+        public string titaniaTalent_10 = "N";
         #endregion
 
         #region Spike
@@ -804,6 +866,7 @@ namespace ApacchiisClassesMod2
 
         public override void Initialize()
         {
+            globalClassLevel = new List<string>();
             bloodMageDefeatedBosses = new List<string>();
             scoutDefeatedBosses = new List<string>();
             vanguardDefeatedBosses = new List<string>();
@@ -854,6 +917,12 @@ namespace ApacchiisClassesMod2
             nessieBaseCooldown = 60 * 60;
             hasMajorsCare = false;
             hasWindsRoar = false;
+            hasBlackBaloon = false;
+            hasArcaneBarrier = false;
+            hasSacrifice = false;
+            sacrificeDotLevel = 0;
+            minionSlotsSacrificed = 0;
+            hasImperialMandate = false;
             #endregion
 
             #region Player Stats
@@ -942,13 +1011,19 @@ namespace ApacchiisClassesMod2
             hasRelic = false;
             equippedClass = "";
 
+            if (!hasClass)
+                classStatMultiplier = 1f;
+
             devTool = false;
+
+            ultChargeMax = 12000;
+            ability1MaxCooldown = 1;
+            ability1MaxCharges = 1;
+            ability2MaxCooldown = 1;
+            ability2MaxCharges = 1;
 
             #region Vanguard
             hasVanguard = false;
-            ultChargeMax = 12000;
-            ability1MaxCooldown = 1;
-            ability2MaxCooldown = 1;
             vanguardShieldRegen = false;
             vanguardSpearHeal = false;
             vanguardPassiveReflectAmount = .75f;
@@ -1143,26 +1218,37 @@ namespace ApacchiisClassesMod2
             plaguePassivePlaguedPerLevel = .0025f;
             plaguePassivePlaguedDamage = 0;
 
-            plagueInsectDamageBase = 10;
-            plagueInsectDamagePerLevel = 3;
+            plagueInsectDamageBase = 13;
+            plagueInsectDamagePerLevel = 4;
             plagueInsectDamageTotal = 0;
             plagueInsectsBase = 1;
 
-            plagueInfectionBurstBase = 13;
+            plagueInfectionBurstBase = 14;
             plagueInfectionBurstPerLevel = 9;
             plagueInfectionBurstTotal = 0;
             plagueInfectionRange = 450;
 
             plagueDeadzoneDuration = 60 * 12;
-            plagueDeadzoneBaseDamage = 5;
-            plagueDeadzoneDamagePerLevel = 2;
+            plagueDeadzoneBaseDamage = 7;
+            plagueDeadzoneDamagePerLevel = 3;
             plagueDeadzoneDamage = 0;
-            plagueDeadzoneRange = 275;
+            plagueDeadzoneRange = 280;
             plagueDeadzoneStrikeInterval = 15;
             #endregion
 
             #region Scholar
-            
+
+            #endregion
+
+            #region Titania
+            titaniaIsPhasing = false;
+            titaniaPassiveDamageMult = .1f;
+
+            if (!ACM2.ClassAbility2.Current)
+            {
+                titaniaPhaseVelX = 0f;
+                titaniaPhaseVelY = -.4f;
+            }
             #endregion
 
             compactHUD = Configs.ACMConfigClient.Instance.compactHUD;
@@ -1238,6 +1324,61 @@ namespace ApacchiisClassesMod2
             };
         }
 
+        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
+        {
+            if (_arcaneBladeAvoidDeath)
+            {
+                _arcaneBladeAvoidDeath = false;
+                ClientSideColoredMessage("Your mana saves you from guaranteed death...", Color.AliceBlue);
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 15, Player.width, Player.height), Color.AliceBlue, $"Your mana saves you from guaranteed death...");
+                _arcaneBarrierNoManaRegenDuration = 60 * 3;
+
+                //&Player.GiveImmuneTimeForCollisionAttack(120);
+                Player.AddImmuneTime(ImmunityCooldownID.General, 60);
+                Player.statLife = Player.statLifeMax2 / 10;
+                Player.statMana = 0;
+                playSound = false;
+                genDust = false;
+
+                SoundEngine.PlaySound(SoundID.Item29);
+
+                #region Dust Circles
+                Vector2 origin = Player.Center;
+                float radius = 8;
+
+                int locations = 30;
+                for (int i = 0; i < locations; i++)
+                {
+                    Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * i)) * radius;
+                    var dust = Dust.NewDustPerfect(position, 63, Vector2.Zero, 0, Color.CadetBlue, 2f);
+                    dust.noGravity = true;
+                    dust.noLight = true;
+
+                    Vector2 dir = dust.position - origin;
+                    dir.Normalize();
+                    dust.velocity = dir * 8f;
+                    dust.scale *= .95f;
+                }
+
+                int locations2 = 15;
+                for (int i = 0; i < locations2; i++)
+                {
+                    Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations2 * i)) * radius;
+                    var dust = Dust.NewDustPerfect(position, 63, Vector2.Zero, 0, Color.DeepSkyBlue, 3f);
+                    dust.noGravity = true;
+                    dust.noLight = true;
+
+                    Vector2 dir = dust.position - origin;
+                    dir.Normalize();
+                    dust.velocity = dir * 14f;
+                    dust.scale *= .92f;
+                }
+                #endregion
+                return false;
+            }
+            return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+        }
+
         public override void UpdateDead()
         {
             ultCharge = 0;
@@ -1246,6 +1387,12 @@ namespace ApacchiisClassesMod2
             {
                 timesDied++;
                 canAddDeaths = false;
+            }
+
+            if (canReleaseRevengeSpirit)
+            {
+                canReleaseRevengeSpirit = false;
+                Projectile.NewProjectileDirect(null, Player.Center, new Vector2(0f, -12f), ProjectileType<Projectiles.RevengeSpirit>(), 1, 0f, Player.whoAmI);
             }
 
             healthToRegen = 0;
@@ -1423,6 +1570,18 @@ namespace ApacchiisClassesMod2
                 }
             }
 
+            if (hasArcaneBarrier)
+            {
+                if (Player.statMana >= hurtInfo.Damage && Player.statLife - hurtInfo.Damage <= 0)
+                {
+                    if (_arcaneBarrierCooldown <= 0)
+                    {
+                        _arcaneBladeAvoidDeath = true;
+                        _arcaneBarrierCooldown = 60 * 75;
+                    }
+                }
+            }
+
             // This stays last in the bottom
             if (hasaccountantRat)
             {
@@ -1469,6 +1628,18 @@ namespace ApacchiisClassesMod2
                     int heal = (int)(Player.statLifeMax2 * .02f);
                     HealPlayer(1, 1, heal);
                     flanPuddingTimer = 120;
+                }
+            }
+
+            if (hasArcaneBarrier)
+            {
+                if (Player.statMana >= hurtInfo.Damage && Player.statLife - hurtInfo.Damage <= 0)
+                {
+                    if (_arcaneBarrierCooldown <= 0)
+                    {
+                        _arcaneBladeAvoidDeath = true;
+                        _arcaneBarrierCooldown = 60 * 75;
+                    }
                 }
             }
 
@@ -1578,6 +1749,15 @@ namespace ApacchiisClassesMod2
                 }
             }
 
+            if (hasSacrifice && sacrificeDotLevel != 0 && item.DamageType == DamageClass.SummonMeleeSpeed)
+            { 
+                if(sacrificeDotLevel == 1)
+                    target.AddBuff(BuffType<SacrificeDot1>(), 60 * 3);
+
+                if (sacrificeDotLevel == 2)
+                    target.AddBuff(BuffType<SacrificeDot2>(), 60 * 3);
+            }
+
             base.OnHitNPCWithItem(item, target, hit, damageDone);
         }
 
@@ -1591,6 +1771,26 @@ namespace ApacchiisClassesMod2
 
             if (target.life <= 0)
                 enemiesKilled++;
+
+            if(proj.type == ProjectileType<Projectiles.RevengeSpirit>())
+            {
+                revengeSpiritDamageMultiplier += 1f;
+
+                if(!target.active)
+                    Projectile.NewProjectileDirect(null, target.Center, new Vector2(0f, -12f), ProjectileType<Projectiles.RevengeSpirit>(), 1, 0f, Player.whoAmI);
+            }
+
+            if(Main.netMode == NetmodeID.SinglePlayer)
+            {
+                if (!proj.minion && Player.HeldItem.DamageType == DamageClass.SummonMeleeSpeed && proj.DamageType == DamageClass.SummonMeleeSpeed)
+                    target.AddBuff(BuffType<Buffs.ImperialMandate>(), 60 * 5);
+            }
+            else
+            {
+                if (!proj.minion && Player.HeldItem.DamageType == DamageClass.SummonMeleeSpeed && proj.DamageType == DamageClass.SummonMeleeSpeed)
+                    target.AddBuff(BuffType<ImperialMandate>(), 60 * 5);
+            }
+            
 
             // Blood Gem
             if (bloodGemProjectileTimer <= 0 && hasBloodGem)
@@ -1738,6 +1938,15 @@ namespace ApacchiisClassesMod2
                 }    
             }
 
+            if (hasSacrifice && sacrificeDotLevel != 0 && proj.DamageType == DamageClass.SummonMeleeSpeed)
+            {
+                if (sacrificeDotLevel == 1)
+                    target.AddBuff(BuffType<SacrificeDot1>(), 60 * 3);
+
+                if (sacrificeDotLevel == 2)
+                    target.AddBuff(BuffType<SacrificeDot2>(), 60 * 3);
+            }
+
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
         }
 
@@ -1746,9 +1955,18 @@ namespace ApacchiisClassesMod2
         {
             //Vanguard Execute
             if (target.boss && target.life <= target.lifeMax * vanguardUltimateBossExecute && proj.type == ProjectileType<Projectiles.Vanguard.VanguardUltimate>())
-                modifiers.FinalDamage += target.lifeMax * 3;
+            {
+                modifiers.FinalDamage += target.lifeMax;
+                ScreenShake(target.Center, 30f, 120);
+            }
+            //Non-boss takes 2x dmg
+            if (!target.boss && proj.type == ProjectileType<Projectiles.Vanguard.VanguardUltimate>())
+                modifiers.FinalDamage *= 2;
             if (!target.boss && target.life <= target.lifeMax / 3 && proj.type == ProjectileType<Projectiles.Vanguard.VanguardUltimate>())
-                modifiers.FinalDamage += target.lifeMax * 3;
+            {
+                modifiers.FinalDamage += target.lifeMax;
+                ScreenShake(target.Center, 8f, 60);
+            }
 
             //Gambler Passive
             if (equippedClass == "Gambler")
@@ -1764,9 +1982,9 @@ namespace ApacchiisClassesMod2
                 if (gamblerPassiveFeedback)
                 {
                     if (mult >= (gamblerPassiveMinDmg + gamblerPassiveMaxDmg) / 2)
-                        CombatText.NewText(new Rectangle((int)Player.Center.X, (int)(Player.Center.Y) + 85, 1, 1), Color.CadetBlue, ">", true, true);
+                        CombatText.NewText(new Rectangle((int)Player.Center.X + 10, (int)(Player.Center.Y) + 85, 1, 1), Color.CadetBlue, ">", false, true);
                     else
-                        CombatText.NewText(new Rectangle((int)Player.Center.X, (int)(Player.Center.Y) + 85, 1, 1), Color.IndianRed, "<", true, true);
+                        CombatText.NewText(new Rectangle((int)Player.Center.X - 10, (int)(Player.Center.Y) + 85, 1, 1), Color.IndianRed, "<", false, true);
                 }
                 modifiers.FinalDamage *= mult;
             }
@@ -1789,11 +2007,35 @@ namespace ApacchiisClassesMod2
             if (Main.rand.NextFloat() < minionCritChance && proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>())
                 modifiers.SetCrit();
 
+            if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                if (target.HasBuff(BuffType<ImperialMandate>()))
+                {
+                    modifiers.FinalDamage *= 1.08f;
+                    target.DelBuff(target.FindBuffIndex(BuffType<ImperialMandate>()));
+                }
+            }
+            else
+            {
+                if (!hasImperialMandate)
+                {
+                    if (target.HasBuff(BuffType<ImperialMandate>()))
+                    {
+                        modifiers.FinalDamage *= 1.06f;
+                        target.DelBuff(target.FindBuffIndex(BuffType<ImperialMandate>()));
+                    }
+                }
+            }
+            
+
             if (isUnstableConcoctionReady)
             {
                 modifiers.FinalDamage *= 3;
                 isUnstableConcoctionReady = false;
             }
+
+            if (hasBlackBaloon && Main.rand.NextFloat() < .01f)
+                modifiers.FinalDamage *= 5f;
 
             if (bloodMageBloodEnchantment && Player.HeldItem.DamageType == DamageClass.Magic)
             {
@@ -1838,11 +2080,48 @@ namespace ApacchiisClassesMod2
             if (hasScout && scoutColaCurDuration > 0)
                 modifiers.FinalDamage += scoutColaDamageBonus;
 
+            if(equippedClass == "Titania")
+            {
+                if(titaniaPassiveTimer <= 0f)
+                {
+                    titaniaPassiveTimer = titaniaPassiveTimerBase;
+                    modifiers.FinalDamage += titaniaPassiveDamageMult;
+
+                    if(titaniaPassiveDustLineEffect)
+                        Dust.QuickDustLine(Player.Center + new Vector2(0f, -34f), target.Center, 40f, Color.CadetBlue);
+
+                    //Dust Circle
+                    Vector2 origin = new Vector2(Player.Center.X, Player.Center.Y - 34);
+                    float radius = 6;
+                    int locations = 8;
+                    for (int j = 0; j < locations; j++)
+                    {
+                        Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * j)) * radius;
+                        var dust = Dust.NewDustPerfect(position, DustID.UnusedWhiteBluePurple, Vector2.Zero, 0, default, 1f);
+                        dust.noGravity = true;
+                        dust.noLight = true;
+                        dust.fadeIn = 5f;
+            
+                        Vector2 dvel = dust.position - origin;
+                        dvel.Normalize();
+                        dvel *= 3f;
+                        dust.velocity = dvel + Player.velocity;
+                    }
+                }
+            }
+
+            if(hasRevengeSpirit && proj.type == ProjectileType<Projectiles.RevengeSpirit>())
+            {
+                //modifiers.FinalDamage *= 0f;
+                modifiers.FlatBonusDamage += target.lifeMax * .25f * revengeSpiritDamageMultiplier;
+            }
+
             modifiers.CritDamage += critDamageMult - 1f;
 
             // Insect reduced dmg vs worms
-            if (proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>() && target.type != NPCID.EaterofWorldsHead && target.type != NPCID.EaterofWorldsBody && target.type != NPCID.EaterofWorldsTail && target.type != NPCID.TheDestroyer && target.type != NPCID.TheDestroyerBody && target.type != NPCID.TheDestroyerBody)
-                modifiers.FinalDamage *= .02f;
+            if (proj.type == ProjectileType<Projectiles.Plague.PlagueInsect>())
+                if(target.type == NPCID.EaterofWorldsHead || target.type == NPCID.EaterofWorldsBody || target.type == NPCID.EaterofWorldsTail || target.type == NPCID.TheDestroyer || target.type == NPCID.TheDestroyerBody || target.type == NPCID.TheDestroyerBody)
+                    modifiers.FinalDamage *= .02f;
 
             base.ModifyHitNPCWithProj(proj, target, ref modifiers);
         }
@@ -1890,6 +2169,9 @@ namespace ApacchiisClassesMod2
                 isUnstableConcoctionReady = false;
             }
 
+            if (hasBlackBaloon && Main.rand.NextFloat() < .01f)
+                modifiers.FinalDamage *= 5f;
+
             if (bloodMageBloodEnchantment && Player.HeldItem.DamageType == DamageClass.Magic)
             {
                 modifiers.FinalDamage *= (bloodMageDamageGain + 1f);
@@ -1930,6 +2212,36 @@ namespace ApacchiisClassesMod2
             if (hasScout && scoutColaCurDuration > 0)
                 modifiers.FinalDamage += scoutColaDamageBonus;
 
+            if (equippedClass == "Titania")
+            {
+                if (titaniaPassiveTimer <= 0f)
+                {
+                    titaniaPassiveTimer = titaniaPassiveTimerBase;
+                    modifiers.FinalDamage += titaniaPassiveDamageMult;
+
+                    if (titaniaPassiveDustLineEffect)
+                        Dust.QuickDustLine(Player.Center + new Vector2(0f, -34f), target.Center, 40f, Color.CadetBlue);
+
+                    //Dust Circle
+                    Vector2 origin = new Vector2(Player.Center.X, Player.Center.Y - 34);
+                    float radius = 6;
+                    int locations = 8;
+                    for (int j = 0; j < locations; j++)
+                    {
+                        Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * j)) * radius;
+                        var dust = Dust.NewDustPerfect(position, DustID.UnusedWhiteBluePurple, Vector2.Zero, 0, default, 1f);
+                        dust.noGravity = true;
+                        dust.noLight = true;
+                        dust.fadeIn = 5f;
+
+                        Vector2 dvel = dust.position - origin;
+                        dvel.Normalize();
+                        dvel *= 3f;
+                        dust.velocity = dvel + Player.velocity;
+                    }
+                }
+            }
+
             modifiers.CritDamage += critDamageMult - 1f;
 
             base.ModifyHitNPCWithItem(item, target, ref modifiers);
@@ -1942,7 +2254,6 @@ namespace ApacchiisClassesMod2
                 Player.statLife -= (int)(Player.HeldItem.mana * bloodMageEnchantmentBaseManaCost);
                 CombatText.NewText(new Rectangle((int)Player.Center.X - 32, (int)Player.Center.Y + 64, 1, 1), Color.Red, "" + (int)(Player.HeldItem.mana * bloodMageEnchantmentBaseManaCost));
             }
-
             base.OnConsumeMana(item, manaConsumed);
         }
 
@@ -1981,8 +2292,21 @@ namespace ApacchiisClassesMod2
             base.GetHealLife(item, quickHeal, ref healValue);
         }
 
+        public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
+        {
+            if (_arcaneBarrierNoManaRegenDuration > 0)
+            {
+                healValue = 0;
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 15, Player.width, Player.height), Color.AliceBlue, $"Your potion fails to replenish your mana ({(decimal)(_arcaneBarrierNoManaRegenDuration / 60)})");
+            }
+
+            base.GetHealMana(item, quickHeal, ref healValue);
+        }
+
         public override void PreUpdate()
         {
+            globalTickTimer++;
+
             chocolateBarTimer--;
             inventorOverclockCurDuration--;
             flanPuddingTimer--;
@@ -1993,6 +2317,11 @@ namespace ApacchiisClassesMod2
             nessieCooldown--;
             majorsCareTimer--;
             _windsRoarCooldown--;
+            _arcaneBarrierNoManaRegenDuration--;
+            _arcaneBarrierCooldown--;
+
+            if (hasArcaneBarrier && _arcaneBarrierCooldown == 0)
+                ClientSideColoredMessage("Your arcane barrier has replenished!", Color.CadetBlue);
 
             if (hasMajorsCare)
             {
@@ -2002,7 +2331,7 @@ namespace ApacchiisClassesMod2
                     majorsCareTimer = 60 * 5;
                 }
             }
-
+           
             //if (Configs._ACMConfigServer.Instance.startWithRelic && !gotFreeRelic)
             //{
             //    Player.QuickSpawnItem(null, ItemType<Items.Relics.RandomRelic>(), 1);
@@ -2289,6 +2618,7 @@ namespace ApacchiisClassesMod2
 
             if (soulmancerSacrificeTimer == 0 && soulmancerSacrificeSoulCount_Cur > 0)
             {
+                ScreenShake(Player.Center, 4f, 5);
                 soulmancerSacrificeSoulCount_Cur--;
                 soulmancerSacrificeTimer = 3;
 
@@ -2305,6 +2635,68 @@ namespace ApacchiisClassesMod2
                 Player.statLife -= healthCost;
                 Player.HealEffect(-healthCost);
             }
+
+            //Titania
+            if(equippedClass == "Titania")
+            {
+                titaniaPassiveTimer--;
+                titaniaPhaseRechargeCooldown--;
+                if (titaniaPhaseRechargeCooldown <= 0)
+                    titaniaPhaseResource++;
+
+                if (titaniaPhaseResource > 120)
+                    titaniaPhaseResource = 120;
+
+                if (!titaniaCanPhase && titaniaPhaseResource >= 120)
+                    titaniaCanPhase = true;
+
+                if (titaniaPassiveTimer <= 0f && !ACM2.ClassAbility2.Current)
+                {
+                    var dust = Dust.NewDustPerfect(new Vector2(Player.Center.X, Player.Center.Y - 34), DustID.UnusedWhiteBluePurple, Vector2.Zero, 0, default, 1f);
+                    dust.noGravity = true;
+                    dust.fadeIn = 0f;
+                }
+
+            }
+
+            //[Scrap] Might be useful later
+            //Finish this, make it only update once and saving crashes the game if the modded class is not loaded
+            //Titania
+            //if (DamageClassLoader.DamageClassCount > 9)
+            //{
+            //    //Supported damage types list
+            //    List<string> supportedDamageTypes = new List<string>()
+            //    {
+            //        //Thorium
+            //        "ThoriumMod/HealerDamage",
+            //        "ThoriumMod/BardDamage",
+            //
+            //        //Mod of Redemption
+            //        "Redemption/RitualistClass",
+            //
+            //        //Calamity
+            //        "CalamityMod/RogueDamageClass"
+            //    };
+            //
+            //    //9 = Accounting for the vanilla classes starting from index 0
+            //    for (int i = 9; i < DamageClassLoader.DamageClassCount; i++)
+            //    {
+            //        //DevTool
+            //        //if (!supportedDamageTypes.Contains(DamageClassLoader.GetDamageClass(i).FullName) && globalSingleSecondTimer % 60 == 0)
+            //        //    Main.NewText($"New damage type found: {DamageClassLoader.GetDamageClass(i).FullName}");
+            //
+            //        if (supportedDamageTypes.Contains(DamageClassLoader.GetDamageClass(i).FullName))
+            //        {
+            //            if (!titaniaAllowedClassesList.Contains(DamageClassLoader.GetDamageClass(i).Type))
+            //            {
+            //
+            //                titaniaAllowedClassesList.Add(DamageClassLoader.GetDamageClass(i).Type);
+            //                Main.NewText($"Added damage type: {DamageClassLoader.GetDamageClass(i).FullName} to Titania's allowed class list");
+            //            }
+            //        }
+            //    }
+            //}
+
 
             #region Global Skill Points Spent
             if (equippedClass == "Blood Mage")
@@ -2335,10 +2727,10 @@ namespace ApacchiisClassesMod2
             cooldownReduction -= card_TimelessCount * card_TimelessValue;
             ultCooldownReduction -= card_MightyCount * card_MightyValue;
             healingPower += card_MendingCount * card_MendingValue;
-            if(hasClass) classStatMultiplier += card_MagicalCount * card_MagicalValue;
+            classStatMultiplier += card_MagicalCount * card_MagicalValue;
 
             lifeMult += card_VeteranCount * card_VeteranValue_1;
-            manaMult += card_VeteranCount * card_VeteranValue_2;
+            classStatMultiplier += card_VeteranCount * card_VeteranValue_2;
 
             lifeMult += card_FortifiedCount * card_FortifiedValue_1;
             Player.endurance += card_FortifiedCount * card_FortifiedValue_2;
@@ -2497,27 +2889,26 @@ namespace ApacchiisClassesMod2
                     plagueDebuffDuration += 2; //In seconds
                 //10th Right is done on the ability cast itself
             }
-
             base.UpdateEquips();
         }
 
         public override void PostUpdateEquips()
         {
             if (hasClass)
+            {
                 if (hasScalingWarbanner)
                 {
                     classStatMultiplier += .1f;
                     if (Main.hardMode)
                         classStatMultiplier += .08f;
                 }
+            }
 
-            //globalLevel = defeatedBosses.Count;
+            int currentClassLevel = globalClassLevel.Count;
+            if (currentClassLevel > _ACMConfigServer.Instance.maxClassLevel)
+                currentClassLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             #region Vanguard
-            vanguardLevel = vanguardDefeatedBosses.Count;
-            if (vanguardLevel > _ACMConfigServer.Instance.maxClassLevel)
-                vanguardLevel = _ACMConfigServer.Instance.maxClassLevel;
-
             if (hasVanguard)
             {
                 #region Vanguard Talents
@@ -2556,9 +2947,9 @@ namespace ApacchiisClassesMod2
                 Player.GetDamage(DamageClass.Melee) += talentSinkVanguardRight * talentSinkVanguardRightValue;
                 #endregion
 
-                vanguardSpearDamage = vanguardSpearBaseDamage + 13 * vanguardLevel;
-                vanguardShieldDuration = vanguardShieldBaseDuration + vanguardShieldDurationPerLevel * vanguardLevel;
-                vanguardSwordDamage = vanguardSwordBaseDamage + 12 * vanguardLevel;
+                vanguardSpearDamage = vanguardSpearBaseDamage + 13 * currentClassLevel;
+                vanguardShieldDuration = vanguardShieldBaseDuration + vanguardShieldDurationPerLevel * currentClassLevel;
+                vanguardSwordDamage = vanguardSwordBaseDamage + 12 * currentClassLevel;
                 vanguardShieldDamageReduction += vanguardShieldBaseDamageReduction;
 
                 //Player.endurance += vanguardShieldDamageReduction;
@@ -2566,9 +2957,9 @@ namespace ApacchiisClassesMod2
             #endregion
 
             #region Blood Mage
-            bloodMageLevel = bloodMageDefeatedBosses.Count;
-            if (bloodMageLevel > _ACMConfigServer.Instance.maxClassLevel)
-                bloodMageLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //bloodMageLevel = bloodMageDefeatedBosses.Count;
+            //if (bloodMageLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    bloodMageLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasBloodMage)
             {
@@ -2621,17 +3012,17 @@ namespace ApacchiisClassesMod2
                 healingPower += talentSinkBloodMageRight * talentSinkBloodMageRightValue;
                 #endregion
 
-                bloodMageUltRegen = bloodMageBaseUltRegen + .0025f * bloodMageLevel;
-                bloodMageSiphonDamage = bloodMageSiphonBaseDamage + 6 * bloodMageLevel;
-                bloodMageDamageGain += bloodMageBaseDamageGain * bloodMageLevel;
-                bloodMageBasePassiveWeaponDamageMult += bloodMagePassiveDamageLevel * bloodMageLevel;
+                bloodMageUltRegen = bloodMageBaseUltRegen + .0025f * currentClassLevel;
+                bloodMageSiphonDamage = bloodMageSiphonBaseDamage + 6 * currentClassLevel;
+                bloodMageDamageGain += bloodMageBaseDamageGain * currentClassLevel;
+                bloodMageBasePassiveWeaponDamageMult += bloodMagePassiveDamageLevel * currentClassLevel;
             }
             #endregion
 
             #region Commander
-            commanderLevel = commanderDefeatedBosses.Count;
-            if (commanderLevel > _ACMConfigServer.Instance.maxClassLevel)
-                commanderLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //commanderLevel = commanderDefeatedBosses.Count;
+            //if (commanderLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    commanderLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasCommander)
             {
@@ -2692,16 +3083,16 @@ namespace ApacchiisClassesMod2
 
 
             Player.endurance += Player.maxMinions * commanderPassiveEndurance;
-            commanderBannerDuration += 24 * commanderLevel;
-            commanderUltDuration += 15 * commanderLevel;
-            commanderCryDamage += commanderCryDamageLevel * commanderLevel;
+            commanderBannerDuration += 24 * currentClassLevel;
+            commanderUltDuration += 15 * currentClassLevel;
+            commanderCryDamage += commanderCryDamageLevel * currentClassLevel;
             }
             #endregion
 
             #region Scout
-            scoutLevel = scoutDefeatedBosses.Count;
-            if (scoutLevel > _ACMConfigServer.Instance.maxClassLevel)
-                scoutLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //scoutLevel = scoutDefeatedBosses.Count;
+            //if (scoutLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    scoutLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasScout)
             {
@@ -2779,8 +3170,8 @@ namespace ApacchiisClassesMod2
                     Player.immune = true;
                 }
 
-                scoutTrapDamage += scoutTrapDamageLevel * scoutLevel;
-                scoutUltSpeed += scoutUltSpeedLevel * scoutLevel;
+                scoutTrapDamage += scoutTrapDamageLevel * currentClassLevel;
+                scoutUltSpeed += scoutUltSpeedLevel * currentClassLevel;
             }
             #endregion
 
@@ -2865,9 +3256,9 @@ namespace ApacchiisClassesMod2
             #endregion
 
             #region Crusader
-            crusaderLevel = crusaderDefeatedBosses.Count;
-            if (crusaderLevel > _ACMConfigServer.Instance.maxClassLevel)
-                crusaderLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //crusaderLevel = crusaderDefeatedBosses.Count;
+            //if (crusaderLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    crusaderLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasCrusader)
             {
@@ -2898,17 +3289,17 @@ namespace ApacchiisClassesMod2
                 abilityPower += talentSinkCrusaderLeft * talentSinkCrusaderLeftValue;
                 healingPower += talentSinkCrusaderRight * talentSinkCrusaderRightValue;
 
-                crusaderHammerDamage = crusaderHammerDamageBase + crusaderHammerDamageLevel * crusaderLevel;
-                crusaderGuardianAngelEndurance -= crusaderGuardianAngelEnduranceLevel * crusaderLevel;
+                crusaderHammerDamage = crusaderHammerDamageBase + crusaderHammerDamageLevel * currentClassLevel;
+                crusaderGuardianAngelEndurance -= crusaderGuardianAngelEnduranceLevel * currentClassLevel;
             }
 
             
             #endregion
 
             #region Gambler
-            gamblerLevel = gamblerDefeatedBosses.Count;
-            if (gamblerLevel > _ACMConfigServer.Instance.maxClassLevel)
-                gamblerLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //gamblerLevel = gamblerDefeatedBosses.Count;
+            //if (gamblerLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    gamblerLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (equippedClass == "Gambler")
             {
@@ -2941,19 +3332,19 @@ namespace ApacchiisClassesMod2
                 cooldownReduction -= talentSinkGamblerLeft * talentSinkGamblerLeftValue;
                 Player.GetDamage(DamageClass.Ranged) += talentSinkGamblerRight * talentSinkGamblerRightValue;
 
-                gamblerPassiveMinDmg += gamblerPassiveMinDmgPerLevel * gamblerLevel;
-                gamblerPassiveMaxDmg += gamblerPassiveMinDmgPerLevel * gamblerLevel;
-                gamblerDiceDamage += gamblerDiceDamageBase + gamblerDiceDamagePerLevel * gamblerLevel;
-                gamblerPassiveBoostDamage += gamblerPassiveBoostPerLevel * gamblerLevel;
-                gamblerUltCooldownReduction += gamblerUltCooldownReductionPerLevel * gamblerLevel;
-                gamblerUltAbilityPower += gamblerUltAbilityPowerPerLevel * gamblerLevel;
+                gamblerPassiveMinDmg += gamblerPassiveMinDmgPerLevel * currentClassLevel;
+                gamblerPassiveMaxDmg += gamblerPassiveMinDmgPerLevel * currentClassLevel;
+                gamblerDiceDamage += gamblerDiceDamageBase + gamblerDiceDamagePerLevel * currentClassLevel;
+                gamblerPassiveBoostDamage += gamblerPassiveBoostPerLevel * currentClassLevel;
+                gamblerUltCooldownReduction += gamblerUltCooldownReductionPerLevel * currentClassLevel;
+                gamblerUltAbilityPower += gamblerUltAbilityPowerPerLevel * currentClassLevel;
             }
             #endregion
 
             #region Plague
-            plagueLevel = plagueDefeatedBosses.Count;
-            if (plagueLevel > _ACMConfigServer.Instance.maxClassLevel)
-                plagueLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //plagueLevel = plagueDefeatedBosses.Count;
+            //if (plagueLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    plagueLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if(equippedClass == "Plague")
             {
@@ -2972,22 +3363,25 @@ namespace ApacchiisClassesMod2
                 minionCritChance += plaguePassiveCritBase;
 
                 plaguePassivePlaguedDamage += plaguePassivePlaguedDamageBase;
-                plaguePassivePlaguedDamage += plaguePassivePlaguedPerLevel * plagueLevel;
+                plaguePassivePlaguedDamage += plaguePassivePlaguedPerLevel * currentClassLevel;
 
                 plagueInsectDamageTotal += plagueInsectDamageBase;
-                plagueInsectDamageTotal += plagueInsectDamagePerLevel * plagueLevel;
+                plagueInsectDamageTotal += plagueInsectDamagePerLevel * currentClassLevel;
 
                 plagueInfectionBurstTotal += plagueInfectionBurstBase;
-                plagueInfectionBurstTotal += plagueInfectionBurstPerLevel * plagueLevel;
+                plagueInfectionBurstTotal += plagueInfectionBurstPerLevel * currentClassLevel;
 
                 plagueDeadzoneDamage += plagueDeadzoneBaseDamage;
-                plagueDeadzoneDamage += plagueDeadzoneDamagePerLevel * plagueLevel;
+                plagueDeadzoneDamage += plagueDeadzoneDamagePerLevel * currentClassLevel;
 
                 //Plague ult
                 _plagueDeadzoneDurationCurrent--;
                 if (_plagueDeadzoneDurationCurrent > 0)
                 {
                     float q = (float)_plagueDeadzoneDurationCurrent / (float)plagueDeadzoneDuration;
+
+                    
+
                     // Circle Dust
                     Vector2 origin = Player.Center;
                     float radius = plagueDeadzoneRange;
@@ -2999,6 +3393,7 @@ namespace ApacchiisClassesMod2
                     {
                         //Range Circle
                         Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * j)) * radius;
+
                         if (!hasAghanims && !hasAghanimsShard)
                         {
                             if (Collision.CanHitLine(Player.Center, 1, 1, position, 1, 1))
@@ -3016,7 +3411,6 @@ namespace ApacchiisClassesMod2
                             dust.noLight = true;
                             //dust.velocity = Player.velocity;
                         }
-
                     }
 
                     for (int j = 0; j < 8; j++)
@@ -3179,11 +3573,17 @@ namespace ApacchiisClassesMod2
             if (hasWindsRoar)
                 lifeMult += .02f;
 
+            if (hasVanguard)
+                lifeMult += globalClassLevel.Count * .0085f * classStatMultiplier * _ACMConfigServer.Instance.classStatMult;
+
             if (hasScout)
-                lifeMult -= scoutLevel * .0035f * _ACMConfigServer.Instance.classStatMultNegative;
+                lifeMult -= globalClassLevel.Count * .0035f * _ACMConfigServer.Instance.classStatMultNegative;
 
             if(equippedClass == "Plague")
-                lifeMult -= plagueLevel * .006f * _ACMConfigServer.Instance.classStatMultNegative;
+                lifeMult -= globalClassLevel.Count * .006f * _ACMConfigServer.Instance.classStatMultNegative;
+
+            if (equippedClass == "Crusader")
+                lifeMult -= globalClassLevel.Count * .002f * _ACMConfigServer.Instance.classStatMultNegative;
 
             ultChargeMax = (int)(ultChargeMax * ultCooldownReduction);
             if (ultChargeMax < 60)
@@ -3217,8 +3617,10 @@ namespace ApacchiisClassesMod2
                 pSecHealthTimer = 60;
             }
 
-            if (cooldownReduction < 0f)
-                cooldownReduction = 0f;
+            if (cooldownReduction < .25f)
+                cooldownReduction = .25f;
+            if (ultCooldownReduction < .25f)
+                ultCooldownReduction = .25f;
 
             if (hasScout && scoutColaCurDuration > 0)
                 if (hasAghanims || hasAghanimsShard)
@@ -3288,7 +3690,30 @@ namespace ApacchiisClassesMod2
 
         public override void PostUpdate()
         {
+            if (hasSacrifice)
+            {
+                minionSlotsSacrificed = Player.maxMinions / 2;
+                if (minionSlotsSacrificed > 4)
+                    minionSlotsSacrificed = 4;
+                Player.maxMinions -= minionSlotsSacrificed;
+
+                if (minionSlotsSacrificed >= 1)
+                    Player.GetDamage(DamageClass.SummonMeleeSpeed) += .1f;
+                if (minionSlotsSacrificed >= 2)
+                    sacrificeDotLevel = 1;
+                if (minionSlotsSacrificed >= 3)
+                    Player.GetDamage(DamageClass.SummonMeleeSpeed) += .1f;
+                if (minionSlotsSacrificed >= 4)
+                    sacrificeDotLevel = 2;
+            }
+
             // RELIC LIST CODE WAS HERE ON 1.4.3, 1.4.4 BUGGED IT, PLACEHOLDER
+
+            if (ability1MaxCharges > 1 && ability1Cooldown <= 0 && ability1Charges < ability1MaxCharges)
+            {
+                AddAbilityCooldown(1, ability1MaxCooldown);
+                //Main.NewText($"{ability1Cooldown}/{ability1MaxCooldown}");
+            }
 
             if (Main.netMode != NetmodeID.Server)
             {
@@ -3297,6 +3722,9 @@ namespace ApacchiisClassesMod2
                     if (equippedClass != "" && GetInstance<ACM2ModSystem>()._HUD.CurrentState == null)
                         GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
 
+                    //if (equippedClass != "" && GetInstance<ACM2ModSystem>()._HUDRework.CurrentState == null)
+                    //    GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
+
                     //if (resetHUD == 1 && equippedClass != "")
                     //{
                     //    GetInstance<ACM2ModSystem>()._HUD.SetState(null);
@@ -3304,6 +3732,7 @@ namespace ApacchiisClassesMod2
                     //}
                 }
             }
+
 
             base.PostUpdate();
         }
@@ -3314,7 +3743,13 @@ namespace ApacchiisClassesMod2
             {
                 GetInstance<ACM2ModSystem>()._HUD.SetState(null);
                 GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+
+                //GetInstance<ACM2ModSystem>()._HUDRework.SetState(null);
+                //GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
             }
+
+            revengeSpiritDamageMultiplier = 1f;
+            canReleaseRevengeSpirit = true;
 
             base.OnRespawn();
         }
@@ -3386,6 +3821,12 @@ namespace ApacchiisClassesMod2
                 if (Player.controlInv && GetInstance<ACM2ModSystem>()._ClassesMenu.CurrentState != null)
                 {
                     GetInstance<ACM2ModSystem>()._ClassesMenu.SetState(null);
+                    if (Main.playerInventory == true)
+                        Main.playerInventory = false;
+                }
+                if (Player.controlInv && GetInstance<ACM2ModSystem>()._Changelog.CurrentState != null)
+                {
+                    GetInstance<ACM2ModSystem>()._Changelog.SetState(null);
                     if (Main.playerInventory == true)
                         Main.playerInventory = false;
                 }
@@ -3582,6 +4023,28 @@ namespace ApacchiisClassesMod2
 
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Infect!", true);
                             break;
+                        case "Titania":
+                            Vector2 origin = Player.Center;
+                            origin.X -= Player.width / 2 - 10;
+                            float radius = 16;
+
+                            int pixies = titaniaBasePixies;
+                            for (int i = 0; i < pixies; i++)
+                            {
+                                Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / pixies * i)) * radius;
+                                var dust = Dust.NewDustPerfect(position, 61, Vector2.Zero, 0, Color.Pink, 2f);
+                                dust.noGravity = false;
+                                dust.noLight = false;
+
+                                Vector2 dvel = dust.position - Player.Center;
+                                dvel.Normalize();
+                                dvel *= 10f;
+                                dust.velocity = -dvel;
+
+                                Projectile.NewProjectile(default, position, dvel, ProjectileType<Projectiles.Titania.TitaniaPixie>(), 20, 1f, Player.whoAmI);
+                            }
+                            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Player.position);
+                            break;
                     }
                     a1Sound = false;
                 }
@@ -3736,7 +4199,7 @@ namespace ApacchiisClassesMod2
                                 }
                             }
 
-                            // Circle Dustq
+                            // Circle Dust
                             Vector2 origin = Player.Center;
                             origin.X -= Player.width / 2;
                             float radius = plagueInfectionRange;
@@ -3757,10 +4220,56 @@ namespace ApacchiisClassesMod2
                             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Player.position);
                             break;
 
-                        case "Operator":
+                        case "Titania":
+                            //Dash ability
+                            //
+                            //int dustType = DustID.Dirt;
+                            //if (Player.velocity.Y == 0f)
+                            //    dustType = DustID.Dirt;
+                            //else
+                            //    dustType = DustID.DirtSpray;
+                            //
+                            //float velX = 0f;
+                            //float velY = -1f;
+                            //
+                            //if (Player.controlLeft)
+                            //    velX = -12f;
+                            //else
+                            //if(Player.controlRight)
+                            //    velX = 12f;
+                            //
+                            //if (Player.controlUp)
+                            //    velY = -15f;
+                            //else
+                            //if (Player.controlDown)
+                            //    velY = 15f;
+                            //
+                            //Player.velocity = new Vector2(velX, velY);
+                            //
+                            //SoundEngine.PlaySound(SoundID.Item12, Player.position);
+                            //
+                            //
+                            //
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    var dashDust = Dust.NewDust(Player.Center, 4, 4, dustType, Player.velocity.X * .5f, Player.velocity.Y * .5f, 0, default, 1.1f);
+                            //}
+                            //for (int i = 0; i < 5; i++)
+                            //{
+                            //    var dashDust = Dust.NewDust(Player.Center, 4, 4, dustType, Player.velocity.X * .25f, Player.velocity.Y * .25f, 0, default, .8f);
+                            //}
+                            //
+                            //float dashDir;
+                            //if (Player.velocity.X > 0f)
+                            //    dashDir = -15f;
+                            //else
+                            //    dashDir = 15f;
+                            //for (int i = 0; i < 8; i++)
+                            //{
+                            //    var dashDust = Dust.NewDust(Player.Center, 4, 4, dustType, dashDir, -2f, 0, default, 1f);
+                            //    Main.dust[dashDust].noGravity = true;
+                            //}
 
-                            Player.velocity = PointToCursor * 15f;
-                            SoundEngine.PlaySound(SoundID.Item36, Player.position);
                             break;
                     }
                     a2Sound = false;
@@ -3784,6 +4293,28 @@ namespace ApacchiisClassesMod2
                     //}
                 }
 
+                //Holding Ability 1 keybind
+                if (ACM2.ClassAbility1.Current)
+                {
+                    Vector2 PointToCursor = Main.MouseWorld - Player.position;
+                    PointToCursor.Normalize();
+
+                    switch (equippedClass)
+                    {
+                        case "Titania":
+                            //int chargeCost = 240;
+                            //if(globalTickTimer % 3 == 0 && ability1Cooldown <= chargeCost)
+                            //{
+                            //    ability1Cooldown += chargeCost;
+                            //    int pr = Projectile.NewProjectile(default, Player.Center, PointToCursor * 14f, ProjectileID.DD2FlameBurstTowerT3Shot, 5, 0f, Player.whoAmI);
+                            //    float acc = Main.rand.NextFloat(-.11f, .11f);
+                            //    Main.projectile[pr].velocity = Main.projectile[pr].velocity.RotatedBy(acc);
+                            //}
+                            
+                            break;
+                    }
+                }
+
                 //Holding Ability 2 keybind
                 if (ACM2.ClassAbility2.Current && ability2Cooldown <= 0)
                 {
@@ -3805,6 +4336,115 @@ namespace ApacchiisClassesMod2
                                 dust.velocity = Player.velocity * .75f;
                             }
                             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathShot, Player.position);
+                            break;
+
+                        case "Titania":
+                            if (titaniaPhaseResource > 0 && titaniaCanPhase)
+                            {
+                                titaniaPhaseRechargeCooldown = 0;
+                                titaniaPhaseResource -= 2;
+
+                                Player.AddBuff(BuffID.Invisibility, 1);
+                                Player.AddBuff(BuffID.Cursed, 1);
+                                Player.noKnockback = true;
+
+                                //If has talent
+                                Player.ShimmerCollision(false, true, true);
+
+                                //Get movement inputs and adjust velocity accordingly
+                                if (Player.controlLeft)
+                                {
+                                    titaniaPhaseVelX -= .5f;
+                                    if (Player.velocity.X > 0f)
+                                        titaniaPhaseVelX -= .5f;
+                                }
+                                else
+                                if (Player.controlRight)
+                                {
+                                    titaniaPhaseVelX += .5f;
+                                    if (Player.velocity.X < 0f)
+                                        titaniaPhaseVelX += .5f;
+                                }
+
+                                if (Player.controlUp)
+                                {
+                                    titaniaPhaseVelY -= .5f;
+                                    if (Player.velocity.Y > .5f)
+                                        titaniaPhaseVelY -= .5f;
+                                }
+                                    
+                                else
+                                if (Player.controlDown)
+                                {
+                                    titaniaPhaseVelY += .5f;
+                                    if (Player.velocity.Y < .5f)
+                                        titaniaPhaseVelY += .5f;
+                                }
+
+                                //Reset velocitites to 0 if controls are not held [Removed for different movement style]
+                                //if (!Player.controlLeft && !Player.controlRight)
+                                //{
+                                //    if (titaniaPhaseVelX > 0f)
+                                //        titaniaPhaseVelX -= .5f;
+                                //    else
+                                //        titaniaPhaseVelX += .5f;
+                                //
+                                //    //Avoid right steering automatically that happens for some reason
+                                //    if (titaniaPhaseVelX > 0f)
+                                //       titaniaPhaseVelX -= .01f;
+                                //}
+                                //if (!Player.controlDown && !Player.controlUp)
+                                //{
+                                //    if (titaniaPhaseVelY > 0f)
+                                //        titaniaPhaseVelY -= .5f;
+                                //    else
+                                //        titaniaPhaseVelY += .5f;
+                                //}
+
+                                //Limit velocity values
+                                float maxVel = 6f;
+                                if (titaniaPhaseVelX > maxVel)
+                                    titaniaPhaseVelX = maxVel;
+                                if (titaniaPhaseVelX < -maxVel)
+                                    titaniaPhaseVelX = -maxVel;
+                                if (titaniaPhaseVelY > maxVel)
+                                    titaniaPhaseVelY = maxVel;
+                                if (titaniaPhaseVelY < -maxVel)
+                                    titaniaPhaseVelY = -maxVel;
+
+                                Player.velocity = new Vector2(titaniaPhaseVelX, titaniaPhaseVelY);
+
+
+                                var movementDust = Dust.NewDustPerfect(Player.Center, DustID.UnusedWhiteBluePurple, new Vector2(Player.velocity.X * .25f, Player.velocity.Y * .25f), 0, Color.Pink, 4f);
+                                movementDust.noGravity = true;
+
+                                var movementDust2 = Dust.NewDust(Player.position, 32, 32, DustID.WhiteTorch, 0, 0, 0, Color.LightBlue, 2f);
+                                Main.dust[movementDust2].noGravity = true;
+                                var movementDust3 = Dust.NewDust(Player.position, 32, 32, DustID.WhiteTorch, 0, 0, 0, Color.LightPink, 1f);
+                                Main.dust[movementDust3].noGravity = true;
+
+                                if (titaniaPhaseResource <= 0)
+                                {
+                                    titaniaCanPhase = false;
+
+                                    //If has talent
+                                    // Circle Dust
+                                    Vector2 phasePlayerPos = Player.Center;
+                                    phasePlayerPos.X -= Player.width / 2;
+                                    float range = 350;
+
+                                    int l = 36;
+                                    for (int i = 0; i < l; i++)
+                                    {
+                                        Vector2 position = phasePlayerPos + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / l * i)) * range;
+                                        var dust = Dust.NewDustPerfect(position, DustID.UnusedWhiteBluePurple, Vector2.Zero, 0, Color.Pink, 2f);
+                                        dust.noGravity = true;
+                                        dust.noLight = true;
+                                    }
+                                    SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Player.position);
+                                }
+                            }
+                            
                             break;
                     }
                 }
@@ -3838,8 +4478,9 @@ namespace ApacchiisClassesMod2
                                 Projectile.NewProjectile(null, new Vector2(Main.MouseWorld.X, Player.position.Y - 1000), new Vector2(0f, 80f), ProjectileType<Projectiles.Vanguard.VanguardUltimate>(), (int)(vanguardSwordDamage * abilityPower), 0, Player.whoAmI);
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Sword Of Judgement!", true);
                                 //SoundEngine.PlaySound(SoundID.Thunder, Player.Center);
+                                ScreenShake(Player.Center, 3f, 40);
 
-                                SoundStyle sfx = new SoundStyle($"{nameof(ApacchiisClassesMod2)}/Sounds/SoundEffects/Vanguard/Ultimate3");
+                                SoundStyle sfx = new SoundStyle($"{nameof(ApacchiisClassesMod2)}/Sounds/SoundEffects/Vanguard/Ultimate");
                                 SoundEngine.PlaySound(sfx with
                                 {
                                     Volume = 1f,
@@ -3915,6 +4556,23 @@ namespace ApacchiisClassesMod2
                             case "Gambler":
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Jackpot!", true);
                                 Player.AddBuff(BuffType<Buffs.Gambler.Jackpot>(), gamblerUltDuration);
+
+                                PointToCursor.Normalize();
+                                PointToCursor *= 14f;
+
+                                AddAbilityCooldown(1, ability1MaxCooldown);
+
+                                if (gamblerDiceCount >= 3)
+                                {
+                                    Projectile.NewProjectile(null, Player.position, PointToCursor, ProjectileType<Projectiles.Gambler.Dice>(), (int)(gamblerDiceDamage * abilityPower), 0, Player.whoAmI);
+                                    Projectile.NewProjectile(null, Player.position, PointToCursor.RotatedBy(MathHelper.ToRadians(10f)), ProjectileType<Projectiles.Gambler.Dice>(), (int)(gamblerDiceDamage * abilityPower), 0, Player.whoAmI);
+                                    Projectile.NewProjectile(null, Player.position, PointToCursor.RotatedBy(MathHelper.ToRadians(-10f)), ProjectileType<Projectiles.Gambler.Dice>(), (int)(gamblerDiceDamage * abilityPower), 0, Player.whoAmI);
+                                }
+                                if (gamblerDiceCount >= 5)
+                                {
+                                    Projectile.NewProjectile(null, Player.position, PointToCursor.RotatedBy(MathHelper.ToRadians(5f)), ProjectileType<Projectiles.Gambler.Dice>(), (int)(gamblerDiceDamage * abilityPower), 0, Player.whoAmI);
+                                    Projectile.NewProjectile(null, Player.position, PointToCursor.RotatedBy(MathHelper.ToRadians(-5f)), ProjectileType<Projectiles.Gambler.Dice>(), (int)(gamblerDiceDamage * abilityPower), 0, Player.whoAmI);
+                                }
                                 break;
 
                             case "Plague":
@@ -3946,6 +4604,7 @@ namespace ApacchiisClassesMod2
             tag.Add("highestCrit", highestCrit);
             tag.Add("totalDamageTaken", totalDamageTaken);
 
+            tag.Add("globalClassLevel", globalClassLevel);
             tag.Add("gotFreeRelic", gotFreeRelic);
             tag.Add("hasAghanimsShard", hasAghanimsShard);
             tag.Add("relicsFound", relicsFound);
@@ -3989,12 +4648,6 @@ namespace ApacchiisClassesMod2
             tag.Add("vanguardTalent_8", vanguardTalent_8);
             tag.Add("vanguardTalent_9", vanguardTalent_9);
             tag.Add("vanguardTalent_10", vanguardTalent_10);
-
-            tag.Add("specVanguard_Defense", specVanguard_Defense);
-            tag.Add("specVanguard_MeleeDamage", specVanguard_MeleeDamage);
-            tag.Add("specVanguard_ShieldDamageReduction", specVanguard_ShieldDamageReduction);
-            tag.Add("specVanguard_SpearDamage", specVanguard_SpearDamage);
-            tag.Add("specVanguard_UltCost", specVanguard_UltCost);
 
             tag.Add("talentSinkVanguardLeft", talentSinkVanguardLeft);
             tag.Add("talentSinkVanguardRight", talentSinkVanguardRight);
@@ -4166,6 +4819,13 @@ namespace ApacchiisClassesMod2
             tag.Add("talentSinkPlagueRight", talentSinkPlagueRight);
             #endregion
 
+            #region Titania
+            //tag.Add("titaniaAllowedClassesList", titaniaAllowedClassesList);
+            tag.Add("titaniaSelectedDamageClass", titaniaSelectedDamageClass);
+
+            tag.Add("titaniaPassiveDustLineEffect", titaniaPassiveDustLineEffect);
+            #endregion
+
             base.SaveData(tag);
         }   
 
@@ -4179,7 +4839,8 @@ namespace ApacchiisClassesMod2
             highestDPS = tag.GetInt("highestDPS");
             highestCrit = tag.GetInt("highestCrit");
             totalDamageTaken = tag.GetInt("totalDamageTaken");
-            
+
+            globalClassLevel.AddRange(tag.GetList<string>("globalClassLevel"));
             gotFreeRelic = tag.GetBool("gotFreeRelic");
             hasAghanimsShard = tag.GetBool("hasAghanimsShard");
             relicsFound.AddRange(tag.GetList<int>("relicsFound"));
@@ -4400,6 +5061,14 @@ namespace ApacchiisClassesMod2
             talentSinkPlagueRight = tag.GetInt("talentSinkPlagueRight");
             #endregion
 
+            #region Titania
+            //titaniaAllowedClassesList.Clear();
+            //titaniaAllowedClassesList.AddRange(tag.GetList<int>("titaniaAllowedClassesList"));
+            titaniaSelectedDamageClass = tag.GetInt("titaniaSelectedDamageClass");
+
+            titaniaPassiveDustLineEffect = tag.GetBool("titaniaPassiveDustLineEffect");
+            #endregion
+
             base.LoadData(tag);
         }
 
@@ -4409,9 +5078,28 @@ namespace ApacchiisClassesMod2
         void AddAbilityCooldown(int ability, int timeInSeconds)
         {
             if (ability == 1)
-                ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
+            {
+                if (ability1MaxCharges > 1)
+                {
+                    ability1Charges++;
+                    if(ability1Charges < ability1MaxCharges)
+                        ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
+                }
+                else
+                    ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
+
+            }
             if (ability == 2)
-                ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
+            {
+                if (ability2MaxCharges > 1)
+                {
+                    ability2Charges++;
+                    if (ability2Charges < ability2MaxCharges)
+                        ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
+                }
+                else
+                    ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
+            }
         }
 
         /// <summary>
@@ -4441,6 +5129,12 @@ namespace ApacchiisClassesMod2
                 packet.Write(color.Value.B);
                 packet.Send(-1, -1);
             }
+        }
+
+        public void ClientSideColoredMessage(string msg, Color? color = null)
+        {
+            if (color == null) color = Color.White;
+            Main.NewText(msg, color);
         }
 
         public void PlaySyncedSound(string soundPath, Vector2 pos)
@@ -4701,6 +5395,16 @@ namespace ApacchiisClassesMod2
             if(Main.netMode == NetmodeID.SinglePlayer)
             {
                 Player.AddBuff(buffType, duration);
+            }
+        }
+
+        public void ScreenShake(Vector2 position, float intensity, int durationInFrames, float vibrationsPerSecond = 6f,float reach = 1000f)
+        {
+            if (ACMConfigClient.Instance.screenShake)
+            {
+                intensity *= ACMConfigClient.Instance.screenShakeIntensity;
+                PunchCameraModifier modifier = new PunchCameraModifier(position, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), intensity, vibrationsPerSecond, durationInFrames, reach, FullName);
+                Main.instance.CameraModifiers.Add(modifier);
             }
         }
     }

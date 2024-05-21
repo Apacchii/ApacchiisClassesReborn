@@ -44,6 +44,7 @@ namespace ApacchiisClassesMod2.Projectiles.Soulmancer
             for (int i = 0; i < locations; i++)
             {
                 Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * i)) * radius;
+                Vector2 positionNext = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * i+1)) * radius;
                 var dust = Dust.NewDustPerfect(position, 180, Vector2.Zero, 0, Color.PaleGreen, 2f);
                 dust.noGravity = true;
             }
@@ -69,6 +70,16 @@ namespace ApacchiisClassesMod2.Projectiles.Soulmancer
                     }
                 }
             }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            return base.PreDraw(ref lightColor);
+        }
+
+        public override void PostDraw(Color lightColor)
+        {
+            base.PostDraw(lightColor);
         }
     }
 }

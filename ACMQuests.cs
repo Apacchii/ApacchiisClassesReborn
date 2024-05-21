@@ -32,7 +32,7 @@ namespace ApacchiisClassesMod2
 
         public int qSlayerCount;
         public int qSlayerCountToComplete;
-        int _qSlayerCountToCompleteBase = 120;
+        int _qSlayerCountToCompleteBase = 50;
 
         public int qUnicornHunterCount;
         public int qUnicornHunterToComplete;

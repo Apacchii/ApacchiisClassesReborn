@@ -931,7 +931,6 @@ namespace ApacchiisClassesMod2.UI
             if (acmPlayer.soulmancerTalent_1 == "R")
                 acmPlayer.soulmancerTalent_1 = "L";
         }
-
         private void Button1R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();

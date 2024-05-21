@@ -29,6 +29,9 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
+        internal HUDRework HUDRework;
+        internal UserInterface _HUDRework;
+
         internal RelicsUIReworked RelicsUI;
         internal UserInterface _RelicsUI;
 
@@ -60,6 +63,9 @@ namespace ApacchiisClassesMod2
         internal UserInterface _Cards;
         internal MyDeck MyDeck;
         internal UserInterface _MyDeck;
+
+        internal Changelog Changelog;
+        internal UserInterface _Changelog;
 
         //Achievements Mod
         //public override void PostSetupContent()
@@ -94,6 +100,9 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
+                HUDRework = new HUDRework();
+                _HUDRework = new UserInterface();
+
                 RelicsUI = new RelicsUIReworked();
                 _RelicsUI = new UserInterface();
 
@@ -124,7 +133,10 @@ namespace ApacchiisClassesMod2
                 Cards = new GeneralCards();
                 _Cards = new UserInterface();
                 MyDeck = new MyDeck();
-                _MyDeck =new UserInterface();
+                _MyDeck = new UserInterface();
+
+                Changelog = new Changelog();
+                _Changelog = new UserInterface();
             }
 
             base.Load();
@@ -138,10 +150,14 @@ namespace ApacchiisClassesMod2
                 _ClassesMenu.Update(gameTime);
             if (_HUD?.CurrentState != null)
                 _HUD.Update(gameTime);
+            if (_HUDRework?.CurrentState != null)
+                _HUDRework.Update(gameTime);
             if (_Cards?.CurrentState != null)
                 _Cards.Update(gameTime);
             if (_MyDeck?.CurrentState != null)
                 _MyDeck?.Update(gameTime);
+            if(_Changelog?.CurrentState != null)
+                _Changelog.Update(gameTime);
 
             if (_RelicsUI?.CurrentState != null)
                 _RelicsUI.Update(gameTime);
@@ -205,6 +221,30 @@ namespace ApacchiisClassesMod2
                         if (_lastUpdateUiGameTime != null && _HUD?.CurrentState != null)
                         {
                             _HUD.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: HUDRework",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _HUDRework?.CurrentState != null)
+                        {
+                            _HUDRework.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
+
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: Changelog",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _Changelog?.CurrentState != null)
+                        {
+                            _Changelog.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
                         }
                         return true;
                     },

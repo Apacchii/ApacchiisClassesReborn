@@ -49,6 +49,12 @@ namespace ApacchiisClassesMod2.Configs
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.HiddenAccStats.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.HiddenAccStats.Tooltip")]
         public bool configHidden { get; set; }
+
+        [DefaultValue(true)]
+        [ReloadRequired]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.FragmentDrop.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.FragmentDrop.Tooltip")]
+        public bool FragmentDrop { get; set; }
         #endregion
 
         #region Balance

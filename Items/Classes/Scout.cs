@@ -77,7 +77,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
 
-            var level = modPlayer.scoutLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
             TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedDamage")}\n" +
@@ -89,7 +89,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             lineBadStat.OverrideColor = new Color(200, 50, 25);
             lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
-            if (modPlayer.scoutLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -123,6 +123,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.ultChargeMax = 1900;
             acmPlayer.ability1MaxCooldown = 43;
             acmPlayer.ability2MaxCooldown = 10;
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
@@ -132,18 +133,9 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
-                {
-                    Player.GetDamage(DamageClass.Ranged) += acmPlayer.scoutLevel * stat1 * acmPlayer.classStatMultiplier;
-                    Player.runAcceleration += stat2 * acmPlayer.scoutLevel * acmPlayer.classStatMultiplier;
-                    acmPlayer.dodgeChance += stat3 * acmPlayer.scoutLevel * acmPlayer.classStatMultiplier;
-                }
+                    ClassStats();
             }
-            else
-            {
-                Player.GetDamage(DamageClass.Ranged) += acmPlayer.scoutLevel * stat1 * acmPlayer.classStatMultiplier;
-                Player.runAcceleration += stat2 * acmPlayer.scoutLevel * acmPlayer.classStatMultiplier;
-                acmPlayer.dodgeChance += stat3 * acmPlayer.scoutLevel * acmPlayer.classStatMultiplier;
-            }
+            else { ClassStats(); }
 
             if (acmPlayer.scoutTalent_2 == "R" || acmPlayer.scoutTalent_2 == "B")
             {
@@ -163,9 +155,9 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player.moveSpeed += acmPlayer.scoutPassiveSpeedBonus;
 
             acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += acmPlayer.scoutLevel * .01f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
-            // Class Menu Text
+            // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_Name");
             acmPlayer.P_Desc = $"The scout has a free double jump and has increased movement speed.";
             if (acmPlayer.scoutCanDoubleJump)
@@ -176,22 +168,34 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_A1_Name");
             acmPlayer.A1_Desc = $"Take a sip from an energy drink you made yourself. This drink will temporarily increase the damage you deal.";
-            acmPlayer.A1_Effect_1 = $"Bonus Damage Dealt: {(decimal)(((acmPlayer.scoutColaDamageBonus - 1f) + acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel) * 100)}% = {(decimal)(acmPlayer.scoutColaDamageBonus - 1f) * 100}% + {acmPlayer.scoutColaDamageBonusLevel * 100}% p/Level({(decimal)(acmPlayer.scoutColaDamageBonusLevel * acmPlayer.scoutLevel * 100)}%)";
+            acmPlayer.A1_Effect_1 = $"Bonus Damage Dealt: {(decimal)(((acmPlayer.scoutColaDamageBonus - 1f) + acmPlayer.scoutColaDamageBonusLevel * currentClassLevel) * 100)}% = {(decimal)(acmPlayer.scoutColaDamageBonus - 1f) * 100}% + {acmPlayer.scoutColaDamageBonusLevel * 100}% p/Level({(decimal)(acmPlayer.scoutColaDamageBonusLevel * currentClassLevel * 100)}%)";
             acmPlayer.A2_Effect_2 = $"Duration: {acmPlayer.scoutColaDuration / 60}s";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_A2_Name");
             acmPlayer.A2_Desc = $"Place an explosive trap under your cursor's position, it'll take some time to arm itself. The trap will explode if an enemy gets too close, dealing damage to all enemies within 2x the trap's detection range.";
-            acmPlayer.A2_Effect_1 = $"Damage: {(int)((acmPlayer.scoutTrapBaseDamage + acmPlayer.scoutTrapDamageLevel * acmPlayer.scoutLevel) * acmPlayer.abilityPower)} = {acmPlayer.scoutTrapBaseDamage} + {acmPlayer.scoutTrapDamageLevel} p/Level({acmPlayer.scoutTrapDamageLevel * acmPlayer.scoutLevel})";
+            acmPlayer.A2_Effect_1 = $"Damage: {(int)((acmPlayer.scoutTrapBaseDamage + acmPlayer.scoutTrapDamageLevel * currentClassLevel) * acmPlayer.abilityPower)} = {acmPlayer.scoutTrapBaseDamage} + {acmPlayer.scoutTrapDamageLevel} p/Level({acmPlayer.scoutTrapDamageLevel * currentClassLevel}) * AP";
             acmPlayer.A2_Effect_2 = $"Detection Range: {acmPlayer.scoutTrapRange}";
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_Ult_Name");
             acmPlayer.Ult_Desc = $"Become invincible for {acmPlayer.scoutUltInvDuration / 60} seconds and gain increased movement speed, jump height andauto jump for a longer duration.";
             acmPlayer.Ult_Effect_1 = $"Mobility Duration: {acmPlayer.scoutUltDuration / 60}s";
-            acmPlayer.Ult_Effect_2 = $"Speed Bonus: {(decimal)((acmPlayer.scoutUltSpeed + acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel) * 100)}% = {(int)(acmPlayer.scoutUltSpeed * 100)}% + {(int)(acmPlayer.scoutUltSpeedLevel * 100)}% p/Level({(decimal)(acmPlayer.scoutUltSpeedLevel * acmPlayer.scoutLevel * 100)}%)";
+            acmPlayer.Ult_Effect_2 = $"Speed Bonus: {(decimal)((acmPlayer.scoutUltSpeed + acmPlayer.scoutUltSpeedLevel * currentClassLevel) * 100)}% = {(int)(acmPlayer.scoutUltSpeed * 100)}% + {(int)(acmPlayer.scoutUltSpeedLevel * 100)}% p/Level({(decimal)(acmPlayer.scoutUltSpeedLevel * currentClassLevel * 100)}%)";
             acmPlayer.Ult_Effect_4 = $"Jump Height: {(int)(acmPlayer.scoutUltJump * 100)}%";
 
             acmPlayer.aghanimsText = "- Ultimate invulnerability increased by 1 second\n" +
                                      "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
+
+            player.GetDamage(DamageClass.Ranged) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            player.runAcceleration += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+            acmPlayer.dodgeChance += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+            //-Health is changed in ACMPlayer.cs
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

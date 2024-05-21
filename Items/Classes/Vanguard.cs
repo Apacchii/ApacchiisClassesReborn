@@ -78,7 +78,7 @@ namespace ApacchiisClassesMod2.Items.Classes
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AttackSpeed")} p/lvl (does not apply to tools)");
 
-            var level = modPlayer.vanguardLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
             TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MeleeDamage")}\n" +
@@ -90,7 +90,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             lineBadStat.OverrideColor = new Color(200, 50, 25);
             lineBadStatPreview.OverrideColor = new Color(200, 50, 25);
 
-            if (modPlayer.vanguardLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -124,6 +124,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.ability1MaxCooldown = 20;
             acmPlayer.ability2MaxCooldown = 48;
             acmPlayer.ultChargeMax = 2640;
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
@@ -133,48 +134,47 @@ namespace ApacchiisClassesMod2.Items.Classes
             if (_ACMConfigServer.Instance.configHidden)
             {
                 if (!hideVisual)
-                {
-                    Player.GetDamage(DamageClass.Melee) += acmPlayer.vanguardLevel * stat1 * acmPlayer.classStatMultiplier;
-                    acmPlayer.defenseMult += acmPlayer.vanguardLevel * stat2 * acmPlayer.classStatMultiplier;
-                    acmPlayer.lifeMult += acmPlayer.vanguardLevel * stat3 * acmPlayer.classStatMultiplier;
-                    Player.GetAttackSpeed(DamageClass.Melee) -= acmPlayer.vanguardLevel * badStat;
-                    if (acmPlayer.defenseMult * acmPlayer.crusaderLevel * stat2 * acmPlayer.classStatMultiplier < 1)
-                        Player.statDefense++;
-                }
+                    ClassStats();
             }
-            else
-            {
-                Player.GetDamage(DamageClass.Melee) += acmPlayer.vanguardLevel * stat1 * acmPlayer.classStatMultiplier;
-                acmPlayer.defenseMult += acmPlayer.vanguardLevel * stat2 * acmPlayer.classStatMultiplier;
-                acmPlayer.lifeMult += acmPlayer.vanguardLevel * stat3 * acmPlayer.classStatMultiplier;
-                Player.GetAttackSpeed(DamageClass.Melee) -= acmPlayer.vanguardLevel * badStat;
-                if (acmPlayer.defenseMult * acmPlayer.crusaderLevel * stat2 * acmPlayer.classStatMultiplier < 1)
-                    Player.statDefense++;
-            }
+            else { ClassStats(); }
 
             acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += acmPlayer.vanguardLevel * .01f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
-            // Class Menu Text
+            // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_P_Name");
             acmPlayer.P_Desc = $"Your armor is enchanted with light properties.\nEnemies that directly attack you take a percentage of your defense as damage.";
-            acmPlayer.P_Effect_1 = $"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level({acmPlayer.vanguardLevel * 2.5f}%) = {acmPlayer.vanguardPassiveReflectAmount * 100 + acmPlayer.vanguardLevel * 2.5f}%";
+            acmPlayer.P_Effect_1 = $"Reflected Damage: {acmPlayer.vanguardPassiveReflectAmount * 100}% + 2.5% p/Level({currentClassLevel * 2.5f}%) = {acmPlayer.vanguardPassiveReflectAmount * 100 + currentClassLevel * 2.5f}%";
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A1_Name");
             acmPlayer.A1_Desc = "Throw a spear of light that will explode if an enemy is nearby, dealing damage to all enemies around.";
-            acmPlayer.A1_Effect_1 = $"Explosion Damage: {acmPlayer.vanguardSpearBaseDamage} + 10 p/Level({acmPlayer.vanguardLevel * 11}) * AP = {(int)(acmPlayer.vanguardSpearBaseDamage + acmPlayer.vanguardLevel * 10 * acmPlayer.abilityPower)}";
+            acmPlayer.A1_Effect_1 = $"Explosion Damage: {(int)(acmPlayer.vanguardSpearBaseDamage + currentClassLevel * 13 * acmPlayer.abilityPower)} = {acmPlayer.vanguardSpearBaseDamage} + 13 p/Level({currentClassLevel * 13}) * AP";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A2_Name");
             acmPlayer.A2_Desc = "Surround yourself in a barrier of light. Any damage taken when the barrier is active will be reduced by a percentage.";
             acmPlayer.A2_Effect_1 = $"Damage Reduction: {(decimal)(acmPlayer.vanguardShieldBaseDamageReduction * 100)}%";
-            acmPlayer.A2_Effect_2 = $"Duration: {(decimal)(acmPlayer.vanguardShieldBaseDuration / 60)}s + 0.25s p/Level({(decimal)(acmPlayer.vanguardLevel * 0.25)}s) = {(decimal)(acmPlayer.vanguardShieldBaseDuration / 60 + acmPlayer.vanguardLevel * 0.25f)}s";
+            acmPlayer.A2_Effect_2 = $"Duration: {(decimal)(acmPlayer.vanguardShieldBaseDuration / 60 + currentClassLevel * 0.25f)}s = {(decimal)(acmPlayer.vanguardShieldBaseDuration / 60)}s + 0.25s p/Level({(decimal)(currentClassLevel * 0.25f)}s)";
 
             acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_Ult_Name");
-            acmPlayer.Ult_Desc = $"Call in a giant sword from the heavens. The sword hits enemies all around it, dealing massive damage and executing enemies below 50% health.\n(Bosses are executed below {acmPlayer.vanguardUltimateBossExecute * 100}% health)";
-            acmPlayer.Ult_Effect_1 = $"Damage: {acmPlayer.vanguardSwordBaseDamage} + 9 p/Level({acmPlayer.vanguardLevel * 9}) * AP = {(int)(acmPlayer.vanguardSwordBaseDamage + (acmPlayer.vanguardLevel * 9) * acmPlayer.abilityPower)}";
+            acmPlayer.Ult_Desc = $"Call in a giant sword from the heavens. The sword hits enemies all around it, dealing massive damage and executing enemies below 33% health.\nNon-boss enemies take 2 times the damage.\n(Bosses are executed below {acmPlayer.vanguardUltimateBossExecute * 100}% health)";
+            acmPlayer.Ult_Effect_1 = $"Damage: {(int)(acmPlayer.vanguardSwordBaseDamage + (currentClassLevel * 12) * acmPlayer.abilityPower)} = {acmPlayer.vanguardSwordBaseDamage} + 12 p/Level({currentClassLevel * 12}) * AP";
 
             acmPlayer.aghanimsText = "- Decreases damage taken by 4%\n" +
                                      "- Passive reflected damage is increased by 65%";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
+
+            player.GetDamage(DamageClass.Melee) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            acmPlayer.defenseMult += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
+            //-Health is changed in ACMPlayer.cs
+            player.GetAttackSpeed(DamageClass.Melee) -= currentClassLevel * badStat;
+            if (acmPlayer.defenseMult * currentClassLevel * stat2 * acmPlayer.classStatMultiplier < 1)
+                player.statDefense++;
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

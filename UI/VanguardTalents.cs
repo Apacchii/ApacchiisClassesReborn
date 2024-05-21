@@ -85,11 +85,6 @@ namespace ApacchiisClassesMod2.UI
         UIPanel infoRight;
         UIText textInfoLeft;
         UIText textInfoRight;
-        
-        UIPanel leftPanel;
-        UIPanel rightPanel;
-        UIText leftText;
-        UIText rightText;
 
         UIPanel close;
         UIText closeText;
@@ -172,17 +167,14 @@ namespace ApacchiisClassesMod2.UI
             closeText.OnLeftClick += Close;
             close.Append(closeText);
 
-
-
             infoLeft = new UIPanel();
             infoLeft.VAlign = .5f;
             infoLeft.HAlign = .5f;
             infoLeft.Left.Set(-430, 0f);
             infoLeft.Width.Set(300, 0f);
-            infoLeft.Height.Set(150, 0f);
+            infoLeft.Height.Set(700, 0f);
             infoLeft.BackgroundColor = new Color(75, 75, 75);
             infoLeft.BorderColor = new Color(25, 25, 25);
-            //background.Append(infoLeft);
 
             textInfoLeft = new UIText("");
             textInfoLeft.Top.Set(5, 0f);
@@ -211,7 +203,7 @@ namespace ApacchiisClassesMod2.UI
             classText.HAlign = .5f;
             background.Append(classText);
 
-
+            //
 
             button1_Left = new UIPanel();
             button1_Left.Left.Set(0f, 0f);
@@ -245,7 +237,7 @@ namespace ApacchiisClassesMod2.UI
             text1_Right.OnLeftClick += Button1R;
             button1_Right.Append(text1_Right);
 
-
+            //
 
             button2_Left = new UIPanel();
             button2_Left.Left.Set(0f, 0f);
@@ -279,7 +271,7 @@ namespace ApacchiisClassesMod2.UI
             text2_Right.OnLeftClick += Button2R;
             button2_Right.Append(text2_Right);
 
-
+            //
 
             button3_Left = new UIPanel();
             button3_Left.Left.Set(0f, 0f);
@@ -313,7 +305,7 @@ namespace ApacchiisClassesMod2.UI
             text3_Right.OnLeftClick += Button3R;
             button3_Right.Append(text3_Right);
 
-
+            //
 
             button4_Left = new UIPanel();
             button4_Left.Left.Set(0f, 0f);
@@ -347,7 +339,7 @@ namespace ApacchiisClassesMod2.UI
             text4_Right.OnLeftClick += Button4R;
             button4_Right.Append(text4_Right);
 
-
+            //
 
             button5_Left = new UIPanel();
             button5_Left.Left.Set(0f, 0f);
@@ -381,7 +373,7 @@ namespace ApacchiisClassesMod2.UI
             text5_Right.OnLeftClick += Button5R;
             button5_Right.Append(text5_Right);
 
-
+            //
 
             button6_Left = new UIPanel();
             button6_Left.Left.Set(0f, 0f);
@@ -415,7 +407,7 @@ namespace ApacchiisClassesMod2.UI
             text6_Right.OnLeftClick += Button6R;
             button6_Right.Append(text6_Right);
 
-
+            //
 
             button7_Left = new UIPanel();
             button7_Left.Left.Set(0f, 0f);
@@ -449,7 +441,7 @@ namespace ApacchiisClassesMod2.UI
             text7_Right.OnLeftClick += Button7R;
             button7_Right.Append(text7_Right);
 
-
+            //
 
             button8_Left = new UIPanel();
             button8_Left.Left.Set(0f, 0f);
@@ -483,8 +475,8 @@ namespace ApacchiisClassesMod2.UI
             text8_Right.OnLeftClick += Button8R;
             button8_Right.Append(text8_Right);
 
-
-
+            //
+            
             button9_Left = new UIPanel();
             button9_Left.Left.Set(0f, 0f);
             button9_Left.Top.Set(235, 0f);
@@ -517,7 +509,7 @@ namespace ApacchiisClassesMod2.UI
             text9_Right.OnLeftClick += Button9R;
             button9_Right.Append(text9_Right);
 
-
+            //
 
             button10_Left = new UIPanel();
             button10_Left.Left.Set(0f, 0f);
@@ -577,7 +569,7 @@ namespace ApacchiisClassesMod2.UI
             rightSink.OnLeftClick += RightSink_LClick;
             rightSink.OnRightClick += RightSink_RClick;
 
-            rightSinkText = new UIText("", .9f);
+            rightSinkText = new UIText("", .8f);
             rightSinkText.VAlign = .6f;
             rightSinkText.HAlign = .5f;
 
@@ -598,6 +590,8 @@ namespace ApacchiisClassesMod2.UI
 
             if(close.IsMouseHovering || button1_Left.IsMouseHovering || button1_Right.IsMouseHovering || button2_Left.IsMouseHovering || button2_Right.IsMouseHovering || button3_Left.IsMouseHovering || button3_Right.IsMouseHovering || button4_Left.IsMouseHovering || button4_Right.IsMouseHovering || button5_Left.IsMouseHovering || button5_Right.IsMouseHovering || button6_Left.IsMouseHovering || button6_Right.IsMouseHovering || button7_Left.IsMouseHovering || button7_Right.IsMouseHovering || button8_Left.IsMouseHovering || button8_Right.IsMouseHovering || button9_Left.IsMouseHovering || button9_Right.IsMouseHovering || button10_Left.IsMouseHovering || button10_Right.IsMouseHovering || leftSink.IsMouseHovering || rightSink.IsMouseHovering)
                 Main.LocalPlayer.mouseInterface = true;
+
+            infoLeft.Remove();            
 
             classText.SetText(className + ": " + acmPlayer.vanguardSkillPoints + " Skill Points");
 
@@ -737,7 +731,7 @@ namespace ApacchiisClassesMod2.UI
                 button6_Right.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardSpentSkillPoints < 6 && acmPlayer.vanguardTalent_7  == "N")
+            if (acmPlayer.vanguardSpentSkillPoints < 6 && acmPlayer.vanguardTalent_7 == "N")
             {
                 button7_Left.BackgroundColor = new Color(50, 50, 50);
                 button7_Right.BackgroundColor = new Color(50, 50, 50);
@@ -780,6 +774,8 @@ namespace ApacchiisClassesMod2.UI
                 button10_Left.BackgroundColor = new Color(75, 75, 75);
                 button10_Right.BackgroundColor = new Color(75, 75, 75);
             }
+
+
 
             if (acmPlayer.vanguardTalent_1 == "L")
             {
@@ -891,7 +887,7 @@ namespace ApacchiisClassesMod2.UI
                 button10_Left.BackgroundColor = new Color(75, 75, 75);
             }
 
-            if (acmPlayer.vanguardTalent_10 != "N")
+            if(acmPlayer.vanguardTalent_10 != "N")
             {
                 background.Append(leftSink);
                 leftSink.Append(leftSinkText);
@@ -913,7 +909,7 @@ namespace ApacchiisClassesMod2.UI
 
                 leftSinkText.SetText($"+{(acmPlayer.talentSinkVanguardLeftValue * 100).ToString("F2")}% Max Health ({(acmPlayer.talentSinkVanguardLeftValue * acmPlayer.talentSinkVanguardLeft * 100).ToString("F2")}%)");
                 rightSinkText.SetText($"+{(acmPlayer.talentSinkVanguardRightValue * 100).ToString("F2")}% Melee Damage ({(acmPlayer.talentSinkVanguardRightValue * acmPlayer.talentSinkVanguardRight * 100).ToString("F2")}%)");
-            }
+            } 
 
             base.Update(gameTime);
         }
@@ -930,7 +926,10 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_1 == "R")
                 acmPlayer.vanguardTalent_1 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
+
         private void Button1R(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
@@ -943,6 +942,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_1 == "L")
                 acmPlayer.vanguardTalent_1 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button2L(UIMouseEvent evt, UIElement listeningElement)
@@ -957,6 +958,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_2 == "R")
                 acmPlayer.vanguardTalent_2 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button2R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -970,6 +973,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_2 == "L")
                 acmPlayer.vanguardTalent_2 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button3L(UIMouseEvent evt, UIElement listeningElement)
@@ -984,6 +989,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_3 == "R")
                 acmPlayer.vanguardTalent_3 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button3R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -997,6 +1004,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_3 == "L")
                 acmPlayer.vanguardTalent_3 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button4L(UIMouseEvent evt, UIElement listeningElement)
@@ -1011,6 +1020,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_4 == "R")
                 acmPlayer.vanguardTalent_4 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button4R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1024,6 +1035,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_4 == "L")
                 acmPlayer.vanguardTalent_4 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button5L(UIMouseEvent evt, UIElement listeningElement)
@@ -1038,6 +1051,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_5 == "R")
                 acmPlayer.vanguardTalent_5 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button5R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1051,6 +1066,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_5 == "L")
                 acmPlayer.vanguardTalent_5 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button6L(UIMouseEvent evt, UIElement listeningElement)
@@ -1065,6 +1082,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_6 == "R")
                 acmPlayer.vanguardTalent_6 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button6R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1078,6 +1097,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_6 == "L")
                 acmPlayer.vanguardTalent_6 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button7L(UIMouseEvent evt, UIElement listeningElement)
@@ -1092,6 +1113,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_7 == "R")
                 acmPlayer.vanguardTalent_7 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button7R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1105,6 +1128,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_7 == "L")
                 acmPlayer.vanguardTalent_7 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button8L(UIMouseEvent evt, UIElement listeningElement)
@@ -1119,6 +1144,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_8 == "R")
                 acmPlayer.vanguardTalent_8 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button8R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1132,6 +1159,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_8 == "L")
                 acmPlayer.vanguardTalent_8 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button9L(UIMouseEvent evt, UIElement listeningElement)
@@ -1146,6 +1175,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_9 == "R")
                 acmPlayer.vanguardTalent_9 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button9R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1159,6 +1190,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_9 == "L")
                 acmPlayer.vanguardTalent_9 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void Button10L(UIMouseEvent evt, UIElement listeningElement)
@@ -1173,6 +1206,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_10 == "R")
                 acmPlayer.vanguardTalent_10 = "L";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
         private void Button10R(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -1186,6 +1221,8 @@ namespace ApacchiisClassesMod2.UI
 
             if (acmPlayer.vanguardTalent_10 == "L")
                 acmPlayer.vanguardTalent_10 = "R";
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
         }
 
         private void LeftSink_LClick(UIMouseEvent evt, UIElement listeningElement)
@@ -1199,19 +1236,19 @@ namespace ApacchiisClassesMod2.UI
                 acmPlayer.vanguardSpentSkillPoints++;
                 SoundEngine.PlaySound(SoundID.MenuOpen);
             }
-
+                
         }
         private void LeftSink_RClick(UIMouseEvent evt, UIElement listeningElement)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
-            if (acmPlayer.talentSinkVanguardLeft > 0)
+            if(acmPlayer.talentSinkVanguardLeft > 0)
             {
                 acmPlayer.talentSinkVanguardLeft--;
                 acmPlayer.vanguardSkillPoints++;
                 acmPlayer.vanguardSpentSkillPoints--;
             }
-
+            
             SoundEngine.PlaySound(SoundID.MenuClose);
         }
 
@@ -1219,14 +1256,14 @@ namespace ApacchiisClassesMod2.UI
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
 
-            if (acmPlayer.vanguardSkillPoints > 0)
+            if(acmPlayer.vanguardSkillPoints > 0)
             {
                 acmPlayer.talentSinkVanguardRight++;
                 acmPlayer.vanguardSkillPoints--;
                 acmPlayer.vanguardSpentSkillPoints++;
                 SoundEngine.PlaySound(SoundID.MenuOpen);
             }
-
+            
         }
         private void RightSink_RClick(UIMouseEvent evt, UIElement listeningElement)
         {

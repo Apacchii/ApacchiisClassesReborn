@@ -23,6 +23,11 @@ namespace ApacchiisClassesMod2
 
         public bool plagueInfection;
 
+        public bool sacrifice1;
+        public bool sacrifice2;
+
+        public bool imperialMandate;
+
         protected override bool CloneNewInstances => true; 
         public override bool InstancePerEntity
         {
@@ -57,40 +62,51 @@ namespace ApacchiisClassesMod2
         {
             npc.takenDamageMultiplier = 1f;
             plagueInfection = false;
+            sacrifice1 = false;
+            sacrifice2 = false;
+            imperialMandate = false;
             base.ResetEffects(npc);
         }
 
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
-            if (plagueInfection && !npc.dontTakeDamage && !npc.friendly)
+            if (plagueInfection && !npc.dontTakeDamage && !npc.friendly && npc.GivenOrTypeName != "Treebark Druid")
             {
                 if (npc.boss)
                 {
-                    //Only deal 10% DoT to worm enemies
-                    if (npc.realLife != 0)
-                    {
-                        damage = npc.lifeMax / 10000;
-                        npc.lifeRegen -= (int)(npc.lifeMax * .005f * 2);
-                    }
-                    else
-                    {
-                        damage = npc.lifeMax / 1000;
-                        npc.lifeRegen -= (int)(npc.lifeMax * .005f * 2);
-                    }
+                    damage = npc.lifeMax / 5000;
+                    npc.lifeRegen -= (int)(npc.lifeMax * .005f);
                 }
                 else
                 {
                     damage = npc.lifeMax / 50;
-                    npc.lifeRegen -= (int)(npc.lifeMax * .05f * 2);
+                    npc.lifeRegen -= (int)(npc.lifeMax * .05f);
                 }
             }
+
+            if (sacrifice1)
+            {
+                damage = 5;
+                npc.lifeRegen -= 20;
+            }
+
+            if (sacrifice2)
+            {
+                damage = 10;
+                npc.lifeRegen -= 40;
+            }
+
             base.UpdateLifeRegen(npc, ref damage);
         }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if(!npc.boss && !npc.friendly && npc.lifeMax > 5)
+            {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Relics.RandomRelic>(), 225, 1, 1));
+                if(Configs._ACMConfigServer.Instance.FragmentDrop)
+                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.LostRuneFragment>(), 75, 1, 1));
+            }
 
             base.ModifyNPCLoot(npc, npcLoot);
         }
@@ -130,7 +146,6 @@ namespace ApacchiisClassesMod2
                 npc.takenDamageMultiplier += Player.GetModPlayer<ACMPlayer>().commanderCryBonusDamage;
             }
 
-
             //Custom DoT (mech bosses &&++ dont take vanilla dot)
             // (I failed... Retry sometime and implement for Plague if successful)
             //_globalTimer++;
@@ -166,106 +181,146 @@ namespace ApacchiisClassesMod2
 
                         if (Main.netMode == NetmodeID.SinglePlayer)
                         {
-                            if (acmPlayer.hasVanguard)
+                            if (!acmPlayer.globalClassLevel.Contains(npc.TypeName))
                             {
-                                if (!acmPlayer.vanguardDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.vanguardDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.vanguardSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Add a level to all classes
+                                acmPlayer.globalClassLevel.Add(npc.TypeName);
 
-                            if (acmPlayer.hasBloodMage)
-                            {
-                                if (!acmPlayer.bloodMageDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.bloodMageDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.bloodMageSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Give the player some rune rolls
+                                acmPlayer.cardsPoints += 2;
 
-                            if (acmPlayer.hasCommander)
-                            {
-                                if (!acmPlayer.commanderDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.commanderDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.commanderSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Add 1 mastery point to all the classes
+                                //Magic
+                                acmPlayer.bloodMageSkillPoints++;
+                                acmPlayer.soulmancerSkillPoints++;
 
-                            if (acmPlayer.hasScout)
-                            {
-                                if (!acmPlayer.scoutDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.scoutDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.scoutSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Melee
+                                acmPlayer.vanguardSkillPoints++;
+                                acmPlayer.crusaderSkillPoints++;
 
-                            if (acmPlayer.hasSoulmancer)
-                            {
-                                if (!acmPlayer.soulmancerDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.soulmancerDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.soulmancerSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Ranged
+                                acmPlayer.scoutSkillPoints++;
+                                acmPlayer.gamblerSkillPoints++;
 
-                            if (acmPlayer.hasCrusader)
-                            {
-                                if (!acmPlayer.crusaderDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.crusaderDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.crusaderSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
+                                //Summoner
+                                acmPlayer.commanderSkillPoints++;
+                                acmPlayer.plagueSkillPoints++;
 
-                            if (acmPlayer.equippedClass == "Gambler")
-                            {
-                                if (!acmPlayer.gamblerDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.gamblerDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.gamblerSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
-                            }
-
-                            if (acmPlayer.equippedClass == "Plague")
-                            {
-                                if (!acmPlayer.plagueDefeatedBosses.Contains(npc.TypeName))
-                                {
-                                    acmPlayer.plagueDefeatedBosses.Add(npc.TypeName);
-                                    acmPlayer.plagueSkillPoints++;
-                                    //acmPlayer.levelUpText = true;
-                                    acmPlayer.cardsPoints += 2;
-                                }
+                                //acmPlayer.levelUpText = true;
                             }
                         }
                         else
+                        if(Main.netMode == NetmodeID.Server)
                         {
-                            if (Main.netMode == NetmodeID.Server)
-                            {
-                                var packet = Mod.GetPacket();
-                                packet.Write((byte)ACM2.ACMHandlePacketMessage.SyncBosses);
-                                packet.Write(playerToUpdate);
-                                packet.Write(acmPlayer.equippedClass);
-                                packet.Write(npc.TypeName);
-                                packet.Send();
-                            }
+                            var packet = Mod.GetPacket();
+                            packet.Write((byte)ACM2.ACMHandlePacketMessage.GlobalLevelUp);
+                            packet.Write(playerToUpdate);
+                            packet.Write(npc.TypeName);
+                            packet.Send();
                         }
+
+                        //if (Main.netMode == NetmodeID.SinglePlayer)
+                        //{
+                        //    if (acmPlayer.hasVanguard)
+                        //    {
+                        //        if (!acmPlayer.vanguardDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.vanguardDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.vanguardSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.hasBloodMage)
+                        //    {
+                        //        if (!acmPlayer.bloodMageDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.bloodMageDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.bloodMageSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.hasCommander)
+                        //    {
+                        //        if (!acmPlayer.commanderDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.commanderDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.commanderSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.hasScout)
+                        //    {
+                        //        if (!acmPlayer.scoutDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.scoutDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.scoutSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.hasSoulmancer)
+                        //    {
+                        //        if (!acmPlayer.soulmancerDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.soulmancerDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.soulmancerSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.hasCrusader)
+                        //    {
+                        //        if (!acmPlayer.crusaderDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.crusaderDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.crusaderSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.equippedClass == "Gambler")
+                        //    {
+                        //        if (!acmPlayer.gamblerDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.gamblerDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.gamblerSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //
+                        //    if (acmPlayer.equippedClass == "Plague")
+                        //    {
+                        //        if (!acmPlayer.plagueDefeatedBosses.Contains(npc.TypeName))
+                        //        {
+                        //            acmPlayer.plagueDefeatedBosses.Add(npc.TypeName);
+                        //            acmPlayer.plagueSkillPoints++;
+                        //            //acmPlayer.levelUpText = true;
+                        //            acmPlayer.cardsPoints += 2;
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (Main.netMode == NetmodeID.Server)
+                        //    {
+                        //        var packet = Mod.GetPacket();
+                        //        packet.Write((byte)ACM2.ACMHandlePacketMessage.SyncBosses);
+                        //        packet.Write(playerToUpdate);
+                        //        packet.Write(acmPlayer.equippedClass);
+                        //        packet.Write(npc.TypeName);
+                        //        packet.Send();
+                        //    }
+                        //}
                     }
                 } 
             }
@@ -294,6 +349,27 @@ namespace ApacchiisClassesMod2
                     0,
                     texture.Size() * 0.5f,
                     npc.scale,
+                    SpriteEffects.None,
+                    0f
+                );
+            }
+
+            if (imperialMandate)
+            {
+                Texture2D texture = ModContent.Request<Texture2D>("ApacchiisClassesMod2/Draw/ImperialMandate", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+                spriteBatch.Draw
+                (
+                    texture,
+                    new Vector2
+                    (
+                        npc.position.X - Main.screenPosition.X + npc.width * .5f,
+                        npc.position.Y - Main.screenPosition.Y + npc.height * 1f + 32f
+                    ),
+                    new Rectangle(0, 0, texture.Width, texture.Height),
+                    Color.White,
+                    0,
+                    texture.Size() * 0.5f,
+                    .4f,
                     SpriteEffects.None,
                     0f
                 );

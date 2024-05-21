@@ -55,10 +55,11 @@ namespace ApacchiisClassesMod2.Items.Relics
             for(int i = 0; i < 100; i++)
             {
                 if (player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<NiterihsJewelryBox>() ||
-                    player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<AghanimsShard>())
+                    player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<AghanimsShard>() ||
+                    player.GetModPlayer<ACMPlayer>().relicList[choice] == ModContent.ItemType<StaffOfTheMaster>())
                 {
                     choice = Main.rand.Next(relicCount);
-                }
+                } else { break; }
             }
             
 

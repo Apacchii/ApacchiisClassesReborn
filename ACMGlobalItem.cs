@@ -8,6 +8,7 @@ using static Terraria.ModLoader.ModContent;
 using Terraria.Utilities;
 using Terraria.ModLoader.IO;
 using System.Security.Principal;
+using Terraria.DataStructures;
 
 namespace ApacchiisClassesMod2
 {

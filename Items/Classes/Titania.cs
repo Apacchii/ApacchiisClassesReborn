@@ -8,12 +8,12 @@ using Terraria.Localization;
 
 namespace ApacchiisClassesMod2.Items.Classes
 {
-    public class Operator : ModItem
+    public class Titania : ModItem
     {
-        int classLevel;
+        int classLevel; //Obsolete
 
-        float baseStat1 = .0055f;
-        float stat1; // All Damage
+        float baseStat1 = .005f;
+        float stat1; // Selected Type Damage
 
         float baseStat2 = .004f;
         float stat2; // Health
@@ -78,20 +78,20 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AllDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% Generic Damage p/lvl\n" +
                                                                          "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl\n" +
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")} p/lvl");
 
-            var level = classLevel;
+            var level = modPlayer.globalClassLevel.Count;
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AllDamage")}\n" +
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% Generic Damage\n" +
                                                                   "+" + (level * 100 * stat2 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}\n" +
-                                                                  "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}");
+                                                                  "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
 
-            if (classLevel == 0)
+            if (level == 0)
             {
                 tooltips.Add(lineLevel);
                 tooltips.Add(lineStatsPreview);
@@ -114,25 +114,16 @@ namespace ApacchiisClassesMod2.Items.Classes
             base.ModifyTooltips(tooltips);
         }
 
-        private void ClassStats()
-        {
-            Player player = Main.player[Main.myPlayer];
-            var acmPlayer = player.GetModPlayer<ACMPlayer>();
-
-            player.GetDamage(DamageClass.Generic) += classLevel * stat1 * acmPlayer.classStatMultiplier;
-            acmPlayer.lifeMult += stat2 * classLevel * acmPlayer.classStatMultiplier;
-            acmPlayer.dodgeChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
-        }
-
         public override void UpdateAccessory(Player Player, bool hideVisual)
         {
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasClass = true;
-            acmPlayer.equippedClass = "Operator";
+            acmPlayer.equippedClass = "Titania";
             acmPlayer.ultChargeMax = 2400;
-            acmPlayer.ability1MaxCooldown = 28;
+            acmPlayer.ability1MaxCooldown = 24;
+            //acmPlayer.ability1MaxCharges = 6;
             acmPlayer.ability2MaxCooldown = 16;
-            classLevel = acmPlayer.plagueLevel; //!!
+            int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
             stat1 = baseStat1 * _ACMConfigServer.Instance.classStatMult;
             stat2 = baseStat2 * _ACMConfigServer.Instance.classStatMult;
@@ -146,30 +137,46 @@ namespace ApacchiisClassesMod2.Items.Classes
             else ClassStats();
 
             acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += classLevel * .01f;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
-            // Class Menu Text
-            acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.P_Name");
+            // Class Menu Text [x = y + z p/lvl]
+            acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Titania.P_Name");
             acmPlayer.P_Desc = $"";
             acmPlayer.P_Effect_1 = $"";
             acmPlayer.P_Effect_2 = $"";
 
-            acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.A1_Name");
+            acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Titania.A1_Name");
             acmPlayer.A1_Desc = $"";
             acmPlayer.A1_Effect_1 = $"";
             acmPlayer.A1_Effect_2 = $"";
 
-            acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.A2_Name");
+            acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Titania.A2_Name");
             acmPlayer.A2_Desc = $"";
             acmPlayer.A2_Effect_1 = $"";
             acmPlayer.A2_Effect_2 = $"";
 
-            acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Operator.Ult_Name");
+            acmPlayer.Ult_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Titania.Ult_Name");
             acmPlayer.Ult_Desc = $"";
             acmPlayer.Ult_Effect_1 = $"";
             acmPlayer.Ult_Effect_2 = $"";
 
             acmPlayer.aghanimsText = "- ";
+        }
+
+        private void ClassStats()
+        {
+            Player player = Main.player[Main.myPlayer];
+            var acmPlayer = player.GetModPlayer<ACMPlayer>();
+
+            player.GetDamage(DamageClass.Generic) += stat1 * classLevel * acmPlayer.classStatMultiplier;
+            acmPlayer.lifeMult += stat2 * classLevel * acmPlayer.classStatMultiplier;
+            acmPlayer.dodgeChance += stat3 * classLevel * acmPlayer.classStatMultiplier;
+
+            //[Scrap]
+            //if (acmPlayer.titaniaSelectedDamageClass  > acmPlayer.titaniaAllowedClassesList.Count)
+            //    acmPlayer.titaniaSelectedDamageClass = 0;
+            //
+            //player.GetDamage(DamageClassLoader.GetDamageClass(acmPlayer.titaniaAllowedClassesList[0])) += 50 + classLevel * stat1 * acmPlayer.classStatMultiplier;
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

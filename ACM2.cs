@@ -64,6 +64,8 @@ namespace ApacchiisClassesMod2
 
             SendChatMessage,
             PlaySyncedSound,
+
+            GlobalLevelUp
         }
 
 
@@ -94,90 +96,126 @@ namespace ApacchiisClassesMod2
                         SoundEngine.PlaySound(new SoundStyle(soundPath), pos);
                     break;
 
-                case ACMHandlePacketMessage.SyncBosses:
-                    int playernumber = reader.ReadInt32();
-                    string playerClass = reader.ReadString();
-                    string bossDefeated = reader.ReadString();
+                case ACMHandlePacketMessage.GlobalLevelUp:
+                    int playerID = reader.ReadInt32();
+                    string bossName = reader.ReadString();
 
-                    ACMPlayer acmPlayer = Main.player[playernumber].GetModPlayer<ACMPlayer>();
+                    ACMPlayer acmPlayer = Main.player[playerID].GetModPlayer<ACMPlayer>();
 
-
-                    switch (playerClass)
+                    //If we havent defeated this boss before
+                    if (!acmPlayer.globalClassLevel.Contains(bossName))
                     {
-                        case "Vanguard":
-                            if (!acmPlayer.vanguardDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.vanguardDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.vanguardSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Add a level to all classes
+                        acmPlayer.globalClassLevel.Add(bossName);
 
-                        case "Blood Mage":
-                            if (!acmPlayer.bloodMageDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.bloodMageDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.bloodMageSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Give the player some rune rolls
+                        acmPlayer.cardsPoints += 2;
 
-                        case "Commander":
-                            if (!acmPlayer.commanderDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.commanderDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.commanderSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Add 1 mastery point to all the classes
+                        //Magic
+                        acmPlayer.bloodMageSkillPoints++;
+                        acmPlayer.soulmancerSkillPoints++;
 
-                        case "Scout":
-                            if (!acmPlayer.scoutDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.scoutDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.scoutSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Melee
+                        acmPlayer.vanguardSkillPoints++;
+                        acmPlayer.crusaderSkillPoints++;
 
-                        case "Soulmancer":
-                            if (!acmPlayer.soulmancerDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.soulmancerDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.soulmancerSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Ranged
+                        acmPlayer.scoutSkillPoints++;
+                        acmPlayer.gamblerSkillPoints++;
 
-                        case "Crusader":
-                            if (!acmPlayer.crusaderDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.crusaderDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.crusaderSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        //Summoner
+                        acmPlayer.commanderSkillPoints++;
+                        acmPlayer.plagueSkillPoints++;
 
-                        case "Gambler":
-                            if (!acmPlayer.gamblerDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.gamblerDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.gamblerSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
-
-                        case "Plague":
-                            if (!acmPlayer.plagueDefeatedBosses.Contains(bossDefeated))
-                            {
-                                acmPlayer.plagueDefeatedBosses.Add(bossDefeated);
-                                acmPlayer.plagueSkillPoints++;
-                                acmPlayer.cardsPoints += 2;
-                            }
-                            break;
+                        acmPlayer.levelUpText = true;
                     }
-                    acmPlayer.levelUpText = true;
                     break;
+
+                //case ACMHandlePacketMessage.SyncBosses:
+                //    int playernumber = reader.ReadInt32();
+                //    string playerClass = reader.ReadString();
+                //    string bossDefeated = reader.ReadString();
+                //
+                //    ACMPlayer acmPlayer = Main.player[playernumber].GetModPlayer<ACMPlayer>();
+                //
+                //
+                //    switch (playerClass)
+                //    {
+                //        case "Vanguard":
+                //            if (!acmPlayer.vanguardDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.vanguardDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.vanguardSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Blood Mage":
+                //            if (!acmPlayer.bloodMageDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.bloodMageDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.bloodMageSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Commander":
+                //            if (!acmPlayer.commanderDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.commanderDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.commanderSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Scout":
+                //            if (!acmPlayer.scoutDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.scoutDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.scoutSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Soulmancer":
+                //            if (!acmPlayer.soulmancerDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.soulmancerDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.soulmancerSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Crusader":
+                //            if (!acmPlayer.crusaderDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.crusaderDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.crusaderSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Gambler":
+                //            if (!acmPlayer.gamblerDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.gamblerDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.gamblerSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //
+                //        case "Plague":
+                //            if (!acmPlayer.plagueDefeatedBosses.Contains(bossDefeated))
+                //            {
+                //                acmPlayer.plagueDefeatedBosses.Add(bossDefeated);
+                //                acmPlayer.plagueSkillPoints++;
+                //                acmPlayer.cardsPoints += 2;
+                //            }
+                //            break;
+                //    }
+                //    acmPlayer.levelUpText = true;
+                //    break;
 
                 case ACMHandlePacketMessage.BuffPlayer:
                     byte playerToBuff = reader.ReadByte();
