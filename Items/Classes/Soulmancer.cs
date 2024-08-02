@@ -147,7 +147,7 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Soulmancer_A1_Name");
             acmPlayer.A1_Desc = $"For a short duration, everytime you hit an enemy with a soul fragment, recall it to yourself, consuming it and healing you for a small percentage of your max health per fragment consumed.\n" +
-                                $"This ability can only be activated and will only heal if you are below half health.";
+                                $"[This ability can only be activated and will only heal if you are below 50% health]";
             acmPlayer.A1_Effect_1 = $"Duration: {(decimal)(acmPlayer.soulmancerConsumeDuration / 60)}s";
             acmPlayer.A1_Effect_2 = $"Heal p/Fragment: {(decimal)(acmPlayer.soulmancerConsumeHeal * 100)}%";
 

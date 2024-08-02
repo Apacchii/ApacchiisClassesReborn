@@ -148,7 +148,7 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             acmPlayer.A1_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A1_Name");
             acmPlayer.A1_Desc = "Throw a spear of light that will explode if an enemy is nearby, dealing damage to all enemies around.";
-            acmPlayer.A1_Effect_1 = $"Explosion Damage: {(int)(acmPlayer.vanguardSpearBaseDamage + currentClassLevel * 13 * acmPlayer.abilityPower)} = {acmPlayer.vanguardSpearBaseDamage} + 13 p/Level({currentClassLevel * 13}) * AP";
+            acmPlayer.A1_Effect_1 = $"Explosion Damage: {(int)((acmPlayer.vanguardSpearBaseDamage + currentClassLevel * 13) * acmPlayer.abilityPower)} = {acmPlayer.vanguardSpearBaseDamage} + 13 p/Level({currentClassLevel * 13}) * AP";
 
             acmPlayer.A2_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Vanguard_A2_Name");
             acmPlayer.A2_Desc = "Surround yourself in a barrier of light. Any damage taken when the barrier is active will be reduced by a percentage.";

@@ -178,7 +178,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Magic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+            player.GetDamage(DamageClass.Summon) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
             player.maxMinions += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
             player.whipRangeMultiplier += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
             player.runAcceleration -= currentClassLevel * badStat;

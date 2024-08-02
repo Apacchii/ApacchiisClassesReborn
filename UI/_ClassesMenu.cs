@@ -567,7 +567,8 @@ namespace ApacchiisClassesMod2.UI
                 abilityCooldown.SetText("\n" +
                                        $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}: {(acmPlayer.dodgeChance * 100).ToString("F2")}%\n" +
                                        $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}: {acmPlayer.Player.maxMinions}" +
-                                       $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%");
+                                       $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%" +
+                                       $"\nBanner/Class Stats Bonus: {(acmPlayer.classStatMultiplier * 100).ToString("F2")}%");
             }
 
             if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering && !changelogButton.IsMouseHovering && !changelogText.IsMouseHovering)

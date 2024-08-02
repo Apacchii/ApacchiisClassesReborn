@@ -109,12 +109,7 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
 
                         for (int i2 = 0; i2 < Main.maxNPCs; i2++)
                             if (Vector2.Distance(Projectile.Center, Main.npc[i2].Center) <= range && !Main.npc[i2].townNPC && !Main.npc[i2].dontTakeDamage && Main.npc[i2].type != NPCID.DD2Bartender && Main.npc[i2].type != NPCID.DD2EterniaCrystal && Main.npc[i2].type != NPCID.DD2LanePortal && !Main.npc[i2].friendly)
-                            {
-                                if (Main.npc[i2].realLife != 0)
-                                    player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower * player.GetModPlayer<ACMPlayer>().abilityPower / 4), 5f, hitDir, false);
-                                else
-                                    player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower * player.GetModPlayer<ACMPlayer>().abilityPower), 5f, hitDir, false);
-                            }
+                                    player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower), 5f, hitDir, false);
 
 
                         SoundEngine.PlaySound(SoundID.Item14, Projectile.position);

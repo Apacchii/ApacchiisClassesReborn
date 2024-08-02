@@ -17,8 +17,6 @@ namespace ApacchiisClassesMod2
             return base.GetDefaultVisibility(drawInfo);
         }
 
-        
-
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             if (drawInfo.shadow == 0)
@@ -96,7 +94,27 @@ namespace ApacchiisClassesMod2
                     ));
                 }
 
-                
+                if (drawInfo.drawPlayer.GetModPlayer<ACMPlayer>().fairyLawTimer > 0)
+                {
+                    var position = drawInfo.Center - Main.screenPosition;
+                    position = new Vector2((int)position.X, (int)position.Y); // To avoid quivering.
+                    Texture2D texture = ModContent.Request<Texture2D>("ApacchiisClassesMod2/Draw/Circle1", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+
+                    float q = 100f / (float)drawInfo.drawPlayer.GetModPlayer<ACMPlayer>().fairyLawTimer;
+
+                    drawInfo.DrawDataCache.Add(new DrawData(
+                        texture,
+                        position,
+                        null, // Source rectangle.
+                        Color.LightGoldenrodYellow,
+                        0f, // Rotation.
+                        texture.Size() * 0.5f,
+                        .2f * q, // Scale.
+                        SpriteEffects.None,
+                        0
+                    ));
+                }
+
             }
          }
     }

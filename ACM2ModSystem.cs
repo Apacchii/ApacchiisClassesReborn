@@ -29,8 +29,8 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
-        internal HUDRework HUDRework;
-        internal UserInterface _HUDRework;
+        //internal HUDRework HUDRework;
+        //internal UserInterface _HUDRework;
 
         internal RelicsUIReworked RelicsUI;
         internal UserInterface _RelicsUI;
@@ -100,8 +100,8 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
-                HUDRework = new HUDRework();
-                _HUDRework = new UserInterface();
+                //HUDRework = new HUDRework();
+                //_HUDRework = new UserInterface();
 
                 RelicsUI = new RelicsUIReworked();
                 _RelicsUI = new UserInterface();
@@ -150,8 +150,8 @@ namespace ApacchiisClassesMod2
                 _ClassesMenu.Update(gameTime);
             if (_HUD?.CurrentState != null)
                 _HUD.Update(gameTime);
-            if (_HUDRework?.CurrentState != null)
-                _HUDRework.Update(gameTime);
+            //if (_HUDRework?.CurrentState != null)
+            //    _HUDRework.Update(gameTime);
             if (_Cards?.CurrentState != null)
                 _Cards.Update(gameTime);
             if (_MyDeck?.CurrentState != null)
@@ -226,17 +226,17 @@ namespace ApacchiisClassesMod2
                     },
                        InterfaceScaleType.UI));
 
-                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "ApacchiisClassesMod2: HUDRework",
-                    delegate
-                    {
-                        if (_lastUpdateUiGameTime != null && _HUDRework?.CurrentState != null)
-                        {
-                            _HUDRework.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-                        }
-                        return true;
-                    },
-                       InterfaceScaleType.UI));
+                //layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                //    "ApacchiisClassesMod2: HUDRework",
+                //    delegate
+                //    {
+                //        if (_lastUpdateUiGameTime != null && _HUDRework?.CurrentState != null)
+                //        {
+                //            _HUDRework.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                //        }
+                //        return true;
+                //    },
+                //       InterfaceScaleType.UI));
 
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "ApacchiisClassesMod2: Changelog",

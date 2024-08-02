@@ -18,6 +18,7 @@ using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.Graphics.CameraModifiers;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -772,6 +773,8 @@ namespace ApacchiisClassesMod2
         public int titaniaBasePixies = 4;
         public int titaniaPixieDamage = 5;
         public int titaniaPixieDuration = 60 * 12;
+
+        public int fairyLawTimer = 0;
 
         public bool titaniaIsPhasing = false;
         public int titaniaPhaseResource = 120;
@@ -2045,7 +2048,7 @@ namespace ApacchiisClassesMod2
                     bloodMageEnchantmentOnCooldown = true;
                     int heal = (int)(Player.HeldItem.mana * bloodMageEnchantmentBaseManaCost);
 
-                    if(proj.type == 931 && target.boss) //Nightglow projectile ID
+                    if(proj.type == 931) //Nightglow projectile ID
                         heal /= 5;
                     
                     Player.statLife += heal;
@@ -3653,6 +3656,53 @@ namespace ApacchiisClassesMod2
                 SoundEngine.PlaySound(SoundID.NPCDeath24, Player.Center);
             }
 
+            //Titania
+            fairyLawTimer--;
+            if (fairyLawTimer == 600)
+            {
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "One...", false);
+                ScreenShake(Player.Center, 1f, 260, 2);
+
+                Vector2 origin = Player.Center;
+                origin.X -= Player.width / 2;
+                float radius = 32;
+                int locations = 50;
+                for (int i = 0; i < locations; i++)
+                {
+                    Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / locations * i)) * radius;
+                    var dust = Dust.NewDustPerfect(position, DustID.YellowStarDust, Vector2.Zero, 0, Color.White, 2f);
+                    dust.noGravity = true;
+                    dust.noLight = true;
+
+                    Vector2 dvel = dust.position - Player.Center;
+                    dvel.Normalize();
+                    dvel *= 10f;
+                    dust.velocity = -dvel;
+                }
+            }
+            if (fairyLawTimer == 480)
+            {
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "...two...", false);
+                ScreenShake(Player.Center, 1.5f, 260, 3);
+
+            }
+            if (fairyLawTimer == 360)
+            {
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "...three...", false);
+                ScreenShake(Player.Center, 2f, 260, 4);
+            }
+            if (fairyLawTimer == 240)
+            {
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Fairy...", false);
+                ScreenShake(Player.Center, 3f, 300, 6);
+            }
+            if (fairyLawTimer == 120)
+            {
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "...LAW!", true);
+                ScreenShake(Player.Center, 24f, 400, 16);
+                //Filters.Scene.Activate("BloodMoon");
+            }
+
             //LAZER TARGETING NPC CLOSEST TO MOUSE, MAYBE GOOD FOR SOME ABILITIES IN THE FUTURE
             //if (globalSingleSecondTimer % 1 == 0 && lazerTaget != -1)
             //{
@@ -4578,6 +4628,17 @@ namespace ApacchiisClassesMod2
                             case "Plague":
                                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Deadzone!", true);
                                 _plagueDeadzoneDurationCurrent = plagueDeadzoneDuration;
+                                break;
+
+                            case "Titania":
+                                fairyLawTimer = 630;
+
+                                SoundStyle fairyLawSFX = new SoundStyle($"{nameof(ApacchiisClassesMod2)}/Sounds/SoundEffects/Titania/FairyLaw");
+                                SoundEngine.PlaySound(fairyLawSFX with
+                                {
+                                    Volume = 1.3f,
+                                    Pitch = -.0775f
+                                }, Player.Center);
                                 break;
 
                             case "Inventor":
