@@ -57,6 +57,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player Player = Main.player[Main.myPlayer];
 
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
+            string damageType = "RangedDamage";
+            if (_ACMConfigServer.Instance.generalistClasses) damageType = "AllDamage";
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -72,17 +74,28 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)} p/lvl\n" +
                                                                          "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")} p/lvl\n" +
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
 
             var level = modPlayer.globalClassLevel.Count;
+            string classStats;
+            if (Player.controlUp)
+            {
+                classStats = $"+{level * stat1 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")}\n" +
+                             $"+{level * stat3 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}";
+            }
+            else
+            {
+                classStats = $"+{level * stat1 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")}\n" +
+                             $"+{level * stat3 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}";
+            }
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedDamage")}\n" +
-                                                                      "+" + (level * stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")}\n" +
-                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", classStats);
             TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
@@ -154,9 +167,6 @@ namespace ApacchiisClassesMod2.Items.Classes
             
             Player.moveSpeed += acmPlayer.scoutPassiveSpeedBonus;
 
-            acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
-
             // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Scout_P_Name");
             acmPlayer.P_Desc = $"The scout has a free double jump and has increased movement speed.";
@@ -184,6 +194,8 @@ namespace ApacchiisClassesMod2.Items.Classes
 
             acmPlayer.aghanimsText = "- Ultimate invulnerability increased by 1 second\n" +
                                      "- Hit-a-Soda now increases ranged crit chance by 15% for its duration";
+
+            acmPlayer.classStatMultiplier = 1f;
         }
 
         private void ClassStats()
@@ -192,10 +204,22 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Ranged) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
-            player.runAcceleration += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
-            acmPlayer.dodgeChance += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
-            //-Health is changed in ACMPlayer.cs
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += (float)(currentClassLevel * .01f);
+
+            if (_ACMConfigServer.Instance.generalistClasses)
+            {
+                player.GetDamage(DamageClass.Generic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.runAcceleration += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.dodgeChance += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                //-Health is changed in ACMPlayer.cs
+            }
+            else
+            {
+                player.GetDamage(DamageClass.Ranged) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.runAcceleration += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.dodgeChance += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                //-Health is changed in ACMPlayer.cs
+            }
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

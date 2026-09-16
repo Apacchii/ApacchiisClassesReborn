@@ -58,6 +58,8 @@ namespace ApacchiisClassesMod2.Items.Classes
         {
             Player Player = Main.player[Main.myPlayer];
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
+            string damageType = "MagicDamage";
+            if (_ACMConfigServer.Instance.generalistClasses) damageType = "AllDamage";
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -73,17 +75,28 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MagicDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)} p/lvl\n" +
                                                                          "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")} p/lvl\n" +
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")} p/lvl");
 
             var level = modPlayer.globalClassLevel.Count;
+            string classStats;
+            if (Player.controlUp)
+            {
+                classStats = $"+{level * stat1 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")}\n" +
+                             $"+{level * stat3 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}";
+            }
+            else
+            {
+                classStats = $"+{level * stat1 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")}\n" +
+                             $"+{level * stat3 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}";
+            }
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MagicDamage")}\n" +
-                                                                      "+" + (level * stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMana")}\n" +
-                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", classStats);
             TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
@@ -122,7 +135,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.hasBloodMage = true;
             acmPlayer.equippedClass = "Blood Mage";
             acmPlayer.ultChargeMax = 3900;
-            acmPlayer.ability1MaxCooldown = 39;
+            acmPlayer.ability1MaxCooldown = 42;
             acmPlayer.ability2MaxCooldown = 0;
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
@@ -137,9 +150,6 @@ namespace ApacchiisClassesMod2.Items.Classes
                     ClassStats();
             }
             else { ClassStats(); }
-
-            acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
             // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.BloodMage_P_Name");
@@ -165,6 +175,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.aghanimsText = "- Ability power is increased by 15%\n" +
                                      "- Cooldown reduction increased by 5%\n" +
                                      "- Transfusion now also heals you and teammates for 10% of the damage it deals";
+
+            acmPlayer.classStatMultiplier = 1f;
         }
 
         private void ClassStats()
@@ -173,10 +185,24 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Magic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
-            acmPlayer.manaMult += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
-            acmPlayer.lifeMult += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
-            acmPlayer.defenseMult -= currentClassLevel * badStat;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += (float)(currentClassLevel * .01f);
+
+            if (_ACMConfigServer.Instance.generalistClasses)
+            {
+                player.GetDamage(DamageClass.Generic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                acmPlayer.manaMult += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.lifeMult += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.defenseMult -= currentClassLevel * badStat;
+            }
+            else
+            {
+                player.GetDamage(DamageClass.Magic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                acmPlayer.manaMult += stat2 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.lifeMult += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                acmPlayer.defenseMult -= currentClassLevel * badStat;
+            }
+
+            
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
@@ -191,4 +217,3 @@ namespace ApacchiisClassesMod2.Items.Classes
         }
     }
 }
-

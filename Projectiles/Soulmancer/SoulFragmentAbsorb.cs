@@ -132,7 +132,15 @@ namespace ApacchiisClassesMod2.Projectiles.Soulmancer
                 float dist = Projectile.Distance(player.Center);
                 if (dist < 16)
                 {
-                    int healing = (int)(player.statLifeMax2 * acmPlayer.soulmancerConsumeHeal);
+                    int healing;
+                    if (player.statLifeMax2 > player.statLifeMax2 / 2)
+                        healing = (int)(player.statLifeMax2 * acmPlayer.soulmancerConsumeHeal);
+                    else
+                        healing = (int)(player.statLifeMax2 * acmPlayer.soulmancerConsumeHeal / 5);
+
+                    if (healing < 1)
+                        healing = 1;
+
                     player.GetModPlayer<ACMPlayer>().HealPlayer(0, 0, healing);
                     Projectile.Kill();
                 }

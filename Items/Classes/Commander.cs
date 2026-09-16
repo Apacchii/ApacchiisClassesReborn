@@ -19,7 +19,7 @@ namespace ApacchiisClassesMod2.Items.Classes
         float baseStat3 = .0115f;
         float stat3;// Whip Range
 
-        float baseBadStat = .0011f;
+        float baseBadStat = .0009f;
         float badStat; // Acceleration
 
 		public override void SetDefaults()
@@ -59,6 +59,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player Player = Main.player[Main.myPlayer];
 
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
+            string damageType = "SummonDamage";
+            if (_ACMConfigServer.Instance.generalistClasses) damageType = "AllDamage";
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -74,17 +76,28 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.SummonDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)} p/lvl\n" +
                                                                          "+" + (stat2 * modPlayer.classStatMultiplier).ToString("F2") + $" {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")} p/lvl\n" +
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.WhipRange")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")} p/lvl");
 
             var level = modPlayer.globalClassLevel.Count;
+            string classStats;
+            if (Player.controlUp)
+            {
+                classStats = $"+{level * stat1 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat3 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.WhipRange")}\n" +
+                             $"+{level * stat2:F2} {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}";
+            }
+            else
+            {
+                classStats = $"+{level * stat1 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat3 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.WhipRange")}\n" +
+                             $"+{level * stat2 * modPlayer.classStatMultiplier:F2} {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}";
+            }
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.SummonDamage")}\n" +
-                                                                      "+" + (level * stat2 * modPlayer.classStatMultiplier).ToString("F2") + $" {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}\n" +
-                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.WhipRange")}");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", classStats);
             TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MovementAcceleration")}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
@@ -116,7 +129,7 @@ namespace ApacchiisClassesMod2.Items.Classes
             base.ModifyTooltips(tooltips);
         }
 
-        public override void UpdateAccessory (Player Player, bool hideVisual)
+        public override void UpdateAccessory(Player Player, bool hideVisual)
 		{
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
             acmPlayer.hasClass = true;
@@ -138,9 +151,6 @@ namespace ApacchiisClassesMod2.Items.Classes
                     ClassStats();
             }
             else { ClassStats(); }
-
-            acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
 
             // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = Language.GetTextValue("Mods.ApacchiisClassesMod2.Commander_P_Name");
@@ -170,6 +180,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.aghanimsText = "- Banner cooldown decreased by 5 seconds\n" +
                                      "- Banner range increased by 25\n" +
                                      "- Banner now follows you around";
+
+            acmPlayer.classStatMultiplier = 1f; ;
         }
 
         private void ClassStats()
@@ -178,10 +190,24 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Summon) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
-            player.maxMinions += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
-            player.whipRangeMultiplier += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
-            player.runAcceleration -= currentClassLevel * badStat;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += (float)(currentClassLevel * .01f);
+
+            if (_ACMConfigServer.Instance.generalistClasses)
+            {
+                player.GetDamage(DamageClass.Generic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.maxMinions += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
+                player.whipRangeMultiplier += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                player.runAcceleration -= currentClassLevel * badStat;
+            }
+            else
+            {
+                player.GetDamage(DamageClass.Summon) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.maxMinions += (int)(stat2 * currentClassLevel * acmPlayer.classStatMultiplier);
+                player.whipRangeMultiplier += stat3 * currentClassLevel * acmPlayer.classStatMultiplier;
+                player.runAcceleration -= currentClassLevel * badStat;
+            }
+
+                
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)
@@ -196,4 +222,3 @@ namespace ApacchiisClassesMod2.Items.Classes
         }
     }
 }
-

@@ -10,6 +10,7 @@ using ApacchiisClassesMod2.UI.Other;
 using ApacchiisClassesMod2.UI.Specializations;
 using Terraria.UI;
 using System.Collections.Generic;
+using ApacchiisClassesMod2.Items.Classes.Apothecary;
 
 namespace ApacchiisClassesMod2
 {
@@ -29,8 +30,8 @@ namespace ApacchiisClassesMod2
         internal HUD HUD;
         internal UserInterface _HUD;
 
-        //internal HUDRework HUDRework;
-        //internal UserInterface _HUDRework;
+        internal HUDRework HUDRework;
+        internal UserInterface _HUDRework;
 
         internal RelicsUIReworked RelicsUI;
         internal UserInterface _RelicsUI;
@@ -58,6 +59,12 @@ namespace ApacchiisClassesMod2
 
         internal PlagueTalents PlagueTalents;
         internal UserInterface _PlagueTalents;
+
+        //internal ApothecaryTalents ApothecaryTalents;
+        //internal UserInterface _ApothecaryTalents;
+
+        internal ApothecaryUI ApothecaryUI;
+        internal UserInterface _ApothecaryUI;
 
         internal GeneralCards Cards;
         internal UserInterface _Cards;
@@ -100,8 +107,8 @@ namespace ApacchiisClassesMod2
                 HUD = new HUD();
                 _HUD = new UserInterface();
 
-                //HUDRework = new HUDRework();
-                //_HUDRework = new UserInterface();
+                HUDRework = new HUDRework();
+                _HUDRework = new UserInterface();
 
                 RelicsUI = new RelicsUIReworked();
                 _RelicsUI = new UserInterface();
@@ -130,6 +137,9 @@ namespace ApacchiisClassesMod2
                 PlagueTalents = new PlagueTalents();
                 _PlagueTalents = new UserInterface();
 
+                ApothecaryUI = new ApothecaryUI();
+                _ApothecaryUI = new UserInterface();
+
                 Cards = new GeneralCards();
                 _Cards = new UserInterface();
                 MyDeck = new MyDeck();
@@ -150,8 +160,8 @@ namespace ApacchiisClassesMod2
                 _ClassesMenu.Update(gameTime);
             if (_HUD?.CurrentState != null)
                 _HUD.Update(gameTime);
-            //if (_HUDRework?.CurrentState != null)
-            //    _HUDRework.Update(gameTime);
+            if (_HUDRework?.CurrentState != null)
+                _HUDRework.Update(gameTime);
             if (_Cards?.CurrentState != null)
                 _Cards.Update(gameTime);
             if (_MyDeck?.CurrentState != null)
@@ -177,6 +187,9 @@ namespace ApacchiisClassesMod2
                 _GamblerTalents.Update(gameTime);
             if (_PlagueTalents?.CurrentState != null)
                 _PlagueTalents.Update(gameTime);
+
+            if (_ApothecaryUI?.CurrentState != null)
+                _ApothecaryUI.Update(gameTime);
 
             base.UpdateUI(gameTime);
         }
@@ -226,17 +239,17 @@ namespace ApacchiisClassesMod2
                     },
                        InterfaceScaleType.UI));
 
-                //layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                //    "ApacchiisClassesMod2: HUDRework",
-                //    delegate
-                //    {
-                //        if (_lastUpdateUiGameTime != null && _HUDRework?.CurrentState != null)
-                //        {
-                //            _HUDRework.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
-                //        }
-                //        return true;
-                //    },
-                //       InterfaceScaleType.UI));
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: HUDRework",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _HUDRework?.CurrentState != null)
+                        {
+                            _HUDRework.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
 
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
                     "ApacchiisClassesMod2: Changelog",
@@ -371,6 +384,20 @@ namespace ApacchiisClassesMod2
                        return true;
                    },
                       InterfaceScaleType.UI));
+                #endregion
+
+                #region Other
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "ApacchiisClassesMod2: ApothecaryUI",
+                    delegate
+                    {
+                        if (_lastUpdateUiGameTime != null && _ApothecaryUI?.CurrentState != null)
+                        {
+                            _ApothecaryUI.Draw(Main.spriteBatch, _lastUpdateUiGameTime);
+                        }
+                        return true;
+                    },
+                       InterfaceScaleType.UI));
                 #endregion
             }
             base.ModifyInterfaceLayers(layers);

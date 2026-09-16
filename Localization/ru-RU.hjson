@@ -279,6 +279,16 @@ Mods: {
 				// DisplayName: Imperial Mandate
 				// Description: Mods.ApacchiisClassesMod2.Buffs.ImperialMandate.Description
 			}
+
+			ApothecaryMaxHealthMix: {
+				// DisplayName: Apothecary Max Health Mix
+				// Description: Mods.ApacchiisClassesMod2.Buffs.ApothecaryMaxHealthMix.Description
+			}
+
+			ApothecaryMaxHealthMixUpgraded: {
+				// DisplayName: Apothecary Max Health Mix Upgraded
+				// Description: Mods.ApacchiisClassesMod2.Buffs.ApothecaryMaxHealthMixUpgraded.Description
+			}
 		}
 
 		Items: {
@@ -721,6 +731,16 @@ Mods: {
 				// DisplayName: Revenge Spirit
 				// Tooltip: ""
 			}
+
+			Apothecary: {
+				// DisplayName: Apothecary
+				// Tooltip: ""
+			}
+
+			CoreOfMasochism: {
+				// DisplayName: Core Of Masochism
+				// Tooltip: ""
+			}
 		}
 
 		Projectiles: {
@@ -759,6 +779,25 @@ Mods: {
 					'''
 					Changes the maximum level all classes can reach
 					(Default: 100)
+					''' */
+			}
+
+			BloodMagePassiveSFX: {
+				// Label: Disable Blood Mage Passive Sound Effect
+				/* Tooltip:
+					'''
+					Disables the Blood Mage's passive sound effect
+					(Default: Off)
+					''' */
+			}
+
+			GeneralistClasses: {
+				// Label: Generalist Classes
+				/* Tooltip:
+					'''
+					Changes all the class banners damage types to All Damage instead of their specific damage types such as Melee or Ranged Damage
+					This allows for players to use any class with any build they desire
+					(Default: Off)
 					''' */
 			}
 
@@ -846,7 +885,7 @@ Mods: {
 			}
 
 			APWeaponDPS: {
-				// Label: Ability Power Gained By Held Weapon's Base DPS
+				// Label: Ability Pwr. From Held Weapon's DPS
 				/* Tooltip:
 					'''
 					Changes how much ability power the player gets depending on the base dps of their currently held weapon
@@ -855,12 +894,22 @@ Mods: {
 					''' */
 			}
 
+			ThoriumHealingScaling: {
+				// Label: Thorium Healing Bonus Percentage
+				/* Tooltip:
+					'''
+					Increases Thorium's Healer class bonus healing by a percentage of  Healing Power gained from this mod
+					(Requires 'Thorium Mod' in order to work)
+					(Default: 0.50 (50%))
+					''' */
+			}
+
 			CalamityScaling: {
 				// Label: Calamity Scaling
 				/* Tooltip:
 					'''
-					If enabled the amount of stats you gain from your class' banner stats will be slighty increased for each boss defeated after entering Hardmode.
-					(Does NOT actually need Calamity installed/enabled to work)
+					If enabled the amount of stats you gain from your class' banner stats will be slighty increased for each boss defeated after entering Hardmode
+					(Does not require 'Calamity' in order to work)
 					(Default: Off)
 					''' */
 			}
@@ -889,6 +938,15 @@ Mods: {
 					'''
 					Visual effects from abilities such as Blood Mage's [Blood Enchantment] are scaled down to reduce obstruction
 					(Default: Off)
+					''' */
+			}
+
+			ZoomEffects: {
+				// Label: Zoom Effects
+				/* Tooltip:
+					'''
+					Some abilities will modify screen zoom temporarily.
+					(Default: On)
 					''' */
 			}
 
@@ -981,9 +1039,43 @@ Mods: {
 				// Label: Screen Shake Intensity
 				/* Tooltip:
 					'''
-					Changes how intense screen shaking effects are.
+					Changes how intense screen shaking effects are
 					(Default: 1)
 					''' */
+			}
+
+			HUDStyle: {
+				// Label: Hud Style
+				/* Tooltip:
+					'''
+					Changes how the HUD is structured, does not affect HUD position on the screen
+					(Default: Left)
+					''' */
+			}
+
+			CoreMasochismChance: {
+				// Label: Core Of Masochism Drop Chance
+				/* Tooltip:
+					'''
+					Changes the chance of this relic dropping a rune fragment.
+					0.01 = 1 in 1000, 0.05 = 1 in 200, 0.1 = 1 in 100
+					(Default: 0.05)
+					''' */
+			}
+
+			ReworkedHudHorizontalPosition: {
+				// Label: reworked Hud H Pos
+				// Tooltip: ""
+			}
+
+			ReworkedHudVerticalPosition: {
+				// Label: reworked Hud V Pos
+				// Tooltip: ""
+			}
+
+			ApothecaryHelpPanel: {
+				// Label: Apothecary Help Panel
+				// Tooltip: ""
 			}
 		}
 
@@ -1002,65 +1094,31 @@ Mods: {
 				// DisplayName: ACM Config Client
 
 				Headers: {
-					// HUD: HUD Header
-					// Effects/Feeback: Effects/Feeback Header
+					// HUD: HUD
+					// QuestsHUD: Quests HUD
+					// TeamHUD: Team HUD
+					// Effects/Feeback: Effects/Feeback
 				}
 			}
 		}
 
 		/* Changelog.Text:
 			'''
-			--------------------------------------------[1.5.6.1]--------------------------------------------
+			Mod Version: [1.5.8]
 			--------------------------------------------[Overview]--------------------------------------------
-			- New relics.
-			- Screen shake effects and an option to disable or reduce their intensity.
-			- Added Changelog button to Class Menu to be able to see updates in-game.
-			- Some resprites.
-			- Some bug fixes.
 
 			--------------------------------------------[General]--------------------------------------------
-			- Screen shake effects and config options for it.
-			- Fixed Cooldown Reduction cap not working, now caps at a max of 75%.
-			- Fixed Ultimate Cooldown Reduction cap not working, now caps at a max of 75%.
+			- All classes can now be "Generalists" by enabling the new server config option "Generalist Classes".
+			This means every class will give players All Damage, instead of specific damage types like Melee or Ranged damage.
+			This allows for players to use any class they desire for nearly any build.
 
 			--------------------------------------------[Classes]--------------------------------------------
+			Blood Mage
+			- Added a client config option to disable the sound effect of the class' passive ability.
 
 			--------------------------------------------[Relics]--------------------------------------------
-			[New] Arcane Barrier (Donator)
-			- If the wearer has 250 or more max mana:
-			- On taking lethal damage, if your current mana is higher than the damage you take, the damage will instead be redirected to your mana avoiding your death.
-			- When death is avoided your health will be set to 10% of its max and your mana to 0 without being able to gain mana from potions for 3 seconds.
-			- (75s Cooldown)
-
-			[New] Imperial Mandate (Donator)
-			- Hitting enemies with whips causes them to become tagged.
-			- In singleplayer, your minion hits consume the tag to deal 8% bonus damage.
-			- In multiplayer, other players that do not have Imperial Mandate equipped are the ones who proc the tag.
-			- In multiplayer, players consume the tag to deal 6% bonus damage.
-
-			Mana Inhibitor
-			- Resprited.
-
-			[New] Revenge Spirit (Donator)
-			- Upon death, spawn a spirit that will seek and damage an enemy nearby.
-			- The spirit strikes for 20% of the target's max health.
-			- If the target dies, the spirit's damage will be increased by an additional 20% of the target's max health and will seek another target.
-			- (Does not target bosses)
-
-			[New] Sacrifice (Donator)
-			- Halves your max minions and grants you bonuses based on minion slots sacrificed:
-			- (Minion slots are rounded down. Only removes a max of 4 slots)
-			- 1 Slot: Whip damage increased by 10%.
-			- 2 Slots: Whips now deal 10 damage per second for 3 seconds.
-			- 3 Slots: Whip damage increased by an additional 10%.
-			- 4 Slots: Whips now deal an additional 10 damage per second for 3 seconds.
 
 			--------------------------------------------[Items]--------------------------------------------
-			Lost Rune
-			- Resprited.
-
-			Lost Rune Fragment
-			- Resprited.
 			''' */
 	}
 }

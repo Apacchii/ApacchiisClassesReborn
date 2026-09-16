@@ -17,8 +17,13 @@ namespace ApacchiisClassesMod2.Configs
         //[Tooltip("If true, all classes will share the same level, if false, each class will have their own level")]
         //public bool configGlobalLevels { get; set; }
 
+        [DefaultValue(false)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.GeneralistClasses.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.GeneralistClasses.Tooltip")]
+        public bool generalistClasses { get; set; }
+
         [Slider]
-        [DefaultValue(100)]
+        [DefaultValue(50)]
         [Increment(5)]
         [Range(10, 200)]
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.MaxClassLevel.Label")]
@@ -123,10 +128,27 @@ namespace ApacchiisClassesMod2.Configs
         [SliderColor(255, 255, 255)]
         public float abilityPowerWeaponDPSMult { get; set; }
 
+        [DefaultValue(0.05f)]
+        [Increment(.01f)]
+        [Range(0.01f, 0.1f)]
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.CoreMasochismChance.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.CoreMasochismChance.Tooltip")]
+        public float CoreMasochismChance { get; set; }
+
         #endregion
 
         #region Compatibility
         [Header("Mod.Compatibility")]
+
+        [LabelKey("$Mods.ApacchiisClassesMod2.Config.ThoriumHealingScaling.Label")]
+        [TooltipKey("$Mods.ApacchiisClassesMod2.Config.ThoriumHealingScaling.Tooltip")]
+        [DefaultValue(.5f)]
+        [Increment(.05f)]
+        [Range(0f, 1f)]
+        [Slider]
+        [SliderColor(255, 255, 255)]
+        public float thoriumHealingBonusPercentage { get; set; }
+
         [LabelKey("$Mods.ApacchiisClassesMod2.Config.CalamityScaling.Label")]
         [TooltipKey("$Mods.ApacchiisClassesMod2.Config.CalamityScaling.Tooltip")]
         [DefaultValue(false)]

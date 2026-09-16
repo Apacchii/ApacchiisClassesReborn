@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using System.Drawing.Printing;
 using ApacchiisClassesMod2.Configs;
+
 using System.Linq;
 using Humanizer;
 using System.Data.Odbc;
@@ -29,6 +30,8 @@ namespace ApacchiisClassesMod2.UI.HUD
         UIText text;
         UIText inCombat;
         UIText healthRegen;
+
+        UIText apothecaryCooldownNotification;
 
         public bool showQuestHUD = true;
         UIText questName;
@@ -202,6 +205,11 @@ namespace ApacchiisClassesMod2.UI.HUD
                     teamHealthNumber[i].Top.Set(21, 0f);
                 }
             }
+
+            apothecaryCooldownNotification = new UIText("", 1f);
+            apothecaryCooldownNotification.VAlign = .5f;
+            apothecaryCooldownNotification.HAlign = .5f;
+            apothecaryCooldownNotification.Top.Set(30, 0f);
 
             titaniaHUDPivot = new UIPanel();
             titaniaHUDPivot.VAlign = .5f;

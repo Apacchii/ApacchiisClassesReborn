@@ -61,6 +61,10 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player Player = Main.player[Main.myPlayer];
 
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
+            string damageType = "RangedDamage";
+            if (_ACMConfigServer.Instance.generalistClasses) damageType = "AllDamage";
+            string critType = "RangedCrit";
+            if (_ACMConfigServer.Instance.generalistClasses) critType = "AllCrit";
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -76,18 +80,29 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)} p/lvl\n" +
                                                                          "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AttackSpeed")} p/lvl\n" +
                                                                          "-" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.UltCostReduction")} p/lvl");
-            TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" +(badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedCrit")} p/lvl");
+            TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" +(badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + critType)} p/lvl");
 
             var level = modPlayer.globalClassLevel.Count;
-            
+            string classStats;
+            if (Player.controlUp)
+            {
+                classStats = $"+{level * stat1 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AttackSpeed")}\n" +
+                             $"+{level * stat3 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.UltCostReduction")}";
+            }
+            else
+            {
+                classStats = $"+{level * stat1 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AttackSpeed")}\n" +
+                             $"+{level * stat3 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.UltCostReduction")}";
+            }
+
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedDamage")}\n" +
-                                                                      "+" + (level * stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.AttackSpeed")}\n" +
-                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.UltCostReduction")}");
-            TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.RangedCrit")}");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", classStats);
+            TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + critType)}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
             lineBadStat.OverrideColor = new Color(200, 50, 25);
@@ -140,9 +155,6 @@ namespace ApacchiisClassesMod2.Items.Classes
             }
             else { ClassStats(); }
 
-            acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
-
             // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = "Luck Of The Draw";
             acmPlayer.P_Desc = $"Any damage you deal is randomized, having the same chance to deal either higher or lower damage than normal.";
@@ -175,6 +187,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             acmPlayer.aghanimsText = "- Lucky Streak duration increased by 1 second\n" +
                                      "- Roll The Dice base damage increased by 12\n" +
                                      "- Each dice that hits an enemy heals you between 0.25% to 0.5% of your max health";
+
+            acmPlayer.classStatMultiplier = 1f;
         }
 
         private void ClassStats()
@@ -183,10 +197,22 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Ranged) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
-            player.GetAttackSpeed(DamageClass.Ranged) += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
-            acmPlayer.ultCooldownReduction -= currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
-            player.GetCritChance(DamageClass.Ranged) -= currentClassLevel * badStat;
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += (float)(currentClassLevel * .01f);
+
+            if (_ACMConfigServer.Instance.generalistClasses)
+            {
+                player.GetDamage(DamageClass.Generic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.GetAttackSpeed(DamageClass.Generic) += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
+                acmPlayer.ultCooldownReduction -= currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
+                player.GetCritChance(DamageClass.Generic) -= currentClassLevel * badStat;
+            }
+            else
+            {
+                player.GetDamage(DamageClass.Ranged) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                player.GetAttackSpeed(DamageClass.Ranged) += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
+                acmPlayer.ultCooldownReduction -= currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
+                player.GetCritChance(DamageClass.Ranged) -= currentClassLevel * badStat;
+            }  
         }
 
         public override bool CanEquipAccessory(Player player, int slot, bool modded)

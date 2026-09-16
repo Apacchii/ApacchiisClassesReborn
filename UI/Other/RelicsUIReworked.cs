@@ -221,8 +221,9 @@ namespace ApacchiisClassesMod2.UI.Other
 
                         if (ItemLoader.GetItem(acmPlayer.relicList[i]).Item.type == ItemType<Sacrifice>())
                         {
-                            Main.hoverItemName = $"Halves your max minions and grants you bonuses based on minion slots sacrificed:" +
-                                                  $"\n(Minion slots are rounded down. Only removes a max of 4 slots)\n" +
+                            Main.hoverItemName = $"[c/e69d00:Sacrifice]\n" +
+                                                  $"Halves your max minions and grants you bonuses based on minion slots sacrificed:\n" +
+                                                  $"(Minion slots are rounded down. Only removes a max of 4 slots)\n" +
                                                   $"- 1 Slot: Whip damage increased by 10%.\n" +
                                                   $"- 2 Slots: Whips now deal 10 damage per second for 3 seconds.\n" +
                                                   $"- 3 Slots: Whip damage increased by an additional 10%.\n" +
@@ -232,8 +233,9 @@ namespace ApacchiisClassesMod2.UI.Other
 
                         if (ItemLoader.GetItem(acmPlayer.relicList[i]).Item.type == ItemType<AghanimsScepter>())
                         {
-                            Main.hoverItemName = "[Effect varies on class]\n" +
-                                                 $"{acmPlayer.aghanimsText}\n" +
+                            Main.hoverItemName = "[c/e69d00:Aghanim's Scepter]\n" +
+                                                 "[Effect varies on class]\n" +
+                                                $"{acmPlayer.aghanimsText}\n" +
                                                  "[c/aa17f:'Ahh... Scepter...']";
                         }
                     }

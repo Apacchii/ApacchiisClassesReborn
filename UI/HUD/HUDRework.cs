@@ -13,21 +13,29 @@ using ApacchiisClassesMod2.Configs;
 using System.Linq;
 using Humanizer;
 using System.Data.Odbc;
+using Terraria.ModLoader.UI;
 
 namespace ApacchiisClassesMod2.UI.HUD
 {
     class HUDRework : UIState
     {
+        UIPanel pivotPivot; //lmao
         UIPanel abilitiesPivot;
 
-        Bar ability1Bar;
-        UIText ability1Text;
+        UIImage hudCenter;
+        UIImage hudCenterFill;
+        UIText hudCenterAbilityCooldown;
+        UIText hudCenterAbilityName;
 
-        Bar ability2Bar;
-        UIText ability2Text;
+        UIImage hudLeft;
+        UIImage hudLeftFill;
+        UIText hudLeftAbilityCooldown;
+        UIText hudLeftAbilityName;
 
-        UIImage ultimateCircle;
-        UIText ultimateCircleText;
+        UIImage hudRight;
+        UIImage hudRightFill;
+        UIText hudRightAbilityCooldown;
+        UIText hudRightAbilityName;
 
         UIText text;
         UIText inCombat;
@@ -56,43 +64,84 @@ namespace ApacchiisClassesMod2.UI.HUD
 
         public override void OnInitialize()
         {
+            pivotPivot = new UIPanel();
+            pivotPivot.VAlign = .5f;
+            pivotPivot.HAlign = .5f;
+            Append(pivotPivot);
+
             abilitiesPivot = new UIPanel();
-            abilitiesPivot.VAlign = .9f;
+            abilitiesPivot.VAlign = .5f;
             abilitiesPivot.HAlign = .5f;
-            abilitiesPivot.Width.Set(260, 0f);
-            abilitiesPivot.Height.Set(100, 0f);
+            abilitiesPivot.Left.Set(-12, 0f);
+            abilitiesPivot.Width.Set(400, 0f);
+            abilitiesPivot.Height.Set(140, 0f);
             abilitiesPivot.BackgroundColor = new Color(0, 0, 0, 0);
             abilitiesPivot.BorderColor = new Color(0, 0, 0, 0);
-            Append(abilitiesPivot);
+            pivotPivot.Append(abilitiesPivot);
 
-            ability1Bar = new Bar();
-            ability1Bar.VAlign = .5f;
-            ability1Bar.HAlign = 0f;
-            ability1Bar.Width.Set(100, 0f);
-            ability1Bar.Height.Set(12, 0f);
-            abilitiesPivot.Append(ability1Bar);
+            //Ult
+            hudCenter = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenter", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudCenter.ImageScale = 1f;
+            hudCenter.VAlign = .5f;
+            hudCenter.HAlign = .5f;
+            abilitiesPivot.Append(hudCenter);
 
-            ability1Text = new UIText("27.42s", .8f);
-            ability1Text.HAlign = .5f;
-            ability1Text.Top.Set(16, 0f);
-            ability1Bar.Append(ability1Text);
+            hudCenterFill = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenterFill", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudCenterFill.ImageScale = 1f;
+            hudCenterFill.VAlign = .5f;
+            hudCenterFill.HAlign = .5f;
+            hudCenter.Append(hudCenterFill);
 
-            ability2Bar = new Bar();
-            ability2Bar.VAlign = .5f;
-            ability2Bar.HAlign = 1f;
-            ability2Bar.Width.Set(100, 0f);
-            ability2Bar.Height.Set(12, 0f);
-            abilitiesPivot.Append(ability2Bar);
+            hudCenterAbilityCooldown = new UIText("", .6f);
+            hudCenterAbilityCooldown.VAlign = 0f;
+            hudCenterAbilityCooldown.HAlign = .5f;
+            hudCenterAbilityCooldown.Top.Set(-12, 0f);
+            hudCenterAbilityCooldown.Left.Set(11, 0f);
+            hudCenter.Append(hudCenterAbilityCooldown);
 
-            ability2Text = new UIText("16.13s", .8f);
-            ability2Text.HAlign = .5f;
-            ability2Text.Top.Set(16, 0f);
-            ability2Bar.Append(ability2Text);
+            //A1
+            hudLeft = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenter", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudLeft.ImageScale = .75f;
+            hudLeft.VAlign = .5f;
+            hudLeft.HAlign = .5f;
+            hudLeft.Top.Set(30, 0f);
+            hudLeft.Left.Set(-30, 0f);
+            abilitiesPivot.Append(hudLeft);
 
-            ultimateCircle = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/UltCircleSmall", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
-            ultimateCircle.VAlign = .5f;
-            ultimateCircle.HAlign = .5f;
-            abilitiesPivot.Append(ultimateCircle);
+            hudLeftFill = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenterFill", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudLeftFill.ImageScale = .75f;
+            hudLeftFill.VAlign = .5f;
+            hudLeftFill.HAlign = .5f;
+            hudLeft.Append(hudLeftFill);
+
+            hudLeftAbilityCooldown = new UIText("", .6f);
+            hudLeftAbilityCooldown.VAlign = 1f;
+            hudLeftAbilityCooldown.HAlign = .5f;
+            hudLeftAbilityCooldown.Top.Set(3, 0f);
+            hudLeftAbilityCooldown.Left.Set(11, 0f);
+            hudLeft.Append(hudLeftAbilityCooldown);
+
+            //A2
+            hudRight = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenter", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudRight.ImageScale = .75f;
+            hudRight.VAlign = .5f;
+            hudRight.HAlign = .5f;
+            hudRight.Top.Set(30, 0f);
+            hudRight.Left.Set(30, 0f);
+            abilitiesPivot.Append(hudRight);
+
+            hudRightFill = new UIImage(Request<Texture2D>("ApacchiisClassesMod2/UI/HUD/Rework/HudCenterFill", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
+            hudRightFill.ImageScale = .75f;
+            hudRightFill.VAlign = .5f;
+            hudRightFill.HAlign = .5f;
+            hudRight.Append(hudRightFill);
+
+            hudRightAbilityCooldown = new UIText("", .6f);
+            hudRightAbilityCooldown.VAlign = 1f;
+            hudRightAbilityCooldown.HAlign = .5f;
+            hudRightAbilityCooldown.Top.Set(3, 0f);
+            hudRightAbilityCooldown.Left.Set(11, 0f);
+            hudRight.Append(hudRightAbilityCooldown);
 
             //-----
 
@@ -203,16 +252,106 @@ namespace ApacchiisClassesMod2.UI.HUD
             base.OnInitialize();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            
-            base.Draw(spriteBatch);
+            Player Player = Main.player[Main.myPlayer];
+            var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            int A1Cooldown = (int)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr);
+            hudLeftAbilityCooldown.SetText($"{acmPlayer.ability1Cooldown / 60}/{A1Cooldown}");
+            if(acmPlayer.ability1Cooldown / 60 == A1Cooldown)
+                hudLeftAbilityCooldown.SetText($"Ready");
+
+            if (acmPlayer.ability1Cooldown >= acmPlayer.ability1MaxCooldown)
+            {
+                if (acmPlayer.ability1Cooldown / 60 >= A1Cooldown)
+                    hudLeftFill.Color = Color.White;
+                else
+                    hudLeftFill.Color = Color.DarkSlateGray;
+
+                float q = (float)acmPlayer.ability1Cooldown / (float)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr) / 60;
+                hudLeftFill.ImageScale = q * .75f;
+            }
+
+            int A2Cooldown = (int)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr);
+            hudRightAbilityCooldown.SetText($"{acmPlayer.ability2Cooldown / 60}/{A2Cooldown}");
+            if (acmPlayer.ability2Cooldown / 60 == A2Cooldown)
+                hudRightAbilityCooldown.SetText($"Ready");
+
+            if (acmPlayer.ability2Cooldown >= A2Cooldown)
+            {
+                if (acmPlayer.ability2Cooldown / 60 >= acmPlayer.ability2MaxCooldown)
+                    hudRightFill.Color = Color.White;
+                else
+                    hudRightFill.Color = Color.DarkSlateGray;
+
+                float q = (float)acmPlayer.ability2Cooldown / (float)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr) / 60;
+                hudRightFill.ImageScale = q * .75f;
+            }
+
+            hudCenterAbilityCooldown.SetText($"{acmPlayer.ultCharge}/{acmPlayer.ultChargeMax}");
+            if (acmPlayer.ultCharge == acmPlayer.ultChargeMax)
+                hudCenterAbilityCooldown.SetText($"Ready");
+
+            if (acmPlayer.ultCharge > 0)
+            {
+                if (acmPlayer.ultCharge >= acmPlayer.ultChargeMax)
+                    hudCenterFill.Color = Color.White;
+                else
+                    hudCenterFill.Color = Color.DarkSlateGray;
+
+                float q = (float)acmPlayer.ultCharge / (float)acmPlayer.ultChargeMax;
+                hudCenterFill.ImageScale = q;
+            }
+
+            base.DrawSelf(spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
             Player Player = Main.player[Main.myPlayer];
             var acmPlayer = Player.GetModPlayer<ACMPlayer>();
+
+            pivotPivot.VAlign = ACMConfigClient.Instance.reworkedHudVPos;
+            pivotPivot.HAlign = ACMConfigClient.Instance.reworkedHudHPos - .09f;
+
+            switch (ACMConfigClient.Instance.hudStyle)
+            {
+                case "Left":
+                    break;
+
+                case "Center":
+                    hudCenter.VAlign = .5f;
+                    hudCenter.HAlign = .5f;
+                    hudCenter.Top.Set(0, 0f);
+                    hudCenter.Left.Set(0, 0f);
+                    hudCenterAbilityCooldown.VAlign = 0f;
+                    hudCenterAbilityCooldown.HAlign = .5f;
+                    hudCenterAbilityCooldown.Top.Set(-12, 0f);
+                    hudCenterAbilityCooldown.Left.Set(11, 0f);
+
+                    hudLeft.VAlign = .5f;
+                    hudLeft.HAlign = .5f;
+                    hudLeft.Top.Set(30, 0f);
+                    hudLeft.Left.Set(-30, 0f);
+                    hudLeftAbilityCooldown.VAlign = 1f;
+                    hudLeftAbilityCooldown.HAlign = .5f;
+                    hudLeftAbilityCooldown.Top.Set(3, 0f);
+                    hudLeftAbilityCooldown.Left.Set(11, 0f);
+
+                    hudRight.VAlign = .5f;
+                    hudRight.HAlign = .5f;
+                    hudRight.Top.Set(30, 0f);
+                    hudRight.Left.Set(30, 0f);
+                    hudRightAbilityCooldown.VAlign = 1f;
+                    hudRightAbilityCooldown.HAlign = .5f;
+                    hudRightAbilityCooldown.Top.Set(3, 0f);
+                    hudRightAbilityCooldown.Left.Set(11, 0f);
+                    break;
+
+                case "Right":
+                    break;
+            }
 
             if (ACMConfigClient.Instance.teamHUD)
             {
@@ -342,24 +481,7 @@ namespace ApacchiisClassesMod2.UI.HUD
             //--    text1.SetText($"A1: {acmPlayer.ability1Cooldown / 60} / {(int)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr)}");
             //--text2.SetText("A2: " + (acmPlayer.ability2Cooldown / 60) + " / " + (int)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr));
             //--text.SetText("Ult: " + acmPlayer.ultCharge + " / " + acmPlayer.ultChargeMax);
-
-            if (acmPlayer.ability1Cooldown > 0)
-            {
-                float q1 = (float)acmPlayer.ability1Cooldown / (float)(acmPlayer.ability1MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability1cdr) / 60;
-                //--curBar1.Width.Set(q1 * 100, 0f);
-            }
-
-            if (acmPlayer.ability2Cooldown > 0)
-            {
-                float q2 = (float)acmPlayer.ability2Cooldown / (float)(acmPlayer.ability2MaxCooldown * acmPlayer.cooldownReduction * acmPlayer.ability2cdr) / 60;
-                //--curBar2.Width.Set(q2 * 100, 0f);
-            }
-
-            if (acmPlayer.ultCharge > 0)
-            {
-                float q3 = (float)acmPlayer.ultCharge / (float)acmPlayer.ultChargeMax;
-                //--curBar.Width.Set(q3 * 100, 0f);
-            }
+            
 
             if (acmPlayer.hasBloodMage)
             {

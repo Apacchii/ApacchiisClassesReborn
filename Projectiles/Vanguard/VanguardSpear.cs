@@ -13,6 +13,7 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
 
         bool flag = false;
         int range;
+        int timeToExplode = 4;
 
         public override void SetStaticDefaults()
         {
@@ -30,12 +31,15 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
             Projectile.ignoreWater = false;
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
+
+            timeToExplode = 4;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.timeLeft = 2;
             Projectile.tileCollide = false;
+            Projectile.timeLeft = 2;
+
             return false;
         }
 
@@ -73,70 +77,75 @@ namespace ApacchiisClassesMod2.Projectiles.Vanguard
                 {
                     if (Vector2.Distance(Projectile.Center, Main.npc[i].Center) <= 100 && !Main.npc[i].townNPC && !Main.npc[i].dontTakeDamage && Main.npc[i].type != NPCID.DD2Bartender && Main.npc[i].type != NPCID.DD2EterniaCrystal && Main.npc[i].type != NPCID.DD2LanePortal && !Main.npc[i].friendly)
                     {
-                        int hitDir;
-                        if (Main.npc[i].position.X < Main.player[Projectile.owner].position.X)
-                            hitDir = -1;
-                        else
-                            hitDir = 1;
+                        timeToExplode--;
 
-                        if (acmPlayer.vanguardTalent_6 == "L") // Double range
+                        if(timeToExplode <= 0)
                         {
-                            Projectile.width = 800;
-                            Projectile.height = 800;
-                            range = 800;
-                        }
-                        else
-                        {
-                            Projectile.width = 400;
-                            Projectile.height = 400;
-                            range = 400;
-                        }
+                            int hitDir;
+                            if (Main.npc[i].position.X < Main.player[Projectile.owner].position.X)
+                                hitDir = -1;
+                            else
+                                hitDir = 1;
 
-                        if (!flag)
-                        {
-                            if (acmPlayer.vanguardTalent_6 == "L")
+                            if (acmPlayer.vanguardTalent_6 == "L") // Double range
                             {
-                                Projectile.position.X -= 400;
-                                Projectile.position.Y -= 400;
+                                Projectile.width = 800;
+                                Projectile.height = 800;
+                                range = 800;
                             }
                             else
                             {
-                                Projectile.position.X -= 200;
-                                Projectile.position.Y -= 200;
+                                Projectile.width = 400;
+                                Projectile.height = 400;
+                                range = 400;
                             }
-                            flag = true;
-                        }
 
-                        for (int i2 = 0; i2 < Main.maxNPCs; i2++)
-                            if (Vector2.Distance(Projectile.Center, Main.npc[i2].Center) <= range && !Main.npc[i2].townNPC && !Main.npc[i2].dontTakeDamage && Main.npc[i2].type != NPCID.DD2Bartender && Main.npc[i2].type != NPCID.DD2EterniaCrystal && Main.npc[i2].type != NPCID.DD2LanePortal && !Main.npc[i2].friendly)
+                            if (!flag)
+                            {
+                                if (acmPlayer.vanguardTalent_6 == "L")
+                                {
+                                    Projectile.position.X -= 400;
+                                    Projectile.position.Y -= 400;
+                                }
+                                else
+                                {
+                                    Projectile.position.X -= 200;
+                                    Projectile.position.Y -= 200;
+                                }
+                                flag = true;
+                            }
+
+                            for (int i2 = 0; i2 < Main.maxNPCs; i2++)
+                                if (Vector2.Distance(Projectile.Center, Main.npc[i2].Center) <= range && !Main.npc[i2].townNPC && !Main.npc[i2].dontTakeDamage && Main.npc[i2].type != NPCID.DD2Bartender && Main.npc[i2].type != NPCID.DD2EterniaCrystal && Main.npc[i2].type != NPCID.DD2LanePortal && !Main.npc[i2].friendly)
                                     player.ApplyDamageToNPC(Main.npc[i2], (int)(acmPlayer.vanguardSpearDamage * acmPlayer.abilityPower), 5f, hitDir, false);
 
 
-                        SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+                            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
-                        if (acmPlayer.vanguardTalent_6 == "L")
-                        {
-                            for (int x = 0; x < 30; x++)
+                            if (acmPlayer.vanguardTalent_6 == "L")
                             {
-                                var d3 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-20f, 20f), 0, Color.White, 2.25f);
-                                var d4 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
-                                d3.noGravity = true;
-                                d4.noGravity = false;
+                                for (int x = 0; x < 30; x++)
+                                {
+                                    var d3 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-20f, 20f), 0, Color.White, 2.25f);
+                                    var d4 = Dust.NewDustDirect(Projectile.position, 800, 800, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
+                                    d3.noGravity = true;
+                                    d4.noGravity = false;
+                                }
                             }
-                        }
-                        else
-                        {
-                            for (int y = 0; y < 70; y++)
+                            else
                             {
-                                var d3 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-10f, 10f), 0, Color.White, 2.25f);
-                                var d4 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
-                                d3.noGravity = true;
-                                d4.noGravity = false;
+                                for (int y = 0; y < 70; y++)
+                                {
+                                    var d3 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-20, 20), Main.rand.NextFloat(-10f, 10f), 0, Color.White, 2.25f);
+                                    var d4 = Dust.NewDustDirect(Projectile.position, 400, 400, DustID.AmberBolt, Main.rand.Next(-10, 10), Main.rand.NextFloat(-10f, 10f), 0, Color.White, .75f);
+                                    d3.noGravity = true;
+                                    d4.noGravity = false;
+                                }
                             }
-                        }
 
-                        acmPlayer.ScreenShake(Projectile.Center, 5f, 30);
-                        Projectile.Kill();
+                            acmPlayer.ScreenShake(Projectile.Center, 5f, 30);
+                            Projectile.Kill();
+                        }
                     }
                 }
             }

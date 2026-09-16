@@ -94,7 +94,7 @@ namespace ApacchiisClassesMod2
                     ));
                 }
 
-                if (drawInfo.drawPlayer.GetModPlayer<ACMPlayer>().fairyLawTimer > 0)
+                if (drawInfo.drawPlayer.GetModPlayer<ACMPlayer>().fairyLawTimer > 0 && drawInfo.drawPlayer.GetModPlayer<ACMPlayer>().fairyLawTimer < 120)
                 {
                     var position = drawInfo.Center - Main.screenPosition;
                     position = new Vector2((int)position.X, (int)position.Y); // To avoid quivering.
@@ -119,5 +119,3 @@ namespace ApacchiisClassesMod2
          }
     }
 }
-
-

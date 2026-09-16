@@ -9,7 +9,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 {
 	public class Nessie : ModItem
 	{
-        public string desc = "The next time you would take damage, dodge it instead.\n(60s Cooldowm)\n[c/aa17f:'Property of N. Paquette']";
+        public string desc = "The next time you would take damage, dodge it instead.\n(60s Cooldown)\n[c/aa17f:'Property of N. Paquette']";
 
         public override void SetStaticDefaults()
         {

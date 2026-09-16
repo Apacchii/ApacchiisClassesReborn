@@ -31,13 +31,14 @@ namespace ApacchiisClassesMod2.Projectiles.Titania
             Projectile.timeLeft = 60 * 16;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = false;
-            Projectile.DamageType = DamageClass.Magic;
+            Projectile.DamageType = DamageClass.Generic;
             Projectile.tileCollide = false;
-            Projectile.aiStyle = ProjAIStyleID.Raven;
+            Projectile.aiStyle = ProjAIStyleID.Finch;
         }
 
         public override void AI()
         {
+            Projectile.penetrate = 100;
             Player player = Main.player[Main.myPlayer];
             Projectile.rotation = Projectile.velocity.ToRotation();
 
@@ -49,14 +50,19 @@ namespace ApacchiisClassesMod2.Projectiles.Titania
 
             attackCooldown--;
             if (attackCooldown > 0)
+            {
                 Projectile.aiStyle = ProjAIStyleID.Arrow;
+                Projectile.penetrate = 100;
+                Projectile.tileCollide = false;
+            }
             else
-                Projectile.aiStyle = ProjAIStyleID.Raven;
+                Projectile.aiStyle = ProjAIStyleID.Finch;
             base.AI();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            Projectile.penetrate += 2;
             attackCooldown = 20;
             base.OnHitNPC(target, hit, damageDone);
         }

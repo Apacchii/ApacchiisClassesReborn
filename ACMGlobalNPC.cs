@@ -23,6 +23,8 @@ namespace ApacchiisClassesMod2
 
         public bool plagueInfection;
 
+        public int apothecaryPoison;
+
         public bool sacrifice1;
         public bool sacrifice2;
 
@@ -72,7 +74,7 @@ namespace ApacchiisClassesMod2
         {
             if (plagueInfection && !npc.dontTakeDamage && !npc.friendly && npc.GivenOrTypeName != "Treebark Druid")
             {
-                if (npc.boss)
+                if (npc.boss || npc.GivenOrTypeName == "Ebonian Paladin" || npc.GivenOrTypeName == "Crimulan Paladin")
                 {
                     damage = npc.lifeMax / 5000;
                     npc.lifeRegen -= (int)(npc.lifeMax * .005f);
@@ -81,6 +83,26 @@ namespace ApacchiisClassesMod2
                 {
                     damage = npc.lifeMax / 50;
                     npc.lifeRegen -= (int)(npc.lifeMax * .05f);
+                }
+            }
+
+            if (apothecaryPoison > 0 && !npc.dontTakeDamage && !npc.friendly && npc.GivenOrTypeName != "Treebark Druid")
+            {
+                if (npc.boss || npc.GivenOrTypeName == "Ebonian Paladin" || npc.GivenOrTypeName == "Crimulan Paladin")
+                {
+                    int damagePerSecond = (int)(npc.lifeMax * .00275f);
+                    if (damagePerSecond < 12)
+                        damagePerSecond = 12;
+                    damage = damagePerSecond / 10;
+                    npc.lifeRegen -= damagePerSecond;
+                }
+                else
+                {
+                    int damagePerSecond = (int)(npc.lifeMax * .1f); //Damage is half per second so 10% will be 5% of health per second
+                    if (damagePerSecond < 6)
+                        damagePerSecond = 6;
+                    damage = damagePerSecond / 10;
+                    npc.lifeRegen -= damagePerSecond;
                 }
             }
 
@@ -122,6 +144,8 @@ namespace ApacchiisClassesMod2
         public override void PostAI(NPC npc)
         {
             Player Player = Main.player[Main.myPlayer];
+
+            apothecaryPoison--;
 
             if (!hasIncreasedMaxHealth)
             {

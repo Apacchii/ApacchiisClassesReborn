@@ -21,7 +21,7 @@ namespace ApacchiisClassesMod2.Items.Relics
 
             Item.width = 26;
             Item.height = 20;
-            Item.rare = 11;
+            Item.rare = ItemRarityID.Quest;
             Item.maxStack = 999;
             Item.value = 0;
         }

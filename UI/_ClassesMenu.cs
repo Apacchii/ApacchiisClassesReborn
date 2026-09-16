@@ -14,6 +14,7 @@ using System.Drawing.Printing;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
 using ApacchiisClassesMod2.UI.Other;
+using ApacchiisClassesMod2.Configs;
 
 namespace ApacchiisClassesMod2.UI
 {
@@ -30,6 +31,7 @@ namespace ApacchiisClassesMod2.UI
 
         //UIPanel background;
         UIImage background;
+        UIPanel backgroundPanel; //Replaces the one above for more consistent UI design across resource packs
         UIText className;
         UIPanel buttonTalents;
         UIText talentsText;
@@ -100,6 +102,7 @@ namespace ApacchiisClassesMod2.UI
             $"[i:{ItemID.Heart}] Thank you for your support, @Billy da Bomb! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @Hili! [i:{ItemID.Heart}]",
             $"[i:{ItemID.Heart}] Thank you for your support, @SROSirFDrake! [i:{ItemID.Heart}]",
+            $"[i:{ItemID.Heart}] Thank you for your support, @Thunderaz! [i:{ItemID.Heart}]",
 
             "You can change the max level a class can reach in the mod's config (10-100).",
             $"You level up each time a boss is defeated, you can see which bosses you've defeated using a 'Class Book' [i:{ItemType<Items.ClassBook>()}].",
@@ -127,7 +130,8 @@ namespace ApacchiisClassesMod2.UI
             "All relics have the same drop chance.",
             $"This server's settings has a {(Configs._ACMConfigServer.Instance.classStatMult).ToString("F2")}x multiplier for class stats!",
             $"This server's settings has a {(Configs._ACMConfigServer.Instance.enemyDamageMultiplier).ToString("F2")}x multiplier for all enemy damage!",
-            $"Healing Power does NOT affect potions [i:{ItemID.LesserHealingPotion}] or healing from other mods!",
+            $"Healing Power does NOT affect potions [i:{ItemID.LesserHealingPotion}]!",
+            $"By default, Healing Power increases Thorium Mod's Healer healing bonus by 50% of its value!",
             $"You get Ability Power based on your currently held weapon's base DPS, the higher it is, the more you get!",
             $"Bottom left HUD too big or intrusive for your liking ? Enable 'Compact HUD' on the mod's Client Config!",
             $"Do you keep forgetting to use your abilities ? Enable 'Blinking HUD' on the mod's Client Config!",
@@ -159,7 +163,16 @@ namespace ApacchiisClassesMod2.UI
             background = new UIImage((Texture2D)Request<Texture2D>("ApacchiisClassesMod2/UI/background"));
             background.VAlign = .5f;
             background.HAlign = .5f;
-            Append(background);
+            Append(background); //Removed to be replaced by the panel below
+
+            backgroundPanel = new UIPanel();
+            backgroundPanel.Width.Set(1000, 0f);
+            backgroundPanel.Height.Set(480, 0f);
+            backgroundPanel.VAlign = .5f;
+            backgroundPanel.HAlign = .5f;
+            backgroundPanel.BackgroundColor = new Color(75, 75, 75);
+            backgroundPanel.BorderColor = new Color(25, 25, 25);
+            //Append(backgroundPanel);
 
             className = new UIText("");
             className.VAlign = .03f;
@@ -267,13 +280,13 @@ namespace ApacchiisClassesMod2.UI
             tips.HAlign = .5f;
             tips.VAlign = .5f;
             tips.Top.Set(275, 0f);
-            tips.Width.Set(895, 0f);
+            tips.Width.Set(950, 0f);
             tips.Height.Set(50, 0f);
             tips.BackgroundColor = new Color(75, 75, 75);
             tips.BorderColor = new Color(25, 25, 25);
             Append(tips);
 
-            tipsText = new UIText("" + tip[chosenTip], .9f);
+            tipsText = new UIText("" + tip[chosenTip], .85f);
             tipsText.VAlign = .5f;
             tipsText.HAlign = .5f;
             tipsText.Left.Set(-10, 0f);
@@ -569,6 +582,36 @@ namespace ApacchiisClassesMod2.UI
                                        $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}: {acmPlayer.Player.maxMinions}" +
                                        $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%" +
                                        $"\nBanner/Class Stats Bonus: {(acmPlayer.classStatMultiplier * 100).ToString("F2")}%");
+
+
+                //If Thorium is enabled
+                if (ModLoader.TryGetMod("ThoriumMod", out Mod thoriumMod))
+                {
+                    //Get the player's healing bonus from Thorium
+                    object result = thoriumMod.Call("GetHealerHealBonus", Main.player[Player.whoAmI]);
+                    if (result is int thoriumHealBonus)
+                    {
+                        //Calculate how much healing to display
+                        int healBonusToAdd;
+                        float healingPowerToCalculate = (acmPlayer.healingPower - 1f) * _ACMConfigServer.Instance.thoriumHealingBonusPercentage;
+                        healBonusToAdd = (int)(thoriumHealBonus * healingPowerToCalculate);
+
+                        abilityCooldown.SetText("\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}: {(acmPlayer.dodgeChance * 100).ToString("F2")}%\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}: {acmPlayer.Player.maxMinions}" +
+                                       $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%" +
+                                       $"\nBanner/Class Stats Bonus: {(acmPlayer.classStatMultiplier * 100).ToString("F2")}%" +
+                                       $"\n[Thorium] Heal Bonus from Heal Power: {healBonusToAdd}");
+                    }
+                }
+                else
+                {
+                    abilityCooldown.SetText("\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.DodgeChance")}: {(acmPlayer.dodgeChance * 100).ToString("F2")}%\n" +
+                                       $"{Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxMinions")}: {acmPlayer.Player.maxMinions}" +
+                                       $"\nMinion Crit: {(acmPlayer.minionCritChance * 100f).ToString("F2")}%" +
+                                       $"\nBanner/Class Stats Bonus: {(acmPlayer.classStatMultiplier * 100).ToString("F2")}%");
+                }
             }
 
             if (!passiveButton.IsMouseHovering && !ability1Button.IsMouseHovering && !ability2Button.IsMouseHovering && !ability3Button.IsMouseHovering && !buttonTalents.IsMouseHovering && !questPanel.IsMouseHovering && !relicsText.IsMouseHovering && !specsButton.IsMouseHovering && !specsText.IsMouseHovering && !questPanel.IsMouseHovering && !questText.IsMouseHovering && !relicsButton.IsMouseHovering && !relicsText.IsMouseHovering && !changelogButton.IsMouseHovering && !changelogText.IsMouseHovering)

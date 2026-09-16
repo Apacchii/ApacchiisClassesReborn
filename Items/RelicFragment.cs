@@ -19,7 +19,7 @@ namespace ApacchiisClassesMod2.Items
 			Item.width = 30;
 			Item.height = 30;
 			Item.value = Item.sellPrice(0, 0, 25, 0);
-            Item.rare = 1;
+            Item.rare = ItemRarityID.Quest;
 		}
     }
 }

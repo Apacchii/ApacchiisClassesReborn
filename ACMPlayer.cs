@@ -2,6 +2,7 @@ using ApacchiisClassesMod2.Buffs;
 using ApacchiisClassesMod2.Buffs.Plague;
 using ApacchiisClassesMod2.Configs;
 using ApacchiisClassesMod2.Items.Classes;
+using ApacchiisClassesMod2.Items.Classes.Apothecary;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -44,6 +45,7 @@ namespace ApacchiisClassesMod2
         };
         bool updatedRelicList = false;
 
+        private float defaultZoom = -123;
         public int globalTickTimer;
 
         public bool compactHUD;
@@ -202,6 +204,8 @@ namespace ApacchiisClassesMod2
         public bool hasRevengeSpirit;
         bool canReleaseRevengeSpirit = true;
         float revengeSpiritDamageMultiplier = 1f;
+        public bool hasCoreOfMasochism = false;
+        public float coreOfMasochismRuneChance = 0.05f; //Unused
         #endregion
 
         string[] nessieProcText =
@@ -541,7 +545,7 @@ namespace ApacchiisClassesMod2
         public int soulmancerSoulRipDamage_Base;
         public int soulmancerSoulRipDamage_PerLevel;
 
-        public int soulmancerConsumeDuration;
+        public int soulmancerConsumeDuration = 60 * 5;
         public int soulmancerConsumeDuration_Cur;
         public int soulmancerConsumeDuration_Base;
         public int soulmancerConsumeDuration_PerLevel;
@@ -926,6 +930,7 @@ namespace ApacchiisClassesMod2
             sacrificeDotLevel = 0;
             minionSlotsSacrificed = 0;
             hasImperialMandate = false;
+            hasCoreOfMasochism = false;
             #endregion
 
             #region Player Stats
@@ -1014,7 +1019,7 @@ namespace ApacchiisClassesMod2
             hasRelic = false;
             equippedClass = "";
 
-            if (!hasClass)
+            if (hasClass)
                 classStatMultiplier = 1f;
 
             devTool = false;
@@ -1054,7 +1059,7 @@ namespace ApacchiisClassesMod2
             bloodMagePassiveChance = .15f;
             bloodMageBasePassiveWeaponDamageMult = .2f;
             bloodMageBaseDamageGain = .01f;
-            bloodMageBaseUltRegen = .016f;
+            bloodMageBaseUltRegen = .014f;
             bloodMageSiphonBaseDamage = 20;
             bloodMageSiphonHealMax = .15f;
             bloodMageDamageGain = .1f;
@@ -1122,7 +1127,7 @@ namespace ApacchiisClassesMod2
             soulmancerSoulRipDamage = 0;
             soulmancerSoulRipDamage_PerLevel = 3;
 
-            soulmancerConsumeDuration_Base = 60 * 5;
+            soulmancerConsumeDuration_Base = 60 * 6;
             soulmancerConsumeDuration = 0;
             soulmancerConsumeDuration_PerLevel = 8;
             soulmancerConsumeHeal_Base = .0065f;
@@ -1169,7 +1174,7 @@ namespace ApacchiisClassesMod2
             crusaderEndurance = .97f;
             crusaderEnduranceBuff = .96f;
 
-            crusaderHealing = .13f;
+            crusaderHealing = .12f;
 
             crusaderHammerDamageBase = 21;
             crusaderHammerDamageLevel = 8;
@@ -1239,19 +1244,16 @@ namespace ApacchiisClassesMod2
             plagueDeadzoneStrikeInterval = 15;
             #endregion
 
-            #region Scholar
-
-            #endregion
-
             #region Titania
-            titaniaIsPhasing = false;
-            titaniaPassiveDamageMult = .1f;
-
-            if (!ACM2.ClassAbility2.Current)
-            {
-                titaniaPhaseVelX = 0f;
-                titaniaPhaseVelY = -.4f;
-            }
+            //titaniaIsPhasing = false;
+            //titaniaPassiveDamageMult = .1f;
+            //
+            //This is causing a bug of ClassAbility2 not being presend in the dictionary? fix before use & release 
+            //if (!ACM2.ClassAbility2.Current)
+            //{
+            //    titaniaPhaseVelX = 0f;
+            //    titaniaPhaseVelY = -.4f;
+            //}
             #endregion
 
             compactHUD = Configs.ACMConfigClient.Instance.compactHUD;
@@ -1333,7 +1335,7 @@ namespace ApacchiisClassesMod2
             {
                 _arcaneBladeAvoidDeath = false;
                 ClientSideColoredMessage("Your mana saves you from guaranteed death...", Color.AliceBlue);
-                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 15, Player.width, Player.height), Color.AliceBlue, $"Your mana saves you from guaranteed death...");
+                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 15, Player.width, Player.height), Color.AliceBlue, "Your mana saves you from guaranteed death...");
                 _arcaneBarrierNoManaRegenDuration = 60 * 3;
 
                 //&Player.GiveImmuneTimeForCollisionAttack(120);
@@ -1444,6 +1446,9 @@ namespace ApacchiisClassesMod2
             if (Main.rand.NextFloat() < dodgeChance)
                 Player.NinjaDodge();
 
+            if (hasCoreOfMasochism)
+                modifiers.FinalDamage *= 2f;
+
             if (hasNessie && nessieCooldown <= 0)
             {
                 Player.NinjaDodge();
@@ -1487,6 +1492,9 @@ namespace ApacchiisClassesMod2
             //Dodge
             if (Main.rand.NextFloat() < dodgeChance)
                 Player.NinjaDodge();
+
+            if (hasCoreOfMasochism)
+                modifiers.FinalDamage *= 2f;
 
             if (hasNessie && nessieCooldown <= 0)
             {
@@ -1761,6 +1769,13 @@ namespace ApacchiisClassesMod2
                     target.AddBuff(BuffType<SacrificeDot2>(), 60 * 3);
             }
 
+            if(hasCoreOfMasochism && target.life <= 0 && Main.rand.NextFloat() <= _ACMConfigServer.Instance.CoreMasochismChance / 100)
+            {
+                Main.NewText("a");
+                Item.NewItem(default, target.getRect(), ItemType<Items.LostRuneFragment>(), 1);
+            }
+
+
             base.OnHitNPCWithItem(item, target, hit, damageDone);
         }
 
@@ -1906,7 +1921,7 @@ namespace ApacchiisClassesMod2
                     }
                 }
 
-                if (proj.type == ProjectileType<Projectiles.Soulmancer.SoulFragment>() && soulmancerConsumeDuration_Cur > 0 && Player.statLife < Player.statLifeMax2)
+                if (proj.type == ProjectileType<Projectiles.Soulmancer.SoulFragment>() && soulmancerConsumeDuration_Cur > 0)
                 {
                     Vector2 speed = Main.rand.NextVector2CircularEdge(5f, 5f);
                     speed.Normalize();
@@ -1948,6 +1963,12 @@ namespace ApacchiisClassesMod2
 
                 if (sacrificeDotLevel == 2)
                     target.AddBuff(BuffType<SacrificeDot2>(), 60 * 3);
+            }
+
+            if (hasCoreOfMasochism && target.life <= 0 && Main.rand.NextFloat() <= _ACMConfigServer.Instance.CoreMasochismChance / 100)
+            {
+                Main.NewText("a");
+                Item.NewItem(default, target.getRect(), ItemType<Items.LostRuneFragment>(), 1);
             }
 
             base.OnHitNPCWithProj(proj, target, hit, damageDone);
@@ -2061,7 +2082,8 @@ namespace ApacchiisClassesMod2
                 modifiers.FinalDamage.Base += (int)(Player.HeldItem.damage * bloodMageBasePassiveWeaponDamageMult * abilityPower);
                 float velDirX = Main.rand.NextFloat(-5f, 5f);
                 float velDirY = Main.rand.NextFloat(-5f, 5f);
-                SoundEngine.PlaySound(SoundID.BloodZombie, target.Center);
+                if(!ACMConfigClient.Instance.bloodMagePassiveSFX)
+                    SoundEngine.PlaySound(SoundID.BloodZombie, target.Center);
                 for (int x = 0; x < 15; x++)
                     Dust.NewDustDirect(target.position, 1, 1, DustID.Blood, velDirX, velDirY, 0, default, Main.rand.NextFloat(1f, 2f));
 
@@ -2193,7 +2215,8 @@ namespace ApacchiisClassesMod2
                 modifiers.FinalDamage.Base += (int)(Player.HeldItem.damage * bloodMageBasePassiveWeaponDamageMult * abilityPower);
                 float velDirX = Main.rand.NextFloat(-5f, 5f);
                 float velDirY = Main.rand.NextFloat(-5f, 5f);
-                SoundEngine.PlaySound(SoundID.BloodZombie, target.Center);
+                if (!ACMConfigClient.Instance.bloodMagePassiveSFX)
+                    SoundEngine.PlaySound(SoundID.BloodZombie, target.Center);
                 for (int x = 0; x < 15; x++)
                     Dust.NewDustDirect(target.position, 1, 1, DustID.Blood, velDirX, velDirY, 0, default, Main.rand.NextFloat(1f, 2f));
 
@@ -2262,6 +2285,7 @@ namespace ApacchiisClassesMod2
 
         public override void PreUpdateBuffs()
         {
+
             if (Player.HeldItem.damage > 1 && Player.HeldItem.useTime > 0)
             {
                 float shotsPerSecond = 60 / Player.HeldItem.useTime;
@@ -2273,6 +2297,37 @@ namespace ApacchiisClassesMod2
                 soulmancerSoulRipChance += .25f;
 
             base.PreUpdateBuffs();
+        }
+
+        public override void ModifyScreenPosition()
+        {
+            if (ACMConfigClient.Instance.ZoomEffects)
+            {
+                if (defaultZoom == -123)
+                    defaultZoom = Main.GameZoomTarget;
+
+                if (fairyLawTimer > 90)
+                {
+                    Main.NewText(Main.GameZoomTarget);
+                    Main.GameZoomTarget += .0012f;
+                }
+                else
+                {
+                    if (Main.GameZoomTarget > defaultZoom + 1f)
+                        Main.GameZoomTarget -= .008f;
+                    if (Main.GameZoomTarget < defaultZoom + 1f)
+                        Main.GameZoomTarget = 1f;
+                }
+            }
+            
+
+            base.ModifyScreenPosition();
+        }
+
+        public override void ModifyZoom(ref float zoom)
+        {
+            
+            base.ModifyZoom(ref zoom);
         }
 
         public override void GetHealLife(Item item, bool quickHeal, ref int healValue)
@@ -2348,9 +2403,9 @@ namespace ApacchiisClassesMod2
             }
 
             if (Player.statLife <= 0 && !Player.dead && bloodMageBloodEnchantment && hasBloodMage)
-                Player.KillMe(PlayerDeathReason.ByCustomReason(Player.name + " ran out of blood for their 'Blood Enchantment' ability!. Silly player!"), 1, 1);
+                Player.KillMe(PlayerDeathReason.ByCustomReason(Player.name + " ran out of blood for their 'Blood Enchantment' ability! Silly player!"), 1, 1);
             if (Player.statLife <= 0 && !Player.dead && soulmancerSacrificeSoulCount_Cur > 0 && hasSoulmancer)
-                Player.KillMe(PlayerDeathReason.ByCustomReason(Player.name + " has sacrificed their own soul for the cause!. Now that's dedication!"), 1, 1);
+                Player.KillMe(PlayerDeathReason.ByCustomReason(Player.name + " has sacrificed their own soul for the cause! Now that's dedication!"), 1, 1);
 
             int selectedRatText = Main.rand.Next(accountantRatDeathText.Length);
             if (Player.statLife <= 0 && accountantRatDamageAccumulated > 0)
@@ -2387,7 +2442,7 @@ namespace ApacchiisClassesMod2
 
             if (globalSingleSecondTimer == 0)
                 if (healthToRegen > 0 || healthToRegenMedium > 0 || healthToRegenSlow > 0 || healthToRegenSnail > 0 || healthToRegenSecond > 0)
-                    for (int x = 0; x < 5; x++)
+                    for (int x = 0; x < 4; x++)
                         Dust.NewDustDirect(Player.position, Player.width, Player.height, DustType<Dusts.HealingDust>(), 0f, 0f, 0, default, Main.rand.NextFloat(1f, 1.75f));
 
             if(healthToRegen > 0)
@@ -2400,7 +2455,7 @@ namespace ApacchiisClassesMod2
             }
 
             healthToRegenMediumTimer++;
-            if(healthToRegenMediumTimer % 4 == 0)
+            if(healthToRegenMediumTimer % 5 == 0)
             {
                 if(healthToRegenMedium > 0)
                 {
@@ -2413,7 +2468,7 @@ namespace ApacchiisClassesMod2
             }
 
             healthToRegenSlowTimer++;
-            if (healthToRegenSlowTimer % 8 == 0)
+            if (healthToRegenSlowTimer % 10 == 0)
             {
                 if (healthToRegenSlow > 0)
                 {
@@ -2426,7 +2481,7 @@ namespace ApacchiisClassesMod2
             }
 
             healthToRegenSnailTimer++;
-            if (healthToRegenSnailTimer % 20 == 0)
+            if (healthToRegenSnailTimer % 30 == 0)
             {
                 if (healthToRegenSnail > 0)
                 {
@@ -2457,11 +2512,12 @@ namespace ApacchiisClassesMod2
             if (globalSingleSecondTimer == 0)
                 globalSingleSecondTimer = 60;
             globalSingleSecondTimer--;
-            
-            if (ability1Cooldown > 0)
-                ability1Cooldown--;
-            if(ability2Cooldown > 0)
-                ability2Cooldown--;
+
+            //Old since the change from cooldowns counting down to counting up
+            //if (ability1Cooldown > 0)
+            //    ability1Cooldown--;
+            //if(ability2Cooldown > 0)
+            //    ability2Cooldown--;
 
             pSecHealthTimer--;
             inBattleTimer--;
@@ -2489,16 +2545,16 @@ namespace ApacchiisClassesMod2
                 inBattle = false;
             }
 
-            if (vanguardShieldCurrentDuration > 0)
-            {
-                vanguardShieldUp = true;
-                vanguardShieldCurrentDuration--;
-                Player.endurance += vanguardShieldDamageReduction;
-            }
-            else
-            {
-                vanguardShieldUp = false;
-            }
+            //if (vanguardShieldCurrentDuration > 0)
+            //{
+            //    vanguardShieldUp = true;
+            //    vanguardShieldCurrentDuration--;
+            //    Player.endurance += vanguardShieldDamageReduction;
+            //}
+            //else
+            //{
+            //    vanguardShieldUp = false;
+            //}
 
             if (vanguardTalent_3 == "L")
                 vanguardShieldBaseDamageReduction += .05f;
@@ -2621,7 +2677,7 @@ namespace ApacchiisClassesMod2
 
             if (soulmancerSacrificeTimer == 0 && soulmancerSacrificeSoulCount_Cur > 0)
             {
-                ScreenShake(Player.Center, 4f, 5);
+                ScreenShake(Player.Center, 6f, 7);
                 soulmancerSacrificeSoulCount_Cur--;
                 soulmancerSacrificeTimer = 3;
 
@@ -2713,7 +2769,7 @@ namespace ApacchiisClassesMod2
             if (equippedClass == "Soulmancer")
                 spentSkillPointsGlobal = soulmancerSpentSkillPoints;
             #endregion
-
+            
             base.PreUpdate();
         }
 
@@ -2730,10 +2786,8 @@ namespace ApacchiisClassesMod2
             cooldownReduction -= card_TimelessCount * card_TimelessValue;
             ultCooldownReduction -= card_MightyCount * card_MightyValue;
             healingPower += card_MendingCount * card_MendingValue;
-            classStatMultiplier += card_MagicalCount * card_MagicalValue;
-
+            
             lifeMult += card_VeteranCount * card_VeteranValue_1;
-            classStatMultiplier += card_VeteranCount * card_VeteranValue_2;
 
             lifeMult += card_FortifiedCount * card_FortifiedValue_1;
             Player.endurance += card_FortifiedCount * card_FortifiedValue_2;
@@ -2897,19 +2951,22 @@ namespace ApacchiisClassesMod2
 
         public override void PostUpdateEquips()
         {
-            if (hasClass)
-            {
-                if (hasScalingWarbanner)
-                {
-                    classStatMultiplier += .1f;
-                    if (Main.hardMode)
-                        classStatMultiplier += .08f;
-                }
-            }
-
             int currentClassLevel = globalClassLevel.Count;
             if (currentClassLevel > _ACMConfigServer.Instance.maxClassLevel)
                 currentClassLevel = _ACMConfigServer.Instance.maxClassLevel;
+
+            if (hasClass)
+            {
+                classStatMultiplier += card_MagicalCount * card_MagicalValue;
+                classStatMultiplier += card_VeteranCount * card_VeteranValue_2;
+            }
+
+            if (hasScalingWarbanner && hasClass)
+            {
+                classStatMultiplier += .1f;
+                if (Main.hardMode)
+                    classStatMultiplier += .08f;
+            }
 
             #region Vanguard
             if (hasVanguard)
@@ -2955,7 +3012,16 @@ namespace ApacchiisClassesMod2
                 vanguardSwordDamage = vanguardSwordBaseDamage + 12 * currentClassLevel;
                 vanguardShieldDamageReduction += vanguardShieldBaseDamageReduction;
 
-                //Player.endurance += vanguardShieldDamageReduction;
+                if (vanguardShieldCurrentDuration > 0)
+                {
+                    vanguardShieldUp = true;
+                    vanguardShieldCurrentDuration--;
+                    Player.endurance += vanguardShieldDamageReduction;
+                }
+                else
+                {
+                    vanguardShieldUp = false;
+                }
             }
             #endregion
 
@@ -3179,9 +3245,9 @@ namespace ApacchiisClassesMod2
             #endregion
 
             #region Soulmancer
-            soulmancerLevel = soulmancerDefeatedBosses.Count;
-            if (soulmancerLevel > _ACMConfigServer.Instance.maxClassLevel)
-                soulmancerLevel = _ACMConfigServer.Instance.maxClassLevel;
+            //soulmancerLevel = soulmancerDefeatedBosses.Count;
+            //if (soulmancerLevel > _ACMConfigServer.Instance.maxClassLevel)
+            //    soulmancerLevel = _ACMConfigServer.Instance.maxClassLevel;
 
             if (hasSoulmancer)
             {
@@ -3381,9 +3447,7 @@ namespace ApacchiisClassesMod2
                 _plagueDeadzoneDurationCurrent--;
                 if (_plagueDeadzoneDurationCurrent > 0)
                 {
-                    float q = (float)_plagueDeadzoneDurationCurrent / (float)plagueDeadzoneDuration;
-
-                    
+                    float q = (float)_plagueDeadzoneDurationCurrent / (float)plagueDeadzoneDuration; 
 
                     // Circle Dust
                     Vector2 origin = Player.Center;
@@ -3464,13 +3528,13 @@ namespace ApacchiisClassesMod2
             #endregion
 
             #region Ability Ready Sounds
-            if (ability1Cooldown == 0 && !a1Sound)
+            if (ability1Cooldown == ability1MaxCooldown * 60 && !a1Sound)
             {
                 a1Sound = true;
                 SoundEngine.PlaySound(SoundID.MaxMana);
             }
 
-            if (ability2Cooldown == 0 && !a2Sound)
+            if (ability2Cooldown == ability1MaxCooldown * 60 && !a2Sound)
             {
                 a2Sound = true;
                 SoundEngine.PlaySound(SoundID.MaxMana);
@@ -3510,7 +3574,7 @@ namespace ApacchiisClassesMod2
 
                 if (hasSoulmancer)
                 {
-                    soulmancerSoulShatterRange -= 175;
+                    soulmancerSoulShatterRange -= 150;
                     abilityPower += .06f;
                     soulmancerSoulShatterCastTarget = Main.MouseWorld;
                 }
@@ -3557,8 +3621,8 @@ namespace ApacchiisClassesMod2
 
             if (hasChaosAccelerant)
             {
-                lifeMult -= .4f;
-                manaMult -= .4f;
+                lifeMult -= .33f;
+                manaMult -= .33f;
             }
 
             if (hasTearsOfLife)
@@ -3620,10 +3684,22 @@ namespace ApacchiisClassesMod2
                 pSecHealthTimer = 60;
             }
 
-            if (cooldownReduction < .25f)
-                cooldownReduction = .25f;
-            if (ultCooldownReduction < .25f)
-                ultCooldownReduction = .25f;
+            //Cooldown reduction cap
+            if (!devTool)
+            {
+                if (cooldownReduction < .25f)
+                    cooldownReduction = .25f;
+                if (ultCooldownReduction < .25f)
+                    ultCooldownReduction = .25f;
+            }
+            else
+            {
+                if (cooldownReduction < .1f)
+                    cooldownReduction = .1f;
+                if (ultCooldownReduction < .1f)
+                    ultCooldownReduction = .1f;
+            }
+            
 
             if (hasScout && scoutColaCurDuration > 0)
                 if (hasAghanims || hasAghanimsShard)
@@ -3683,7 +3759,7 @@ namespace ApacchiisClassesMod2
             if (fairyLawTimer == 480)
             {
                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "...two...", false);
-                ScreenShake(Player.Center, 1.5f, 260, 3);
+                ScreenShake(Player.Center, 2f, 260, 3);
 
             }
             if (fairyLawTimer == 360)
@@ -3694,7 +3770,7 @@ namespace ApacchiisClassesMod2
             if (fairyLawTimer == 240)
             {
                 CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Fairy...", false);
-                ScreenShake(Player.Center, 3f, 300, 6);
+                ScreenShake(Player.Center, 2f, 300, 6);
             }
             if (fairyLawTimer == 120)
             {
@@ -3731,6 +3807,8 @@ namespace ApacchiisClassesMod2
 
         public override void PostUpdateMiscEffects()
         {
+            
+
             Player.statLifeMax2 = (int)(Player.statLifeMax2 * lifeMult);
             Player.statDefense *= defenseMult;
             Player.statManaMax2 = (int)(Player.statManaMax2 * manaMult);
@@ -3740,6 +3818,14 @@ namespace ApacchiisClassesMod2
 
         public override void PostUpdate()
         {
+            int A1Cooldown = (int)(ability1MaxCooldown * cooldownReduction * ability1cdr);
+            if (ability1Cooldown < A1Cooldown * 60)
+                ability1Cooldown++;
+
+            int A2Cooldown = (int)(ability2MaxCooldown * cooldownReduction * ability2cdr);
+            if (ability2Cooldown < A2Cooldown * 60)
+                ability2Cooldown++;
+
             if (hasSacrifice)
             {
                 minionSlotsSacrificed = Player.maxMinions / 2;
@@ -3759,7 +3845,7 @@ namespace ApacchiisClassesMod2
 
             // RELIC LIST CODE WAS HERE ON 1.4.3, 1.4.4 BUGGED IT, PLACEHOLDER
 
-            if (ability1MaxCharges > 1 && ability1Cooldown <= 0 && ability1Charges < ability1MaxCharges)
+            if (ability1MaxCharges > 1 && ability1Cooldown / 60 >= ability1MaxCooldown && ability1Charges < ability1MaxCharges)
             {
                 AddAbilityCooldown(1, ability1MaxCooldown);
                 //Main.NewText($"{ability1Cooldown}/{ability1MaxCooldown}");
@@ -3769,11 +3855,19 @@ namespace ApacchiisClassesMod2
             {
                 if(Player.whoAmI == Main.myPlayer)
                 {
+                    //Regular HUD
                     if (equippedClass != "" && GetInstance<ACM2ModSystem>()._HUD.CurrentState == null)
                         GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
+                    
+                    if (equippedClass == "")
+                        GetInstance<ACM2ModSystem>()._HUD.SetState(null);
 
+                    //Reworked HUD
                     //if (equippedClass != "" && GetInstance<ACM2ModSystem>()._HUDRework.CurrentState == null)
                     //    GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
+                    //
+                    //if (equippedClass == "")
+                    //    GetInstance<ACM2ModSystem>()._HUDRework.SetState(null);
 
                     //if (resetHUD == 1 && equippedClass != "")
                     //{
@@ -3783,6 +3877,22 @@ namespace ApacchiisClassesMod2
                 }
             }
 
+            if (ModLoader.TryGetMod("ThoriumMod", out Mod thoriumMod))
+            {
+                //Get the player's healing bonus from Thorium
+                object result = thoriumMod.Call("GetHealerHealBonus", Main.player[Player.whoAmI]);
+                if (result is int thoriumHealBonus)
+                {
+                    //Calculate how much healing to add
+                    int healBonusToAdd;
+                    float healingPowerToCalculate = (healingPower - 1f) * _ACMConfigServer.Instance.thoriumHealingBonusPercentage;
+                    healBonusToAdd = (int)(thoriumHealBonus * healingPowerToCalculate);
+
+                    //Adds Thorium healing bonus
+                    if(healBonusToAdd >= 1)
+                        thoriumMod.Call("BonusHealerHealBonus", Main.player[Player.whoAmI], healBonusToAdd);
+                }
+            }
 
             base.PostUpdate();
         }
@@ -3927,9 +4037,13 @@ namespace ApacchiisClassesMod2
                 }
             }
 
+            //Ability cooldowns
+            int A1Cooldown = (int)(ability1MaxCooldown * cooldownReduction * ability1cdr);
+            int A2Cooldown = (int)(ability2MaxCooldown * cooldownReduction * ability2cdr);
+
             if (Main.myPlayer == Player.whoAmI && !Player.dead)
             {
-                if (ACM2.ClassAbility1.JustReleased && ability1Cooldown <= 0)
+                if (ACM2.ClassAbility1.JustReleased && ability1Cooldown >= A1Cooldown * 60)
                 {
                     Vector2 PointToCursor = Main.MouseWorld - Player.position;
                     PointToCursor.Normalize();
@@ -4001,14 +4115,11 @@ namespace ApacchiisClassesMod2
                             break;
 
                         case "Soulmancer":
-                            if (Player.statLife < Player.statLifeMax2 * .5f)
-                            {
-                                AddAbilityCooldown(1, ability1MaxCooldown);
-                                CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Consume!", true);
-                                soulmancerConsumeDuration_Cur = soulmancerConsumeDuration;
+                            AddAbilityCooldown(1, ability1MaxCooldown);
+                            CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Consume!", true);
+                            soulmancerConsumeDuration_Cur = soulmancerConsumeDuration;
 
-                                SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, Player.position);
-                            }
+                            SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, Player.position);
                             break;
 
                         case "Crusader":
@@ -4068,11 +4179,15 @@ namespace ApacchiisClassesMod2
                         case "Plague":
                             AddAbilityCooldown(1, ability1MaxCooldown);
 
-
                             _plagueInsectsToSpawn = plagueInsectsBase;
 
                             CombatText.NewText(new Rectangle((int)Player.position.X, (int)Player.position.Y + 20, Player.width, Player.height), Color.White, "Infect!", true);
                             break;
+
+                        case "Cook":
+                            //Throw plates that heal players like heart items but overtime
+                            break;
+
                         case "Titania":
                             Vector2 origin = Player.Center;
                             origin.X -= Player.width / 2 - 10;
@@ -4084,7 +4199,7 @@ namespace ApacchiisClassesMod2
                                 Vector2 position = origin + Vector2.UnitX.RotatedBy(MathHelper.ToRadians(360f / pixies * i)) * radius;
                                 var dust = Dust.NewDustPerfect(position, 61, Vector2.Zero, 0, Color.Pink, 2f);
                                 dust.noGravity = false;
-                                dust.noLight = false;
+                                dust.noLight = true;
 
                                 Vector2 dvel = dust.position - Player.Center;
                                 dvel.Normalize();
@@ -4099,8 +4214,10 @@ namespace ApacchiisClassesMod2
                     a1Sound = false;
                 }
 
-                if (ACM2.ClassAbility2.JustReleased && ability2Cooldown <= 0)
+                
+                if (ACM2.ClassAbility2.JustReleased && ability2Cooldown/60 >= A2Cooldown)
                 {
+                    //Main.NewText($"Used A2: @{ability2Cooldown}/{ability2MaxCooldown}");
                     Vector2 PointToCursor = Main.MouseWorld - Player.position;
                     PointToCursor.Normalize();
 
@@ -4191,6 +4308,7 @@ namespace ApacchiisClassesMod2
                             else
                                 Projectile.NewProjectile(null, Player.Center, Vector2.Zero, ProjectileType<Projectiles.Soulmancer.SoulShatter>(), 0, 0, Player.whoAmI);
                             SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, Player.position);
+                            ScreenShake(Player.Center, 5, 10);
                             break;
 
                         case "Crusader":
@@ -4268,6 +4386,10 @@ namespace ApacchiisClassesMod2
                                 dust.velocity = -dvel;
                             }
                             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Player.position);
+                            break;
+
+                        case "Cook":
+                            //Throw boomerand cleavers in 8 directions
                             break;
 
                         case "Titania":
@@ -4366,7 +4488,7 @@ namespace ApacchiisClassesMod2
                 }
 
                 //Holding Ability 2 keybind
-                if (ACM2.ClassAbility2.Current && ability2Cooldown <= 0)
+                if (ACM2.ClassAbility2.Current && ability2Cooldown >= ability2MaxCooldown)
                 {
                     switch (equippedClass)
                     {
@@ -4439,7 +4561,7 @@ namespace ApacchiisClassesMod2
                                 //    else
                                 //        titaniaPhaseVelX += .5f;
                                 //
-                                //    //Avoid right steering automatically that happens for some reason
+                                //    //Avoid right steering that automatically happens for some reason
                                 //    if (titaniaPhaseVelX > 0f)
                                 //       titaniaPhaseVelX -= .01f;
                                 //}
@@ -4470,7 +4592,7 @@ namespace ApacchiisClassesMod2
 
                                 var movementDust2 = Dust.NewDust(Player.position, 32, 32, DustID.WhiteTorch, 0, 0, 0, Color.LightBlue, 2f);
                                 Main.dust[movementDust2].noGravity = true;
-                                var movementDust3 = Dust.NewDust(Player.position, 32, 32, DustID.WhiteTorch, 0, 0, 0, Color.LightPink, 1f);
+                                var movementDust3 = Dust.NewDust(Player.position, 32, 32, DustID.PinkTorch, 0, 0, 0, Color.LightPink, 1f);
                                 Main.dust[movementDust3].noGravity = true;
 
                                 if (titaniaPhaseResource <= 0)
@@ -4630,13 +4752,17 @@ namespace ApacchiisClassesMod2
                                 _plagueDeadzoneDurationCurrent = plagueDeadzoneDuration;
                                 break;
 
+                            case "Cook":
+                                //Scorch nearby enemies applying dot
+                                break;
+
                             case "Titania":
                                 fairyLawTimer = 630;
 
                                 SoundStyle fairyLawSFX = new SoundStyle($"{nameof(ApacchiisClassesMod2)}/Sounds/SoundEffects/Titania/FairyLaw");
                                 SoundEngine.PlaySound(fairyLawSFX with
                                 {
-                                    Volume = 1.3f,
+                                    Volume = 3f,
                                     Pitch = -.0775f
                                 }, Player.Center);
                                 break;
@@ -5136,19 +5262,20 @@ namespace ApacchiisClassesMod2
         /// <summary>
         /// Add ability cooldowns. 'ability' corresponds to ability number (1/2).
         /// </summary>
-        void AddAbilityCooldown(int ability, int timeInSeconds)
+        public void AddAbilityCooldown(int ability, int timeInSeconds)
         {
             if (ability == 1)
             {
                 if (ability1MaxCharges > 1)
                 {
                     ability1Charges++;
-                    if(ability1Charges < ability1MaxCharges)
-                        ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
+                    if (ability1Charges < ability1MaxCharges)
+                        ability1Cooldown = 0;
+                        //ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
                 }
                 else
-                    ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
-
+                        ability1Cooldown = 0;
+                //ability1Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability1cdr);
             }
             if (ability == 2)
             {
@@ -5156,10 +5283,12 @@ namespace ApacchiisClassesMod2
                 {
                     ability2Charges++;
                     if (ability2Charges < ability2MaxCharges)
-                        ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
+                        ability2Cooldown = 0;
+                    //ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
                 }
                 else
-                    ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
+                    ability2Cooldown = 0;
+                    //ability2Cooldown = (int)(60 * timeInSeconds * cooldownReduction * ability2cdr);
             }
         }
 

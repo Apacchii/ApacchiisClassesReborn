@@ -58,6 +58,8 @@ namespace ApacchiisClassesMod2.Items.Classes
             Player Player = Main.player[Main.myPlayer];
 
             var modPlayer = Player.GetModPlayer<ACMPlayer>();
+            string damageType = "MeleeDamage";
+            if (_ACMConfigServer.Instance.generalistClasses) damageType = "AllDamage";
 
             TooltipLine HoldSToPreview = new TooltipLine(Mod, "HoldPreview", $"[{Language.GetTextValue("Mods.ApacchiisClassesMod2.HoldToPreviewAbilities")}]");
             TooltipLine AbilityPreview = new TooltipLine(Mod, "AbilityPreview",
@@ -73,17 +75,28 @@ namespace ApacchiisClassesMod2.Items.Classes
             HoldSToPreview.OverrideColor = Color.CadetBlue;
             AbilityPreview.OverrideColor = Color.CadetBlue;
 
-            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MeleeDamage")} p/lvl\n" +
+            TooltipLine lineStatsPreview = new TooltipLine(Mod, "Stats", "+" + (stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)} p/lvl\n" +
                                                                          "+" + (stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.HealingPower")} p/lvl\n" +
                                                                          "+" + (stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")} p/lvl");
             TooltipLine lineBadStatPreview = new TooltipLine(Mod, "BadStat", "-" + (badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")} p/lvl");
 
             var level = modPlayer.globalClassLevel.Count;
+            string classStats;
+            if (Player.controlUp)
+            {
+                classStats = $"+{level * stat1 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.HealingPower")}\n" +
+                             $"+{level * stat3 * 100:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}";
+            }
+            else
+            {
+                classStats = $"+{level * stat1 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2." + damageType)}\n" +
+                             $"+{level * stat2 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.HealingPower")}\n" +
+                             $"+{level * stat3 * 100 * modPlayer.classStatMultiplier:F2}% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}";
+            }
 
             TooltipLine lineLevel = new TooltipLine(Mod, "Level", "Level: " + level);
-            TooltipLine lineStats = new TooltipLine(Mod, "Stats", "+" + (level * stat1 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MeleeDamage")}\n" +
-                                                                      "+" + (level * stat2 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.HealingPower")}\n" +
-                                                                      "+" + (level * stat3 * 100 * modPlayer.classStatMultiplier).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.Defense")}");
+            TooltipLine lineStats = new TooltipLine(Mod, "Stats", classStats);
             TooltipLine lineBadStat = new TooltipLine(Mod, "BadStat", "-" + (level * badStat * 100).ToString("F2") + $"% {Language.GetTextValue("Mods.ApacchiisClassesMod2.MaxHealth")}");
 
             lineLevel.OverrideColor = new Color(200, 150, 25);
@@ -138,9 +151,6 @@ namespace ApacchiisClassesMod2.Items.Classes
             }
             else { ClassStats(); }
 
-            acmPlayer.classStatMultiplier = 1f;
-            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += currentClassLevel * .01f;
-
             // Class Menu Text [x = y + z p/lvl]
             acmPlayer.P_Name = "Tenacity";
             acmPlayer.P_Desc = $"Reduce damage taken by {(-(acmPlayer.crusaderEndurance - 1f) * 100).ToString("F0")}%.\nThis effect is increased by an additional {(-(acmPlayer.crusaderEnduranceBuff - 1f) * 100).ToString("F0")}% while under the effects of a healing buff.";
@@ -162,6 +172,8 @@ namespace ApacchiisClassesMod2.Items.Classes
                                      "- Cooldown Reduction increased by 10%\n" +
                                      "- Healing Power increased by 10%\n" +
                                      "- Ultimate Cost reduced by 10%";
+
+            acmPlayer.classStatMultiplier = 1f;
         }
 
         private void ClassStats()
@@ -170,10 +182,22 @@ namespace ApacchiisClassesMod2.Items.Classes
             var acmPlayer = player.GetModPlayer<ACMPlayer>();
             int currentClassLevel = acmPlayer.globalClassLevel.Count;
 
-            player.GetDamage(DamageClass.Melee) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
-            acmPlayer.healingPower += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
-            acmPlayer.defenseMult += currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
-            //-Health is changed in ACMPlayer.cs
+            if (_ACMConfigServer.Instance.calamityScaling && Main.hardMode) acmPlayer.classStatMultiplier += (float)(currentClassLevel * .01f);
+
+            if (_ACMConfigServer.Instance.generalistClasses)
+            {
+                player.GetDamage(DamageClass.Generic) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                acmPlayer.healingPower += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
+                acmPlayer.defenseMult += currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
+                //-Health is changed in ACMPlayer.cs
+            }
+            else
+            {
+                player.GetDamage(DamageClass.Melee) += currentClassLevel * stat1 * acmPlayer.classStatMultiplier;
+                acmPlayer.healingPower += currentClassLevel * stat2 * acmPlayer.classStatMultiplier;
+                acmPlayer.defenseMult += currentClassLevel * stat3 * acmPlayer.classStatMultiplier;
+                //-Health is changed in ACMPlayer.cs
+            }
 
             if (acmPlayer.defenseMult * currentClassLevel * stat3 * acmPlayer.classStatMultiplier < 1)
                 player.statDefense++;

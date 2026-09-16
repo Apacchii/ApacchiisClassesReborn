@@ -78,106 +78,125 @@ namespace ApacchiisClassesMod2
 
             if (args[0] == "cheatLevelUp" || args[0] == "clu")
             {
-                if (modPlayer.hasBloodMage)
+                var nString = args[1];
+                int nInt = Convert.ToInt32(nString);
+                if (nInt < 1) nInt = 1;
+                for (int i = 0; i < nInt; i++)
                 {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.bloodMageSkillPoints++;
-                        modPlayer.bloodMageDefeatedBosses.Add("Cheat Level");
-                    }
+                    modPlayer.vanguardSkillPoints++;
+                    modPlayer.bloodMageSkillPoints++;
+                    modPlayer.commanderSkillPoints++;
+                    modPlayer.scoutSkillPoints++;
+                    modPlayer.crusaderSkillPoints++;
+                    modPlayer.soulmancerSkillPoints++;
+                    modPlayer.gamblerSkillPoints++;
+                    modPlayer.plagueSkillPoints++;
+                    modPlayer.titaniaSkillPoints++;
+
+                    modPlayer.cardsPoints += 2;
+                    modPlayer.globalClassLevel.Add("Cheat Level");
                 }
 
-                if (modPlayer.hasCommander)
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.commanderSkillPoints++;
-                        modPlayer.commanderDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.hasScout)
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.scoutSkillPoints++;
-                        modPlayer.scoutDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.hasSoulmancer)
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.soulmancerSkillPoints++;
-                        modPlayer.soulmancerDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.hasVanguard)
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.vanguardSkillPoints++;
-                        modPlayer.vanguardDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.hasCrusader)
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.crusaderSkillPoints++;
-                        modPlayer.crusaderDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.equippedClass == "Gambler")
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.gamblerSkillPoints++;
-                        modPlayer.gamblerDefeatedBosses.Add("Cheat Level");
-                    }
-                }
-
-                if (modPlayer.equippedClass == "Plague")
-                {
-                    var nString = args[1];
-                    int nInt = Convert.ToInt32(nString);
-                    if (nInt < 1) nInt = 1;
-                    for (int i = 0; i < nInt; i++)
-                    {
-                        modPlayer.plagueSkillPoints++;
-                        modPlayer.plagueDefeatedBosses.Add("Cheat Level");
-                    }
-                }
+                //if (modPlayer.hasBloodMage)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.bloodMageSkillPoints++;
+                //        modPlayer.bloodMageDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.hasCommander)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.commanderSkillPoints++;
+                //        modPlayer.commanderDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.hasScout)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.scoutSkillPoints++;
+                //        modPlayer.scoutDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.hasSoulmancer)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.soulmancerSkillPoints++;
+                //        modPlayer.soulmancerDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.hasVanguard)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.vanguardSkillPoints++;
+                //        modPlayer.vanguardDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.hasCrusader)
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.crusaderSkillPoints++;
+                //        modPlayer.crusaderDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.equippedClass == "Gambler")
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.gamblerSkillPoints++;
+                //        modPlayer.gamblerDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
+                //
+                //if (modPlayer.equippedClass == "Plague")
+                //{
+                //    var nString = args[1];
+                //    int nInt = Convert.ToInt32(nString);
+                //    if (nInt < 1) nInt = 1;
+                //    for (int i = 0; i < nInt; i++)
+                //    {
+                //        modPlayer.plagueSkillPoints++;
+                //        modPlayer.plagueDefeatedBosses.Add("Cheat Level");
+                //    }
+                //}
 
                 var _lvls = args[1];
                 int lvls = Convert.ToInt32(_lvls);
                 if (lvls < 1) lvls = 1;
-                caller.Reply($"Added {lvls} cheat levels to the player's currently equipped class");
+                caller.Reply($"Added {lvls} cheat levels to the player");
             }
 
             if (args[0] == "resetHUD" || args[0] == "rhud")
@@ -187,8 +206,8 @@ namespace ApacchiisClassesMod2
                     ModContent.GetInstance<ACM2ModSystem>()._HUD.SetState(null);
                     ModContent.GetInstance<ACM2ModSystem>()._HUD.SetState(new UI.HUD.HUD());
 
-                    ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(null);
-                    ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
+                    //ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(null);
+                    //ModContent.GetInstance<ACM2ModSystem>()._HUDRework.SetState(new UI.HUD.HUDRework());
                 }
                 caller.Reply("HUD has been reset");
                 return;
